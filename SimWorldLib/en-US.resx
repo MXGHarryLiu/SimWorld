@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="T" xml:space="preserve">
+    <value>The accumulated time since simulation started in second.</value>
+    <comment>World Simulation</comment>
+  </data>
+  <data name="CreatureCount" xml:space="preserve">
+    <value>The population of the creatures in simulation in the World. </value>
+    <comment>World Life</comment>
+  </data>
+  <data name="DayLen" xml:space="preserve">
+    <value>The length of the daytime in second. </value>
+    <comment>World Environment</comment>
+  </data>
+  <data name="DayTotal" xml:space="preserve">
+    <value>The length of the whole day in second. </value>
+    <comment>World Environment</comment>
+  </data>
+  <data name="DT" xml:space="preserve">
+    <value>Simulation time resolution/step in second. </value>
+    <comment>World Simulation</comment>
+  </data>
+  <data name="RefreshRate" xml:space="preserve">
+    <value>The refresh rate of the Dashboard information and the Stage image in multiples of DT. In order to speed up the simulation running time, we recommend to set the value greater than 10. </value>
+    <comment>World Simulation</comment>
+  </data>
+  <data name="WorldFileDir" xml:space="preserve">
+    <value>Folder directory that contains the World file and all its creature files.</value>
+    <comment>World Utility</comment>
+  </data>
+  <data name="SettingPath" xml:space="preserve">
+    <value>The path of the Creature file. </value>
+    <comment>Creature Utility</comment>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Environment temperature of the World in Celsius. </value>
+    <comment>World Environment</comment>
+  </data>
+  <data name="Twilight" xml:space="preserve">
+    <value>The length of each transition between day and night in second. </value>
+    <comment>World Environment</comment>
+  </data>
+  <data name="WorldFile" xml:space="preserve">
+    <value>The file name of the World file currently loaded.</value>
+    <comment>World Utility</comment>
+  </data>
+  <data name="WorldVersion" xml:space="preserve">
+    <value>World File version. </value>
+    <comment>World Utility</comment>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>The size of the World (width x height x depth). [Positive double x Positive double x Non-negative double]. If the depth is zero, the simulation is 2-dimensional. </value>
+    <comment>World Environment</comment>
+  </data>
+  <data name="Utility" xml:space="preserve">
+    <value>Utility</value>
+    <comment>Category World/Creature</comment>
+  </data>
+  <data name="ActState" xml:space="preserve">
+    <value>A 2nd-level object that tracks the states of the Creature.  </value>
+    <comment>Creature State</comment>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>The age of the Creature. </value>
+    <comment>Creature Reproduction</comment>
+  </data>
+  <data name="Alive" xml:space="preserve">
+    <value>Whether the Creature is alive. </value>
+    <comment>Creature ActState</comment>
+  </data>
+  <data name="BaseEExpend" xml:space="preserve">
+    <value>Base level energy expenditure per second of the Creature. </value>
+    <comment>Creature Energy</comment>
+  </data>
+  <data name="BornEnergy" xml:space="preserve">
+    <value>Energy that the Creature's offsprings have at birth. </value>
+    <comment>Creature Energy</comment>
+  </data>
+  <data name="BornWeight" xml:space="preserve">
+    <value>The mass of the Creature's offsprings at birth. </value>
+    <comment>Creature Reproduction</comment>
+  </data>
+  <data name="CreatureList" xml:space="preserve">
+    <value>List of the Creatures within the World. </value>
+    <comment>World Life</comment>
+  </data>
+  <data name="Eating" xml:space="preserve">
+    <value>Whether the Creature is eating. </value>
+    <comment>Creature ActState</comment>
+  </data>
+  <data name="Energy" xml:space="preserve">
+    <value>Energy</value>
+    <comment>Category Creature</comment>
+  </data>
+  <data name="Environment" xml:space="preserve">
+    <value>Environment</value>
+    <comment>Category World</comment>
+  </data>
+  <data name="EtoWRate" xml:space="preserve">
+    <value>？？？？？？？？？？？？</value>
+    <comment>Creature Energy</comment>
+  </data>
+  <data name="Graphics" xml:space="preserve">
+    <value>Graphics</value>
+    <comment>Category Creature</comment>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>Unique GUID of the Creature. </value>
+    <comment>Creature Identity</comment>
+  </data>
+  <data name="Identity" xml:space="preserve">
+    <value>Identity</value>
+    <comment>Category Creature</comment>
+  </data>
+  <data name="Joule" xml:space="preserve">
+    <value>Energy the Creature possesses. </value>
+    <comment>Creature Energy</comment>
+  </data>
+  <data name="Life" xml:space="preserve">
+    <value>Life</value>
+    <comment>Category World</comment>
+  </data>
+  <data name="LitterSize" xml:space="preserve">
+    <value>The number of offsprings the Creature has for each mating. </value>
+    <comment>Creature Reproduction</comment>
+  </data>
+  <data name="MaleRatio" xml:space="preserve">
+    <value>The probability that the offsprings of this Creature are male. </value>
+    <comment>Creature Reproduction</comment>
+  </data>
+  <data name="Marked" xml:space="preserve">
+    <value>Whether the Creature is shown highlighted. </value>
+    <comment>Creature Graphics</comment>
+  </data>
+  <data name="MarkerSize" xml:space="preserve">
+    <value>Creature Reproduction</value>
+    <comment>Creature Graphics</comment>
+  </data>
+  <data name="MateReady" xml:space="preserve">
+    <value>Whether the Creature is ready to mate and give birth. </value>
+    <comment>Creature Reproduction</comment>
+  </data>
+  <data name="MaxEnergyStorage" xml:space="preserve">
+    <value>Maximum energy stored by the Creature, i.e. its energy capacity. </value>
+    <comment>Creature Energy</comment>
+  </data>
+  <data name="MinMateAge" xml:space="preserve">
+    <value>The minimum age for the Creature to be able to mate. </value>
+    <comment>Creature Reproduction</comment>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Whether the Creature is moving. </value>
+    <comment>Creature ActState</comment>
+  </data>
+  <data name="MovingVector" xml:space="preserve">
+    <value>The 3D velocity vector of the Creature at the given instance. </value>
+    <comment>Creature State</comment>
+  </data>
+  <data name="NightLen" xml:space="preserve">
+    <value>The length of the night in second. </value>
+    <comment>World Environment</comment>
+  </data>
+  <data name="PhotoSynRate" xml:space="preserve">
+    <value>Rate of photosynthesis in energy per second per brightness received. </value>
+    <comment>Creature Energy</comment>
+  </data>
+  <data name="Photosynthesize" xml:space="preserve">
+    <value>Whether the Creature is photosynthesizing. </value>
+    <comment>Creature ActState</comment>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>The 3D position of the Creature. </value>
+    <comment>Creature State</comment>
+  </data>
+  <data name="Pregnant" xml:space="preserve">
+    <value>Whether the Creature is pregnant. </value>
+    <comment>Creature ActState</comment>
+  </data>
+  <data name="Reproduction" xml:space="preserve">
+    <value>Reproduction</value>
+    <comment>Category Creature</comment>
+  </data>
+  <data name="Sex" xml:space="preserve">
+    <value>Sex of the Creature [Male is True]. For asexual organisms, this property is ignored.  </value>
+    <comment>Creature Reproduction</comment>
+  </data>
+  <data name="Simulation" xml:space="preserve">
+    <value>Simulation</value>
+    <comment>Category World</comment>
+  </data>
+  <data name="Sleep" xml:space="preserve">
+    <value>Whether the Creature is asleep. </value>
+    <comment>Creature ActState</comment>
+  </data>
+  <data name="Species" xml:space="preserve">
+    <value>The species number of the Creature. </value>
+    <comment>Creature Identity</comment>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
+    <comment>Category Creature</comment>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>The mass of the Creature. </value>
+    <comment>Creature Reproduction</comment>
+  </data>
+  <data name="WtoERate" xml:space="preserve">
+    <value>？？？？？？？？？？？？</value>
+    <comment>Creature Energy</comment>
+  </data>
+  <data name="CreationTime" xml:space="preserve">
+    <value>Date and time the World file is created. </value>
+    <comment>World Utility</comment>
+  </data>
+  <data name="SimWorldVer" xml:space="preserve">
+    <value>The version of the SimWorld that created the World file. </value>
+    <comment>World Utility</comment>
+  </data>
+</root>
