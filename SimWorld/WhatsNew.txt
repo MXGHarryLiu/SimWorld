@@ -35,26 +35,22 @@ SimWorld
 0.1.6213
 1. *** Separate all custom class into a dll and start to use MathNet.Numerics. 
 2. Add populate (from file) to the StageForm. 
-3. 
 
-0.1.6214
-1. 
+0.1.6215
+1. *** Add EntryDialog class to handle multiple-entry input at World initialization. 
+2. 
 
+To Do List (Arranged from near to far): 
 Fix Creature position shown on the stage. 
-
 Mutator/Disruptor/Perturber/
-
 move creature update to task to run in parallel
 add log to Creature events.
 creature avoid/approach each other
 Creature property: 
 	life stage (e.g. seed/plant, worker ant and queen, tadpole and frog)
-
 creature templete: 
 	a. bacteria, soil as nutrition. concentration gradient. 
 	b. Plant: seed traveling. 
 	c. Animal. 
-
-To Do List: 
-1. Convert to tab. 
+convert MDI forms to tab. 
 

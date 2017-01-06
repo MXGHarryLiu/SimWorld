@@ -96,16 +96,25 @@ Public Class MainForm
                 Exit Sub
             End If
         End If
+        Dim InputWidth As Double = 600.0R
+        Dim InputHeight As Double = 400.0R
+        Dim ValueChecked As Boolean = False
+        Dim EntryDiag As EntryDialog = New EntryDialog(2, "SimWorld - New World", "Set the World dimension: ", "Width", "Height")
+        EntryDiag.SetInitialText(InputWidth.ToString(), InputHeight.ToString())
+        While ValueChecked = False
+            EntryDiag.Show(Me)
+            If EntryDiag.Confirmed = False Then
+                Exit Sub
+            End If
+            If Double.TryParse(EntryDiag.Results(0), InputWidth) = False OrElse
+                Double.TryParse(EntryDiag.Results(1), InputHeight) = False OrElse InputWidth <= 0 OrElse InputHeight <= 0 Then
+                MsgBox("World width and height must be positive numbers. ",
+                       MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "SimWorld - New World")
+            Else
+                ValueChecked = True
+            End If
+        End While
         Call HideStartPage()
-        Dim EntryDiag As EntryDialog = New EntryDialog(2, "Width", "Height")
-        'Dim task As Task = Task.Run(New Action(AddressOf EntryDiag.WaitInput))
-        EntryDiag.SetInitialText("600", "400")
-        EntryDiag.ShowAndWaitInput(ToolStripPanelTop)
-        If EntryDiag.Confirmed = False Then
-            EntryDiag.Dispose()
-            Exit Sub
-        End If
-        EntryDiag.Dispose()
         MyWorld = New World(EntryDiag.Results(0), EntryDiag.Results(1), 0)
         MyWorld.WorldFile = "Untitled World.smw"
         Dim InitCount As Integer = 5
@@ -128,9 +137,9 @@ Public Class MainForm
             Else
                 Path = OpenFileDialog1.FileName
             End If
-        ElseIf inPath IsNot Nothing Then  ' open from startpage
+        ElseIf inPath IsNot Nothing Then    ' open from startpage
             Path = inPath
-        Else                    ' open from argument
+        Else                                ' open from argument
             Path = Environment.GetCommandLineArgs(1)
         End If
         Select Case IO.Path.GetExtension(Path)
@@ -182,9 +191,7 @@ Public Class MainForm
                 SimStatusLabel.Text = "World file loaded! "
             Case ".smc"
                 SimStatusLabel.Text = "Loading smc file ... "
-
-                Call LoadIniViewer(Path) 'add a creature~~~~~~~~~~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+                MsgBox("View and edit a single Creature file is under development. ") '!!!!!!!!!!!!
                 SimStatusLabel.Text = "Creature file loaded! "
             Case ".ini"
                 SimStatusLabel.Text = "Loading ini file ... "
@@ -557,7 +564,7 @@ Public Class MainForm
             & "A vibrant world with artificial lives" & vbNewLine _
             & "lzhchild@hotmail.com" & vbNewLine _
             & vbNewLine _
-            & "© 2016 MXG Flying Studio", MsgBoxStyle.OkOnly + MsgBoxStyle.Information, "About Us")
+            & "© 2016 - 2017 MXG Flying Studio", MsgBoxStyle.OkOnly + MsgBoxStyle.Information, "About Us")
     End Sub
 
 #End Region

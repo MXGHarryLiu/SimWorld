@@ -1,96 +1,106 @@
-﻿Public Class EntryDialog : Implements IDisposable
+﻿''' <summary>
+''' Multiple-entry input form dialog
+''' </summary>
+Public Class EntryDialog
 
-    Private Responsed As Boolean = False
-    Private EntryBar As ToolStrip = Nothing
-    Private disposed As Boolean = False
-    Private ToolTextBoxList As List(Of ToolStripTextBox) = New List(Of ToolStripTextBox)
+    Private NewDialog As Form = New Form()
+    Private ToolTextBoxList As List(Of TextBox) = New List(Of TextBox)
+    Private Table As TableLayoutPanel = Nothing
     Public Property EntryNum As Integer = 0
     Public Property Confirmed As Boolean = False
     Public Property Results As List(Of String) = New List(Of String)
 
-    Public Sub New(ByVal EntryNum As Integer, ParamArray ByVal Prompt() As String)
+    Public Sub New(ByVal EntryNum As Integer, ByVal Title As String, ByVal Summary As String, ParamArray ByVal Prompt() As String)
         If EntryNum < 0 Then
             Throw New ArgumentException("EntryNum must be positive. ")
         End If
+        Dim ToolLabel As Label = Nothing
         Me.EntryNum = EntryNum
-        EntryBar = New ToolStrip()
-        Dim ToolLabel As ToolStripLabel = Nothing
-        Dim ToolTextbox As ToolStripTextBox = Nothing
-        For i As Integer = 1 To Me.EntryNum Step 1
-            If i <= Prompt.Count Then
-                ToolLabel = New ToolStripLabel(Prompt(i - 1))
-                EntryBar.Items.Add(ToolLabel)
+        Table = New TableLayoutPanel()
+        Table.AutoSize = True
+        Table.RowCount = EntryNum + 2
+        ToolLabel = New Label()
+        ToolLabel.Text = Summary
+        ToolLabel.AutoSize = True
+        ToolLabel.Padding = New Padding(0, 10, 0, 10)
+        Table.Controls.Add(ToolLabel, 0, 0)
+        Table.SetColumnSpan(ToolLabel, 2)
+        Table.Padding = New Padding(10)
+        Table.ColumnCount = 2
+        'Dim TableRowStyles As TableLayoutRowStyleCollection = Table.RowStyles
+        'For Each TableRowStyle As RowStyle In TableRowStyles
+        '    TableRowStyle.SizeType = SizeType.AutoSize
+        'Next
+        Dim ToolTextbox As TextBox = Nothing
+        For i As Integer = 0 To Me.EntryNum - 1 Step 1
+            ToolTextbox = New TextBox()
+            If i < Prompt.Count Then
+                ToolLabel = New Label()
+                ToolLabel.Text = Prompt(i)
+                ToolLabel.AutoSize = True
+                Table.Controls.Add(ToolLabel, 0, i + 1)
+                Table.Controls.Add(ToolTextbox, 1, i + 1)
+            Else
+                ToolTextbox.Width = Table.Width
+                Table.Controls.Add(ToolTextbox, 0, i + 1)
+                Table.SetColumnSpan(ToolTextbox, 2)
             End If
-            ToolTextbox = New ToolStripTextBox()
-            If ToolLabel IsNot Nothing Then
-                ToolTextbox.ToolTipText = ToolLabel.Text
-            End If
-            EntryBar.Items.Add(ToolTextbox)
             ToolTextBoxList.Add(ToolTextbox)
-            ToolLabel = Nothing
         Next
-        Dim ConfirmImg As Image = My.Resources.ResourceManager.GetObject("StatusOK_256x")
-        Dim ConfirmButton As ToolStripButton = New ToolStripButton("Confirm", ConfirmImg)
+        Dim ConfirmButton As Button = New Button()
+        ConfirmButton.Text = "Confirm"
+        ConfirmButton.Padding = New Padding(10, 3, 10, 3)
+        ConfirmButton.AutoSize = True
         AddHandler ConfirmButton.Click, AddressOf Confirm_Click
-        EntryBar.Items.Add(ConfirmButton)
-        Dim CancelImg As Image = My.Resources.ResourceManager.GetObject("StatusNo_cyan_256x")
-        Dim CancelButton As ToolStripButton = New ToolStripButton("Cancel", CancelImg)
+        Table.Controls.Add(ConfirmButton, 0, EntryNum + 1)
+        Dim CancelButton As Button = New Button()
+        CancelButton.Text = "Cancel"
+        'CancelButton.Anchor = AnchorStyles.Top + AnchorStyles.Right + AnchorStyles.Left + AnchorStyles.Bottom
+        CancelButton.Padding = New Padding(10, 3, 10, 3)
+        CancelButton.AutoSize = True
         AddHandler CancelButton.Click, AddressOf Cancel_Click
-        EntryBar.Items.Add(CancelButton)
+        Table.Controls.Add(CancelButton, 1, EntryNum + 1)
+        With NewDialog
+            .Text = "SimWorld"
+            .ControlBox = False
+            .AcceptButton = ConfirmButton
+            .CancelButton = CancelButton
+            .Controls.Add(Table)
+            .StartPosition = FormStartPosition.CenterParent
+            .ClientSize = Table.Size
+            .FormBorderStyle = FormBorderStyle.FixedDialog
+        End With
     End Sub
 
-    Public Sub SetInitialText(ParamArray ByVal Prompt() As String)
-        For i As Integer = 1 To Math.Min(EntryNum, Prompt.Count) Step 1
-            ToolTextBoxList(i - 1).Text = Prompt(i - 1)
+    ''' <summary>
+    ''' Set default values to the input fields
+    ''' </summary>
+    ''' <param name="IniVal">Default entry values</param>
+    Public Sub SetInitialText(ParamArray ByVal IniVal() As String)
+        For i As Integer = 1 To Math.Min(EntryNum, IniVal.Count) Step 1
+            ToolTextBoxList(i - 1).Text = IniVal(i - 1)
         Next
     End Sub
-
-    'Private Sub ToolTextbox_Leave(ByVal sender As Object, ByVal e As EventArgs)
-    '    Dim thisToolTextBox As ToolStripTextBox = TryCast(sender, ToolStripTextBox)
-    '    If thisToolTextBox.Text = "" Then
-    '        thisToolTextBox.Focus()
-    '    End If
-    'End Sub
 
     Private Sub Confirm_Click(ByVal sender As Object, ByVal e As EventArgs)
-        For Each C As ToolStripItem In EntryBar.Items
-            If TypeOf C Is ToolStripTextBox Then
-                Results.Add(TryCast(C, ToolStripTextBox).Text)
-            End If
+        For i As Integer = 0 To EntryNum - 1 Step 1
+            Results.Add(ToolTextBoxList(i).Text)
         Next
         Confirmed = True
-        Responsed = True
+        NewDialog.Close()
     End Sub
 
     Private Sub Cancel_Click(ByVal sender As Object, ByVal e As EventArgs)
         Confirmed = False
-        Responsed = True
+        NewDialog.Close()
     End Sub
 
-    Public Sub Dispose() Implements IDisposable.Dispose
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-
-    Protected Overridable Sub Dispose(disposing As Boolean)
-        If disposed Then Return
-        If disposing Then
-            EntryBar.Dispose() ' Free any other managed objects here.
-        End If
-        ' Free any unmanaged objects here.
-        disposed = True
-    End Sub
-
-    Protected Overrides Sub Finalize()
-        Dispose(False)
-    End Sub
-
-    Public Sub ShowAndWaitInput(ByRef Container As ToolStripPanel)
-        Container.Join(EntryBar, Container.Rows.Count - 1)
-        While Responsed = False
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
+    ''' <summary>
+    ''' Show the entry dialog. 
+    ''' </summary>
+    ''' <param name="Owner">The form that calls the dialog. </param>
+    Public Sub Show(ByRef Owner As Form)
+        NewDialog.ShowDialog(Owner)
     End Sub
 
 End Class

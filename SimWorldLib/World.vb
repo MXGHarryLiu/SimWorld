@@ -179,7 +179,7 @@ Public Class World
     <Description(NameOf(Soil))>
     <System.ComponentModel.TypeConverter(GetType(MapConverter))>
     <System.ComponentModel.Editor(GetType(MapUIEditor), GetType(Design.UITypeEditor))>
-    Public Property Soil As Map = New Map(Size.X, Size.Y, 0.5F)
+    Public Property Soil As Map = Nothing
     'New Map(Size.X, Size.Y, BitConverter.ToSingle(BitConverter.GetBytes(&HFFFF0000), 0))
 
 #End Region
@@ -260,12 +260,12 @@ Public Class World
 
     Public Sub New()
         ' Necessary for serialization
-        'ReDim Soil(Size.X * Size.Y - 1)
+        Soil = New Map(Size.X, Size.Y, 0.5F)
     End Sub
 
     Public Sub New(ByVal X As Double, ByVal Y As Double, ByVal Z As Double)
         Size = New Vector3D(X, Y, Z)
-        'ReDim Soil(Size.X * Size.Y - 1)
+        Soil = New Map(Size.X, Size.Y, 0.5F)
     End Sub
 
     Protected Overrides Sub Finalize()

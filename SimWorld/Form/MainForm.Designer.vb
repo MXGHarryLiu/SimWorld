@@ -387,7 +387,7 @@ Partial Class MainForm
         Me.ActionToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SimulateMB, Me.RevertWorldMB, Me.ToolStripSeparator1, Me.ToolStripButton1})
         Me.ActionToolStrip.Location = New System.Drawing.Point(45, 84)
         Me.ActionToolStrip.Name = "ActionToolStrip"
-        Me.ActionToolStrip.Size = New System.Drawing.Size(90, 27)
+        Me.ActionToolStrip.Size = New System.Drawing.Size(129, 27)
         Me.ActionToolStrip.TabIndex = 12
         '
         'SimulateMB
