@@ -51,7 +51,7 @@
     End Sub
 
     Private Sub NewLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles NewLabel.LinkClicked
-        Call MainForm.WorldFromRNGMI_Click(sender, e)
+        Call MainForm.NewWorldMI_Click(sender, e)
         Me.Close()
     End Sub
 End Class

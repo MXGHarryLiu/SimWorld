@@ -87,7 +87,7 @@ Public Class MainForm
 
 #Region "File Menu"
 
-    Public Sub WorldFromRNGMI_Click(sender As Object, e As EventArgs) Handles NewWorldMI.Click
+    Public Sub NewWorldMI_Click(sender As Object, e As EventArgs) Handles NewWorldMI.Click
         If MyWorld IsNot Nothing Then
             Dim MsgAns As MsgBoxResult = MsgBox("A World has been loaded. " & vbCrLf &
                             "Do you want to initialize and discard all the results? ",
@@ -106,22 +106,17 @@ Public Class MainForm
             If EntryDiag.Confirmed = False Then
                 Exit Sub
             End If
-            If Double.TryParse(EntryDiag.Results(0), InputWidth) = False OrElse
-                Double.TryParse(EntryDiag.Results(1), InputHeight) = False OrElse InputWidth <= 0 OrElse InputHeight <= 0 Then
+            If Double.TryParse(EntryDiag.Results(0), InputWidth) = True And
+                Double.TryParse(EntryDiag.Results(1), InputHeight) = True And InputWidth >= 1 And InputHeight >= 1 Then
+                ValueChecked = True
+            Else
                 MsgBox("World width and height must be positive numbers. ",
                        MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "SimWorld - New World")
-            Else
-                ValueChecked = True
             End If
         End While
         Call HideStartPage()
         MyWorld = New World(EntryDiag.Results(0), EntryDiag.Results(1), 0)
         MyWorld.WorldFile = "Untitled World.smw"
-        Dim InitCount As Integer = 5
-        For i = 0 To InitCount - 1 Step 1
-            MyWorld.AddCreature()
-            Threading.Thread.Sleep(50)      '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Next i
         Call LoadWorld(MyWorld)
         SimStatusLabel.Text = "Initialized! "
     End Sub

@@ -116,6 +116,8 @@ Public Class StageForm
 
 #End Region
 
+#Region "Mouse Response"
+
     Private Sub Panel1_MouseDown(sender As Object, e As MouseEventArgs) Handles Panel1.MouseDown, Stage.MouseDown
         Select Case e.Button
             Case MouseButtons.Left
@@ -203,6 +205,21 @@ Public Class StageForm
         Me.Cursor = Cursors.Default
     End Sub
 
+    Private Sub Form_MouseWheel(sender As Object, e As MouseEventArgs) Handles Stage.MouseWheel, Panel1.MouseWheel
+        If CtrlIsDown = True Then
+            Select Case Math.Sign(e.Delta)
+                Case 1
+                    Zooming(ZoomModeStruct.ZOOMIN, ZOOMSTEP / 2)
+                Case -1
+                    Zooming(ZoomModeStruct.ZOOMOUT, ZOOMSTEP / 2)
+            End Select
+        End If
+    End Sub
+
+#End Region
+
+#Region "Zoom"
+
     Private Sub Zooming(ByVal ZoomMode As ZoomModeStruct, Optional ByVal ZoomStep As Single = ZOOMSTEP)
         With Stage
             Select Case ZoomMode
@@ -251,14 +268,17 @@ Public Class StageForm
         Zooming(ZoomModeStruct.ZOOMTOFIT)
     End Sub
 
-    Private Sub CancelPopulatingMI_Click(sender As Object, e As EventArgs) Handles CancelPopulatingMI.Click
-        Dim ee As KeyEventArgs = New KeyEventArgs(Keys.Escape)
-        Call StageForm_KeyDown(Me, ee)
-    End Sub
+#End Region
 
-    Private Sub FinishPopulatingMI_Click(sender As Object, e As EventArgs) Handles FinishPopulatingMI.Click
-        Dim ee As KeyEventArgs = New KeyEventArgs(Keys.Enter)
-        Call StageForm_KeyDown(Me, ee)
+    Private Sub CheckboardMI_Click(sender As Object, e As EventArgs) Handles CheckboardMI.Click
+        CheckboardMI.Checked = Not CheckboardMI.Checked
+        My.Settings.StageCheckboard = CheckboardMI.Checked
+        If CheckboardMI.Checked = True Then
+            Stage.BackgroundImage = My.Resources.ResourceManager.GetObject("checkboardbg")
+        Else
+            Stage.BackgroundImage = Nothing
+        End If
+        My.Settings.Save()
     End Sub
 
     Private Sub StageForm_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown, Stage.KeyDown, Panel1.KeyDown
@@ -304,17 +324,6 @@ Public Class StageForm
         CtrlIsDown = e.Control
     End Sub
 
-    Private Sub Form_MouseWheel(sender As Object, e As MouseEventArgs) Handles Stage.MouseWheel, Panel1.MouseWheel
-        If CtrlIsDown = True Then
-            Select Case Math.Sign(e.Delta)
-                Case 1
-                    Zooming(ZoomModeStruct.ZOOMIN, ZOOMSTEP / 2)
-                Case -1
-                    Zooming(ZoomModeStruct.ZOOMOUT, ZOOMSTEP / 2)
-            End Select
-        End If
-    End Sub
-
     Private Sub ExportStageImageMI_Click(sender As Object, e As EventArgs) Handles ExportStageImageMI.Click
         Dim SaveFileDialog1 As New SaveFileDialog
         SaveFileDialog1.Filter = "PNG|*.png|JPG|*.jpg;*.jpeg|TIFF|*.tif;*.tiff|Bitmap|*.bmp|" &
@@ -343,9 +352,9 @@ Public Class StageForm
         Clipboard.SetImage(Stage.Image)
     End Sub
 
-    Private Sub MarkInTheFieldToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MarkInTheFieldToolStripMenuItem.Click
-        MarkInTheFieldToolStripMenuItem.Checked = Not MarkInTheFieldToolStripMenuItem.Checked
-        MyWorld.Creatures(MouseHoverObj - 1).Marked = MarkInTheFieldToolStripMenuItem.Checked
+    Private Sub MarkInTheFieldCMI_Click(sender As Object, e As EventArgs) Handles MarkInTheFieldCMI.Click
+        MarkInTheFieldCMI.Checked = Not MarkInTheFieldCMI.Checked
+        MyWorld.Creatures(MouseHoverObj - 1).Marked = MarkInTheFieldCMI.Checked
         Call MainForm.RefreshView(Stage)
     End Sub
 
@@ -353,23 +362,14 @@ Public Class StageForm
         If MouseHoverObj = 0 Or MouseHoverObj > MyWorld.CreatureCount Then 'impossible
             Exit Sub
         End If
-        MarkInTheFieldToolStripMenuItem.Checked = MyWorld.Creatures(MouseHoverObj - 1).Marked
-    End Sub
-
-    Private Sub CheckboardMI_Click(sender As Object, e As EventArgs) Handles CheckboardMI.Click
-        CheckboardMI.Checked = Not CheckboardMI.Checked
-        My.Settings.StageCheckboard = CheckboardMI.Checked
-        If CheckboardMI.Checked = True Then
-            Stage.BackgroundImage = My.Resources.ResourceManager.GetObject("checkboardbg")
-        Else
-            Stage.BackgroundImage = Nothing
-        End If
-        My.Settings.Save()
+        MarkInTheFieldCMI.Checked = MyWorld.Creatures(MouseHoverObj - 1).Marked
     End Sub
 
     Private Sub RefreshMI_Click(sender As Object, e As EventArgs) Handles RefreshMI.Click, RefreshCMI.Click
         Call MainForm.RefreshView(Stage)
     End Sub
+
+#Region "Export Menu"
 
     Private Sub DesolateWorldMI_Click(sender As Object, e As EventArgs) Handles DesolateWorldMI.Click
         Dim DesolateWorld As World = MyWorld.Copy()
@@ -443,6 +443,10 @@ Public Class StageForm
         End If
     End Sub
 
+#End Region
+
+#Region "Populate Menu"
+
     Private Sub PopulateFromExistingCreatureMI_Click(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.Click
         MsgBox("To start populate the World from existing Creature: " & vbNewLine &
                "1. Click the template Creature in view; " & vbNewLine &
@@ -464,7 +468,6 @@ Public Class StageForm
             TempCreature = New CreatureFromFile(OpenFileDiag.FileName).ToCreature().Copy()
             PopulateFromFileMI.Checked = True
             MouseState = (MouseState Or MouseStates.POPULATE)
-
         End If
     End Sub
 
@@ -496,4 +499,46 @@ Public Class StageForm
             CancelPopulatingMI.Enabled = False
         End If
     End Sub
+
+    Private Sub PopulateFromRNGMI_Click(sender As Object, e As EventArgs) Handles PopulateFromRNGMI.Click
+        Dim EntryDiag As EntryDialog = New EntryDialog(1, "SimWorld - Populate", "Please enter the number of" & vbCrLf & "randomly generated Creatures: ")
+        Dim ValueChecked As Boolean = False
+        Dim CreatureNum As Integer = 5
+        EntryDiag.SetInitialText(CreatureNum.ToString())
+        While ValueChecked = False
+            EntryDiag.Show(Me)
+            If EntryDiag.Confirmed = False Then
+                Exit Sub
+            End If
+            If Integer.TryParse(EntryDiag.Results(0), CreatureNum) = True And CreatureNum > 0 Then
+                ValueChecked = True
+            Else
+                MsgBox("The number of Creatures must be a positive integer. ",
+                       MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "SimWorld - Populate")
+            End If
+        End While
+        Dim RNG As Random = New Random()
+        For i = 0 To CreatureNum - 1 Step 1
+            MyWorld.AddCreature()
+            Threading.Thread.Sleep(RNG.Next(1, 100))      'Sleep thread to get quite random results !!!!!!!!!!!!!!!!
+            MainForm.SimStatusLabel.Text = String.Format("Populating ({0}/{1})", i + 1, CreatureNum)
+            Application.DoEvents()
+        Next i
+        MainForm.SimStatusLabel.Text = String.Format("Populating finished: added {0} Creature(s). ", CreatureNum)
+        Call MainForm.RefreshView(Stage)
+    End Sub
+
+    Private Sub CancelPopulatingMI_Click(sender As Object, e As EventArgs) Handles CancelPopulatingMI.Click
+        Dim ee As KeyEventArgs = New KeyEventArgs(Keys.Escape)
+        Call StageForm_KeyDown(Me, ee)
+    End Sub
+
+    Private Sub FinishPopulatingMI_Click(sender As Object, e As EventArgs) Handles FinishPopulatingMI.Click
+        Dim ee As KeyEventArgs = New KeyEventArgs(Keys.Enter)
+        Call StageForm_KeyDown(Me, ee)
+    End Sub
+
+#End Region
+
+
 End Class

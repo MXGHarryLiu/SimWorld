@@ -38,13 +38,15 @@ SimWorld
 
 0.1.6215
 1. *** Add EntryDialog class to handle multiple-entry input at World initialization. 
-2. 
+2. Add populate (from RNG) to the StageForm. 
+3. 
 
 To Do List (Arranged from near to far): 
 Fix Creature position shown on the stage. 
+move action on mainform to stageform
+add log to Creature events.
 Mutator/Disruptor/Perturber/
 move creature update to task to run in parallel
-add log to Creature events.
 creature avoid/approach each other
 Creature property: 
 	life stage (e.g. seed/plant, worker ant and queen, tadpole and frog)

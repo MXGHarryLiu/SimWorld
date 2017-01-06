@@ -40,6 +40,7 @@ Partial Class StageForm
         Me.RefreshMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.PopulateMI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PopulateFromRNGMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.PopulateFromFileMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.PopulateFromExistingCreatureMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
@@ -55,12 +56,11 @@ Partial Class StageForm
         Me.CheckboardMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ContextMenuStripFg = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.CurrentObjToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MarkInTheFieldToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MarkInTheFieldCMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExportCurrentCreatureCMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.RefreshMB = New System.Windows.Forms.ToolStripButton()
-        Me.PopulateFromRNGMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1.SuspendLayout()
         Me.ContextMenuStripBg.SuspendLayout()
         CType(Me.Stage, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -202,6 +202,13 @@ Partial Class StageForm
         Me.PopulateMI.Size = New System.Drawing.Size(227, 26)
         Me.PopulateMI.Text = "&Populate"
         '
+        'PopulateFromRNGMI
+        '
+        Me.PopulateFromRNGMI.Name = "PopulateFromRNGMI"
+        Me.PopulateFromRNGMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.P), System.Windows.Forms.Keys)
+        Me.PopulateFromRNGMI.Size = New System.Drawing.Size(249, 26)
+        Me.PopulateFromRNGMI.Text = "From &RNG..."
+        '
         'PopulateFromFileMI
         '
         Me.PopulateFromFileMI.Name = "PopulateFromFileMI"
@@ -295,7 +302,7 @@ Partial Class StageForm
         'ContextMenuStripFg
         '
         Me.ContextMenuStripFg.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.ContextMenuStripFg.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CurrentObjToolStripMenuItem, Me.MarkInTheFieldToolStripMenuItem, Me.ExportCurrentCreatureCMI})
+        Me.ContextMenuStripFg.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CurrentObjToolStripMenuItem, Me.MarkInTheFieldCMI, Me.ExportCurrentCreatureCMI})
         Me.ContextMenuStripFg.Name = "ContextMenuStripFg"
         Me.ContextMenuStripFg.Size = New System.Drawing.Size(271, 100)
         '
@@ -306,11 +313,11 @@ Partial Class StageForm
         Me.CurrentObjToolStripMenuItem.Size = New System.Drawing.Size(270, 32)
         Me.CurrentObjToolStripMenuItem.Text = "CurrentObj"
         '
-        'MarkInTheFieldToolStripMenuItem
+        'MarkInTheFieldCMI
         '
-        Me.MarkInTheFieldToolStripMenuItem.Name = "MarkInTheFieldToolStripMenuItem"
-        Me.MarkInTheFieldToolStripMenuItem.Size = New System.Drawing.Size(270, 32)
-        Me.MarkInTheFieldToolStripMenuItem.Text = "&Mark in the Field"
+        Me.MarkInTheFieldCMI.Name = "MarkInTheFieldCMI"
+        Me.MarkInTheFieldCMI.Size = New System.Drawing.Size(270, 32)
+        Me.MarkInTheFieldCMI.Text = "&Mark in the Field"
         '
         'ExportCurrentCreatureCMI
         '
@@ -336,12 +343,6 @@ Partial Class StageForm
         Me.RefreshMB.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.RefreshMB.Name = "RefreshMB"
         Me.RefreshMB.Size = New System.Drawing.Size(24, 24)
-        '
-        'PopulateFromRNGMI
-        '
-        Me.PopulateFromRNGMI.Name = "PopulateFromRNGMI"
-        Me.PopulateFromRNGMI.Size = New System.Drawing.Size(249, 26)
-        Me.PopulateFromRNGMI.Text = "From &RNG..."
         '
         'StageForm
         '
@@ -380,7 +381,7 @@ Partial Class StageForm
     Friend WithEvents Panel1 As Panel
     Friend WithEvents ContextMenuStripFg As ContextMenuStrip
     Friend WithEvents CurrentObjToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents MarkInTheFieldToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents MarkInTheFieldCMI As ToolStripMenuItem
     Friend WithEvents ActionMI As ToolStripMenuItem
     Friend WithEvents CopyImageMI As ToolStripMenuItem
     Friend WithEvents ActionMISeparator1 As ToolStripSeparator

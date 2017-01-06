@@ -100,6 +100,7 @@ Public Class EntryDialog
     ''' </summary>
     ''' <param name="Owner">The form that calls the dialog. </param>
     Public Sub Show(ByRef Owner As Form)
+        Results.Clear()
         NewDialog.ShowDialog(Owner)
     End Sub
 
