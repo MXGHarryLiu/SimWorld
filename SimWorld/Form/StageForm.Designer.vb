@@ -35,6 +35,8 @@ Partial Class StageForm
         Me.ExportCurrentCreatureMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.DesolateWorldMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ActionMI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SimulateMI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RevertWorldMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ActionMISeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.CopyImageMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.RefreshMI = New System.Windows.Forms.ToolStripMenuItem()
@@ -60,7 +62,11 @@ Partial Class StageForm
         Me.ExportCurrentCreatureCMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.SimulateMB = New System.Windows.Forms.ToolStripButton()
+        Me.RevertWorldMB = New System.Windows.Forms.ToolStripButton()
+        Me.CopyImageMB = New System.Windows.Forms.ToolStripButton()
         Me.RefreshMB = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.Panel1.SuspendLayout()
         Me.ContextMenuStripBg.SuspendLayout()
         CType(Me.Stage, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -136,7 +142,7 @@ Partial Class StageForm
         Me.ExportMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExportStageImageMI, Me.ExportCurrentCreatureMI, Me.DesolateWorldMI})
         Me.ExportMI.Image = Global.SimWorld.My.Resources.Resources.Forward_256x
         Me.ExportMI.Name = "ExportMI"
-        Me.ExportMI.Size = New System.Drawing.Size(181, 26)
+        Me.ExportMI.Size = New System.Drawing.Size(132, 26)
         Me.ExportMI.Text = "&Export"
         '
         'ExportStageImageMI
@@ -163,22 +169,37 @@ Partial Class StageForm
         '
         'ActionMI
         '
-        Me.ActionMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ActionMISeparator1, Me.CopyImageMI, Me.RefreshMI, Me.ToolStripSeparator2, Me.PopulateMI})
+        Me.ActionMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SimulateMI, Me.RevertWorldMI, Me.ActionMISeparator1, Me.CopyImageMI, Me.RefreshMI, Me.ToolStripSeparator2, Me.PopulateMI})
         Me.ActionMI.Name = "ActionMI"
         Me.ActionMI.Size = New System.Drawing.Size(69, 24)
         Me.ActionMI.Text = "&Action"
         '
+        'SimulateMI
+        '
+        Me.SimulateMI.Image = Global.SimWorld.My.Resources.Resources.Run_256x
+        Me.SimulateMI.Name = "SimulateMI"
+        Me.SimulateMI.ShortcutKeys = System.Windows.Forms.Keys.F12
+        Me.SimulateMI.Size = New System.Drawing.Size(233, 26)
+        Me.SimulateMI.Text = "&Simulate"
+        '
+        'RevertWorldMI
+        '
+        Me.RevertWorldMI.Image = Global.SimWorld.My.Resources.Resources.Undo_grey_256x
+        Me.RevertWorldMI.Name = "RevertWorldMI"
+        Me.RevertWorldMI.Size = New System.Drawing.Size(233, 26)
+        Me.RevertWorldMI.Text = "Revert to Last Saved"
+        '
         'ActionMISeparator1
         '
         Me.ActionMISeparator1.Name = "ActionMISeparator1"
-        Me.ActionMISeparator1.Size = New System.Drawing.Size(224, 6)
+        Me.ActionMISeparator1.Size = New System.Drawing.Size(230, 6)
         '
         'CopyImageMI
         '
         Me.CopyImageMI.Image = Global.SimWorld.My.Resources.Resources.CopyToClipboard_256x
         Me.CopyImageMI.Name = "CopyImageMI"
         Me.CopyImageMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.CopyImageMI.Size = New System.Drawing.Size(227, 26)
+        Me.CopyImageMI.Size = New System.Drawing.Size(233, 26)
         Me.CopyImageMI.Text = "&Copy Image"
         '
         'RefreshMI
@@ -186,20 +207,20 @@ Partial Class StageForm
         Me.RefreshMI.Image = Global.SimWorld.My.Resources.Resources.Refresh_grey_256x
         Me.RefreshMI.Name = "RefreshMI"
         Me.RefreshMI.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.RefreshMI.Size = New System.Drawing.Size(227, 26)
+        Me.RefreshMI.Size = New System.Drawing.Size(233, 26)
         Me.RefreshMI.Text = "&Refresh"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(224, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(230, 6)
         '
         'PopulateMI
         '
         Me.PopulateMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PopulateFromRNGMI, Me.PopulateFromFileMI, Me.PopulateFromExistingCreatureMI, Me.ToolStripSeparator3, Me.FinishPopulatingMI, Me.CancelPopulatingMI})
         Me.PopulateMI.Image = Global.SimWorld.My.Resources.Resources.AddMember_256x
         Me.PopulateMI.Name = "PopulateMI"
-        Me.PopulateMI.Size = New System.Drawing.Size(227, 26)
+        Me.PopulateMI.Size = New System.Drawing.Size(233, 26)
         Me.PopulateMI.Text = "&Populate"
         '
         'PopulateFromRNGMI
@@ -329,12 +350,39 @@ Partial Class StageForm
         '
         Me.ToolStrip1.Dock = System.Windows.Forms.DockStyle.None
         Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RefreshMB})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SimulateMB, Me.RevertWorldMB, Me.ToolStripSeparator4, Me.CopyImageMB, Me.RefreshMB})
         Me.ToolStrip1.Location = New System.Drawing.Point(407, 34)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(36, 27)
+        Me.ToolStrip1.Size = New System.Drawing.Size(114, 27)
         Me.ToolStrip1.TabIndex = 2
         Me.ToolStrip1.Text = "ToolStrip1"
+        '
+        'SimulateMB
+        '
+        Me.SimulateMB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.SimulateMB.Image = Global.SimWorld.My.Resources.Resources.Run_256x
+        Me.SimulateMB.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.SimulateMB.Name = "SimulateMB"
+        Me.SimulateMB.Size = New System.Drawing.Size(24, 24)
+        Me.SimulateMB.Text = "Simulate"
+        '
+        'RevertWorldMB
+        '
+        Me.RevertWorldMB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.RevertWorldMB.Image = Global.SimWorld.My.Resources.Resources.Undo_grey_256x
+        Me.RevertWorldMB.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.RevertWorldMB.Name = "RevertWorldMB"
+        Me.RevertWorldMB.Size = New System.Drawing.Size(24, 24)
+        Me.RevertWorldMB.Text = "Revert to Last Saved"
+        '
+        'CopyImageMB
+        '
+        Me.CopyImageMB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.CopyImageMB.Image = Global.SimWorld.My.Resources.Resources.CopyToClipboard_256x
+        Me.CopyImageMB.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.CopyImageMB.Name = "CopyImageMB"
+        Me.CopyImageMB.Size = New System.Drawing.Size(24, 24)
+        Me.CopyImageMB.Text = "Copy Image"
         '
         'RefreshMB
         '
@@ -343,6 +391,12 @@ Partial Class StageForm
         Me.RefreshMB.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.RefreshMB.Name = "RefreshMB"
         Me.RefreshMB.Size = New System.Drawing.Size(24, 24)
+        Me.RefreshMB.Text = "Refresh"
+        '
+        'ToolStripSeparator4
+        '
+        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 27)
         '
         'StageForm
         '
@@ -405,4 +459,10 @@ Partial Class StageForm
     Friend WithEvents CancelPopulatingMI As ToolStripMenuItem
     Friend WithEvents PopulateFromFileMI As ToolStripMenuItem
     Friend WithEvents PopulateFromRNGMI As ToolStripMenuItem
+    Friend WithEvents CopyImageMB As ToolStripButton
+    Friend WithEvents RevertWorldMI As ToolStripMenuItem
+    Friend WithEvents RevertWorldMB As ToolStripButton
+    Friend WithEvents SimulateMB As ToolStripButton
+    Friend WithEvents SimulateMI As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
 End Class

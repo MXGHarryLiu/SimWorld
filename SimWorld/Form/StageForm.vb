@@ -61,15 +61,13 @@ Public Class StageForm
         If My.Settings.StageFormPos.IsEmpty = False Then
             Me.Location = My.Settings.StageFormPos
         End If
-
         Me.Icon = My.Resources.ResourceManager.GetObject("SimWorld")
         Panel1.Dock = DockStyle.Fill
         FinishPopulatingMI.ShortcutKeyDisplayString = "Enter"
         CancelPopulatingMI.ShortcutKeyDisplayString = "Esc"
         FinishPopulatingMI.Enabled = False
         CancelPopulatingMI.Enabled = False
-        MainForm.ToolStripPanelTop.Join(ToolStrip1, MainForm.ToolStripPanelTop.Rows.Count - 1)
-
+        MainForm.ToolStripPanelTop.Join(ToolStrip1, MainForm.ToolStripPanelTop.Rows.Count)
         '=====disable all features=====
         With Stage
             .Top = 0
@@ -218,6 +216,8 @@ Public Class StageForm
 
 #End Region
 
+#Region "View Menu"
+
 #Region "Zoom"
 
     Private Sub Zooming(ByVal ZoomMode As ZoomModeStruct, Optional ByVal ZoomStep As Single = ZOOMSTEP)
@@ -281,6 +281,8 @@ Public Class StageForm
         My.Settings.Save()
     End Sub
 
+#End Region
+
     Private Sub StageForm_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown, Stage.KeyDown, Panel1.KeyDown
         CtrlIsDown = e.Control
         If (MouseState And MouseStates.POPULATE) = MouseStates.POPULATE Then
@@ -324,34 +326,6 @@ Public Class StageForm
         CtrlIsDown = e.Control
     End Sub
 
-    Private Sub ExportStageImageMI_Click(sender As Object, e As EventArgs) Handles ExportStageImageMI.Click
-        Dim SaveFileDialog1 As New SaveFileDialog
-        SaveFileDialog1.Filter = "PNG|*.png|JPG|*.jpg;*.jpeg|TIFF|*.tif;*.tiff|Bitmap|*.bmp|" &
-            "GIF|*.gif|All supported image files|*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tif;*.tiff|All files|*.*"
-        SaveFileDialog1.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory()
-        SaveFileDialog1.FileName = "Untitled Snapshot"
-        If SaveFileDialog1.ShowDialog() = DialogResult.OK Then
-            Select Case IO.Path.GetExtension(SaveFileDialog1.FileName).ToLower()
-                Case ".png"
-                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Png)
-                Case ".jpg", ".jpeg"
-                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Jpeg)
-                Case ".tif", ".tiff"
-                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Tiff)
-                Case ".bmp"
-                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Bmp)
-                Case ".gif"
-                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Gif)
-                Case Else
-                    'extension not supported
-            End Select
-        End If
-    End Sub
-
-    Private Sub CopyImageMI_Click(sender As Object, e As EventArgs) Handles CopyImageCMI.Click, CopyImageMI.Click
-        Clipboard.SetImage(Stage.Image)
-    End Sub
-
     Private Sub MarkInTheFieldCMI_Click(sender As Object, e As EventArgs) Handles MarkInTheFieldCMI.Click
         MarkInTheFieldCMI.Checked = Not MarkInTheFieldCMI.Checked
         MyWorld.Creatures(MouseHoverObj - 1).Marked = MarkInTheFieldCMI.Checked
@@ -365,7 +339,7 @@ Public Class StageForm
         MarkInTheFieldCMI.Checked = MyWorld.Creatures(MouseHoverObj - 1).Marked
     End Sub
 
-    Private Sub RefreshMI_Click(sender As Object, e As EventArgs) Handles RefreshMI.Click, RefreshCMI.Click
+    Private Sub RefreshMI_Click(sender As Object, e As EventArgs) Handles RefreshMI.Click, RefreshCMI.Click, RefreshMB.Click
         Call MainForm.RefreshView(Stage)
     End Sub
 
@@ -445,6 +419,117 @@ Public Class StageForm
 
 #End Region
 
+#Region "Action Menu"
+
+    Private Sub Simulate_Click(sender As Object, e As EventArgs) Handles SimulateMI.Click, SimulateMB.Click
+        If SimulateMI.Checked = False Then
+            SimulateMI.Checked = True
+            MainForm.NewMI.Enabled = False
+        Else
+            SimulateMI.Checked = False
+            MainForm.NewMI.Enabled = True
+            Exit Sub
+        End If
+        MainForm.SimStatusLabel.Text = "Running... "
+        Dim t As Integer = 0
+        While (SimulateMI.Checked = True) 'Or preassigned time
+            t = t + 1
+            Call MyWorld.Passage()
+            If t Mod MyWorld.RefreshRate = 0 Then
+                If MyWorld.CreatureCount = 0 Then
+                    Call Simulate_Click(sender, e)
+                End If
+                Call MainForm.RefreshView(Stage)
+                If MainForm.CurrentDashboard IsNot Nothing Then
+                    Call MainForm.CurrentDashboard.PropertyGrid1.Refresh()
+                End If
+            End If
+            MainForm.AbsTimeLabel.Text = CInt(MyWorld.T).ToString() & " s"
+            MainForm.PopulationLabel.Text = MyWorld.CreatureCount
+            Application.DoEvents()
+        End While
+        MainForm.SimStatusLabel.Text = String.Format("{0} {1} {2} ({3} s)", "Finished", t, "timesteps", t * MyWorld.DT)
+    End Sub
+
+    Private Sub SimulateMI_CheckedChanged(sender As Object, e As EventArgs) Handles SimulateMI.CheckedChanged
+        SimulateMB.Checked = SimulateMI.Checked
+        If SimulateMI.Checked = True Then
+            SimulateMI.Image = My.Resources.ResourceManager.GetObject("Stop_256x")
+        Else
+            SimulateMI.Image = My.Resources.ResourceManager.GetObject("Run_256x")
+        End If
+        SimulateMB.Image = SimulateMI.Image
+    End Sub
+
+    Private Sub SimulateMI_EnabledChanged(sender As Object, e As EventArgs) Handles SimulateMI.EnabledChanged
+        SimulateMB.Enabled = SimulateMI.Enabled
+    End Sub
+
+    Private Sub RevertWorldMI_Click(sender As Object, e As EventArgs) Handles RevertWorldMI.Click, RevertWorldMB.Click
+        If MyWorld IsNot Nothing Then
+            Dim MsgAns As MsgBoxResult = MsgBox("Do you want to revert the simulation? ",
+                    MsgBoxStyle.Question + MsgBoxStyle.YesNo, "SimWorld - Revert World")
+            If MsgAns = MsgBoxResult.No Then
+                Exit Sub
+            End If
+        End If
+        Dim FullPath As String = MyWorld.WorldFileDir & "\" & MyWorld.WorldFile
+        If IO.File.Exists(FullPath) = False Then
+            MsgBox("No saved check point can be found. ",
+                   MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "SimWorld - Revert World")
+            Exit Sub
+        End If
+        Try
+            Dim ser = New DataContractSerializer(GetType(World))
+            Dim xmlContent As String = My.Computer.FileSystem.ReadAllText(FullPath)
+            Using string_reader As New IO.StringReader(xmlContent),
+                ms As New IO.MemoryStream(System.Text.Encoding.Default.GetBytes(string_reader.ReadToEnd))
+                MyWorld = CType(ser.ReadObject(ms), World)
+            End Using
+            MyWorld.WorldFileDir = IO.Path.GetDirectoryName(FullPath)
+            MyWorld.WorldFile = IO.Path.GetFileName(FullPath)
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, "SimWorld - Revert World")
+            Exit Sub
+        End Try
+        Call MainForm.LoadWorld(MyWorld)
+        MainForm.SimStatusLabel.Text = "World reverted! "
+    End Sub
+
+    Private Sub RevertWorldMI_EnabledChanged(sender As Object, e As EventArgs) Handles RevertWorldMI.EnabledChanged
+        RevertWorldMB.Enabled = RevertWorldMI.Enabled
+    End Sub
+
+    Private Sub ExportStageImageMI_Click(sender As Object, e As EventArgs) Handles ExportStageImageMI.Click
+        Dim SaveFileDialog1 As New SaveFileDialog
+        SaveFileDialog1.Filter = "PNG|*.png|JPG|*.jpg;*.jpeg|TIFF|*.tif;*.tiff|Bitmap|*.bmp|" &
+            "GIF|*.gif|All supported image files|*.bmp;*.gif;*.jpg;*.jpeg;*.png;*.tif;*.tiff|All files|*.*"
+        SaveFileDialog1.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory()
+        SaveFileDialog1.FileName = "Untitled Snapshot"
+        If SaveFileDialog1.ShowDialog() = DialogResult.OK Then
+            Select Case IO.Path.GetExtension(SaveFileDialog1.FileName).ToLower()
+                Case ".png"
+                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Png)
+                Case ".jpg", ".jpeg"
+                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Jpeg)
+                Case ".tif", ".tiff"
+                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Tiff)
+                Case ".bmp"
+                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Bmp)
+                Case ".gif"
+                    Stage.Image.Save(SaveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Gif)
+                Case Else
+                    'extension not supported
+            End Select
+        End If
+    End Sub
+
+    Private Sub CopyImageMI_Click(sender As Object, e As EventArgs) Handles CopyImageCMI.Click, CopyImageMI.Click, CopyImageMB.Click
+        Clipboard.SetImage(Stage.Image)
+    End Sub
+
+#End Region
+
 #Region "Populate Menu"
 
     Private Sub PopulateFromExistingCreatureMI_Click(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.Click
@@ -484,14 +569,16 @@ Public Class StageForm
 
     Private Sub PopulateFromExistingCreatureMI_CheckedChanged(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.CheckedChanged, PopulateFromFileMI.CheckedChanged, PopulateFromRNGMI.CheckedChanged
         If TryCast(sender, ToolStripMenuItem).Checked = True Then 'Start populate
-            MainForm.SimulateMI.Enabled = False
+            SimulateMI.Enabled = False
+            RevertWorldMI.Enabled = False
             PopulateFromExistingCreatureMI.Enabled = False
             PopulateFromFileMI.Enabled = False
             PopulateFromRNGMI.Enabled = False
             FinishPopulatingMI.Enabled = True
             CancelPopulatingMI.Enabled = True
         Else
-            MainForm.SimulateMI.Enabled = True
+            SimulateMI.Enabled = True
+            RevertWorldMI.Enabled = True
             PopulateFromExistingCreatureMI.Enabled = True
             PopulateFromFileMI.Enabled = True
             PopulateFromRNGMI.Enabled = True

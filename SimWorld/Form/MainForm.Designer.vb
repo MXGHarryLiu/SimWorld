@@ -43,9 +43,6 @@ Partial Class MainForm
         Me.SaveTheWorldMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ActionAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SimulateMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RevertWorldMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolsMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.DatabaseViewerMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.DashboardMI = New System.Windows.Forms.ToolStripMenuItem()
@@ -67,14 +64,8 @@ Partial Class MainForm
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.AboutUsMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.DebugMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ActionToolStrip = New System.Windows.Forms.ToolStrip()
-        Me.SimulateMB = New System.Windows.Forms.ToolStripButton()
-        Me.RevertWorldMB = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.StatusStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
-        Me.ActionToolStrip.SuspendLayout()
         Me.SuspendLayout()
         '
         'StatusStrip1
@@ -139,7 +130,7 @@ Partial Class MainForm
         'MenuStrip1
         '
         Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileMI, Me.ActionAToolStripMenuItem, Me.ToolsMI, Me.WindowsMI, Me.HelpMI, Me.DebugMI})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileMI, Me.ToolsMI, Me.WindowsMI, Me.HelpMI, Me.DebugMI})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(5, 2, 0, 2)
@@ -222,28 +213,6 @@ Partial Class MainForm
         Me.ExitMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.F4), System.Windows.Forms.Keys)
         Me.ExitMI.Size = New System.Drawing.Size(262, 26)
         Me.ExitMI.Text = "&Exit"
-        '
-        'ActionAToolStripMenuItem
-        '
-        Me.ActionAToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SimulateMI, Me.RevertWorldMI})
-        Me.ActionAToolStripMenuItem.Name = "ActionAToolStripMenuItem"
-        Me.ActionAToolStripMenuItem.Size = New System.Drawing.Size(69, 24)
-        Me.ActionAToolStripMenuItem.Text = "&Action"
-        '
-        'SimulateMI
-        '
-        Me.SimulateMI.Image = Global.SimWorld.My.Resources.Resources.Run_256x
-        Me.SimulateMI.Name = "SimulateMI"
-        Me.SimulateMI.ShortcutKeys = System.Windows.Forms.Keys.F12
-        Me.SimulateMI.Size = New System.Drawing.Size(233, 26)
-        Me.SimulateMI.Text = "&Simulate"
-        '
-        'RevertWorldMI
-        '
-        Me.RevertWorldMI.Image = Global.SimWorld.My.Resources.Resources.Undo_grey_256x
-        Me.RevertWorldMI.Name = "RevertWorldMI"
-        Me.RevertWorldMI.Size = New System.Drawing.Size(233, 26)
-        Me.RevertWorldMI.Text = "Revert to Last Saved"
         '
         'ToolsMI
         '
@@ -380,52 +349,11 @@ Partial Class MainForm
         Me.DebugMI.Size = New System.Drawing.Size(70, 24)
         Me.DebugMI.Text = "Debug"
         '
-        'ActionToolStrip
-        '
-        Me.ActionToolStrip.Dock = System.Windows.Forms.DockStyle.None
-        Me.ActionToolStrip.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.ActionToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SimulateMB, Me.RevertWorldMB, Me.ToolStripSeparator1, Me.ToolStripButton1})
-        Me.ActionToolStrip.Location = New System.Drawing.Point(45, 84)
-        Me.ActionToolStrip.Name = "ActionToolStrip"
-        Me.ActionToolStrip.Size = New System.Drawing.Size(129, 27)
-        Me.ActionToolStrip.TabIndex = 12
-        '
-        'SimulateMB
-        '
-        Me.SimulateMB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.SimulateMB.Image = Global.SimWorld.My.Resources.Resources.Run_256x
-        Me.SimulateMB.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.SimulateMB.Name = "SimulateMB"
-        Me.SimulateMB.Size = New System.Drawing.Size(24, 24)
-        '
-        'RevertWorldMB
-        '
-        Me.RevertWorldMB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.RevertWorldMB.Image = Global.SimWorld.My.Resources.Resources.Undo_grey_256x
-        Me.RevertWorldMB.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.RevertWorldMB.Name = "RevertWorldMB"
-        Me.RevertWorldMB.Size = New System.Drawing.Size(24, 24)
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 27)
-        '
-        'ToolStripButton1
-        '
-        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
-        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton1.Name = "ToolStripButton1"
-        Me.ToolStripButton1.Size = New System.Drawing.Size(24, 24)
-        Me.ToolStripButton1.Text = "ToolStripButton1"
-        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1501, 929)
-        Me.Controls.Add(Me.ActionToolStrip)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.IsMdiContainer = True
@@ -437,8 +365,6 @@ Partial Class MainForm
         Me.StatusStrip1.PerformLayout()
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
-        Me.ActionToolStrip.ResumeLayout(False)
-        Me.ActionToolStrip.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -446,8 +372,6 @@ Partial Class MainForm
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents AbsTimeLabel As ToolStripStatusLabel
     Friend WithEvents MenuStrip1 As MenuStrip
-    Friend WithEvents ActionAToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents SimulateMI As ToolStripMenuItem
     Friend WithEvents PopulationLabel As ToolStripStatusLabel
     Friend WithEvents SimStatusLabel As ToolStripStatusLabel
     Friend WithEvents FileMI As ToolStripMenuItem
@@ -462,11 +386,8 @@ Partial Class MainForm
     Friend WithEvents ToolsMI As ToolStripMenuItem
     Friend WithEvents DatabaseViewerMI As ToolStripMenuItem
     Friend WithEvents CloseAllMI As ToolStripMenuItem
-    Friend WithEvents ActionToolStrip As ToolStrip
     Friend WithEvents NewWorldMI As ToolStripMenuItem
     Friend WithEvents CurrentGraphicObj As ToolStripStatusLabel
-    Friend WithEvents SimulateMB As ToolStripButton
-    Friend WithEvents RevertWorldMI As ToolStripMenuItem
     Friend WithEvents ToolStripSeparatorWindows As ToolStripSeparator
     Friend WithEvents TileVerticallyMI As ToolStripMenuItem
     Friend WithEvents TileHorizontallyMI As ToolStripMenuItem
@@ -487,9 +408,6 @@ Partial Class MainForm
     Friend WithEvents LayerStatus As ToolStripDropDownButton
     Friend WithEvents NoneLayerML As ToolStripMenuItem
     Friend WithEvents SoilLayerMI As ToolStripMenuItem
-    Friend WithEvents RevertWorldMB As ToolStripButton
-    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
-    Friend WithEvents ToolStripButton1 As ToolStripButton
     Friend WithEvents TutorialMI As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
 End Class

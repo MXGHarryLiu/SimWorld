@@ -31,7 +31,6 @@ Public Class MainForm
         Me.Icon = My.Resources.ResourceManager.GetObject("SimWorld")
         SimStatusLabel.Text = "Welcome! "
         ToolStripPanelTop.Dock = DockStyle.Top
-        ToolStripPanelTop.Join(ActionToolStrip)
         ToolStripPanelTop.Join(MenuStrip1)
         Me.Controls.Add(ToolStripPanelTop)
         If My.Settings.CultureName <> "" Then
@@ -48,10 +47,6 @@ Public Class MainForm
             Case Else
                 MsgBox("Language is not supported!", MsgBoxStyle.Critical, "SimWorld - Language")
         End Select
-        SimulateMB.Text = SimulateMI.Text
-        SimulateMB.ToolTipText = SimulateMB.Text
-        RevertWorldMB.Text = RevertWorldMI.Text
-        RevertWorldMB.ToolTipText = RevertWorldMB.Text
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -268,7 +263,6 @@ Public Class MainForm
                 Exit Sub
             End Try
             SaveTheWorldMI.Enabled = True
-            RevertWorldMI.Enabled = True
             If CurrentStage IsNot Nothing Then
                 TryCast(CurrentStage.Parent.Parent, StageForm).Text = MyWorld.WorldFile & " - Stage"
             End If
@@ -291,69 +285,6 @@ Public Class MainForm
 
     Private Sub ExitMI_Click(sender As Object, e As EventArgs) Handles ExitMI.Click
         Application.Exit()
-    End Sub
-
-#End Region
-
-#Region "Action Menu"
-
-    Private Sub Simulate_Click(sender As Object, e As EventArgs) Handles SimulateMI.Click, SimulateMB.Click
-        If SimulateMI.Checked = False Then
-            SimulateMI.Checked = True
-            NewMI.Enabled = False
-        Else
-            SimulateMI.Checked = False
-            NewMI.Enabled = True
-            Exit Sub
-        End If
-        'Dim TimeCount As Double = 1000
-        SimStatusLabel.Text = "Running... "
-        Dim t As Integer = 0
-        While (SimulateMI.Checked = True) 't < TimeCount / MyWorld.dT Or
-            t = t + 1
-            Call MyWorld.Passage()
-            If t Mod MyWorld.RefreshRate = 0 Then
-                If MyWorld.CreatureCount = 0 Then
-                    Call Simulate_Click(sender, e)
-                End If
-                If CurrentStage IsNot Nothing Then
-                    Call RefreshView(CurrentStage)
-                End If
-                If CurrentDashboard IsNot Nothing Then
-                    Call CurrentDashboard.PropertyGrid1.Refresh()
-                End If
-            End If
-            AbsTimeLabel.Text = CInt(MyWorld.T).ToString() & " s"
-            PopulationLabel.Text = MyWorld.CreatureCount
-            Application.DoEvents()
-        End While
-        SimStatusLabel.Text = String.Format("{0} {1} {2} ({3} s)", "Finished", t, "timesteps", t * MyWorld.DT)
-    End Sub
-
-    Private Sub RevertWorldMI_Click(sender As Object, e As EventArgs) Handles RevertWorldMI.Click, RevertWorldMB.Click
-        If MyWorld IsNot Nothing Then
-            Dim MsgAns As MsgBoxResult = MsgBox("Do you want to revert the simulation? ",
-                    MsgBoxStyle.Question + MsgBoxStyle.YesNo, "SimWorld - Revert World")
-            If MsgAns = MsgBoxResult.No Then
-                Exit Sub
-            End If
-        End If
-        Dim FullPath As String = MyWorld.WorldFileDir & "\" & MyWorld.WorldFile
-        Try
-            Dim ser = New DataContractSerializer(GetType(World))
-            Dim xmlContent As String = My.Computer.FileSystem.ReadAllText(FullPath)
-            Using string_reader As New IO.StringReader(xmlContent),
-                ms As New IO.MemoryStream(System.Text.Encoding.Default.GetBytes(string_reader.ReadToEnd))
-                MyWorld = CType(ser.ReadObject(ms), World)
-            End Using
-            MyWorld.WorldFileDir = IO.Path.GetDirectoryName(FullPath)
-            MyWorld.WorldFile = IO.Path.GetFileName(FullPath)
-        Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, "SimWorld - Revert World")
-            Exit Sub
-        End Try
-        Call LoadWorld(MyWorld)
-        SimStatusLabel.Text = "World reverted! "
     End Sub
 
 #End Region
@@ -566,28 +497,6 @@ Public Class MainForm
 
 #End Region
 
-#Region "ToolStrip"
-
-    Private Sub SimulateMI_EnabledChanged(sender As Object, e As EventArgs) Handles SimulateMI.EnabledChanged
-        SimulateMB.Enabled = SimulateMI.Enabled
-    End Sub
-
-    Private Sub SimulateMI_CheckedChanged(sender As Object, e As EventArgs) Handles SimulateMI.CheckedChanged
-        SimulateMB.Checked = SimulateMI.Checked
-        If SimulateMI.Checked = True Then
-            SimulateMI.Image = My.Resources.ResourceManager.GetObject("Stop_256x")
-        Else
-            SimulateMI.Image = My.Resources.ResourceManager.GetObject("Run_256x")
-        End If
-        SimulateMB.Image = SimulateMI.Image
-    End Sub
-
-    Private Sub RevertWorldMI_EnabledChanged(sender As Object, e As EventArgs) Handles RevertWorldMI.EnabledChanged
-        RevertWorldMB.Enabled = RevertWorldMI.Enabled
-    End Sub
-
-#End Region
-
     Private Sub MainForm_Resize(sender As Object, e As EventArgs) Handles Me.Resize
         ' reposition startpage
         Dim ClientHeight As Double = 0
@@ -614,11 +523,8 @@ Public Class MainForm
                 .FileMI.MergeAction = MergeAction.MatchOnly
                 .ExportMI.MergeAction = MergeAction.Insert
                 .ExportMI.MergeIndex = 4
-                .ActionMI.MergeAction = MergeAction.MatchOnly
-                .ActionMISeparator1.MergeAction = MergeAction.Insert
-                .ActionMISeparator1.MergeIndex = 2
-                .CopyImageMI.MergeAction = MergeAction.Insert
-                .CopyImageMI.MergeIndex = 3
+                .ActionMI.MergeAction = MergeAction.Insert
+                .ActionMI.MergeIndex = 1
                 .ViewMI.MergeAction = MergeAction.Insert
                 .ViewMI.MergeIndex = 2
                 ToolStripManager.Merge(.MenuStrip1, Me.MenuStrip1)
@@ -730,16 +636,12 @@ Public Class MainForm
         If CurrentDashboard IsNot Nothing Then
             CurrentDashboard.Close()
         End If
-        SimulateMI.Enabled = False
         SaveAsMI.Enabled = False
         DashboardMI.Enabled = False
         SaveTheWorldMI.Enabled = False
-        RevertWorldMI.Enabled = False
-        SimulateMI.Checked = False
-        SimulateMI.Image = My.Resources.ResourceManager.GetObject("Run_256x")
     End Sub
 
-    Private Sub LoadWorld(Optional ByRef thisWorld As World = Nothing)
+    Public Sub LoadWorld(Optional ByRef thisWorld As World = Nothing)
         If CurrentStage IsNot Nothing Then
             RefreshView(CurrentStage)
             TryCast(CurrentStage.Parent.Parent, Form).Text = thisWorld.WorldFile & " - Stage"
@@ -771,15 +673,12 @@ Public Class MainForm
         End If
         AbsTimeLabel.Text = CInt(MyWorld.T).ToString() & " s"
         PopulationLabel.Text = MyWorld.CreatureCount
-        SimulateMI.Enabled = True
         SaveAsMI.Enabled = True
         DashboardMI.Enabled = True
         If thisWorld.WorldFileDir = "" Then                  'haven't saved
             SaveTheWorldMI.Enabled = False
-            RevertWorldMI.Enabled = False
         Else
             SaveTheWorldMI.Enabled = True
-            RevertWorldMI.Enabled = True
         End If
     End Sub
 
