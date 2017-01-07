@@ -661,7 +661,7 @@ Public Class MainForm
         For i = 0 To MyWorld.CreatureCount - 1 Step 1
             Pos = MyWorld.Creatures(i).Position
             Size = MyWorld.Creatures(i).MarkerSize
-            Canvas.AddEllipse(CSng(Pos.X), CSng(MyWorld.Size.Y - Pos.Y), Size, Size)
+            Canvas.AddEllipse(CSng(Pos.X) - Size / 2, CSng(MyWorld.Size.Y - Pos.Y) - Size / 2, Size, Size)
             Canvas.SetMarkers()
         Next i
         Dim GraphicsPaths As GraphicsPathIterator = New GraphicsPathIterator(Canvas)
@@ -676,8 +676,10 @@ Public Class MainForm
                 'Array.Copy(MyWorld.CreatureList(i).Pos, Pos, 3)
                 Size = MyWorld.Creatures(i).MarkerSize
                 Pos = MyWorld.Creatures(i).Position
-                Target.FillEllipse(New SolidBrush(Color.Red), CSng(Pos.X) - MarkerThickness,
-                                   CSng(MyWorld.Size.Y - Pos.Y) - MarkerThickness, Size + 2 * MarkerThickness, Size + 2 * MarkerThickness)
+                Target.FillEllipse(New SolidBrush(Color.Red),
+                                   CSng(Pos.X) - MarkerThickness - Size / 2,
+                                   CSng(MyWorld.Size.Y - Pos.Y) - MarkerThickness - Size / 2,
+                                   Size + 2 * MarkerThickness, Size + 2 * MarkerThickness)
             End If
             If MyWorld.Creatures(i).Sex = True Then
                 'Target.DrawPath(Pens.Black, Canvas)

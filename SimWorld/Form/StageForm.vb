@@ -162,7 +162,7 @@ Public Class StageForm
                     Math.Abs(LastScrollPos.Y) + (MouseOrigin.Y - e.Y))
             End If
         Else
-            MainForm.CurrentGraphicObj.Text = CInt(e.X / ZoomRate) & "," & CInt(e.Y / ZoomRate) &
+            MainForm.CurrentGraphicObj.Text = CInt(e.X / ZoomRate) & "," & CInt(MyWorld.Size.Y - e.Y / ZoomRate) &
                                            "(x" & CInt(ZoomRate * 100) / 100 & ")"
             If MainForm.Canvas IsNot Nothing Then
                 Dim GraphicsPaths As GraphicsPathIterator = New GraphicsPathIterator(MainForm.Canvas)

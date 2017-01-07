@@ -39,10 +39,12 @@ SimWorld
 0.1.6215
 1. *** Add EntryDialog class to handle multiple-entry input at World initialization. 
 2. Add populate (from RNG) to the StageForm. 
-3. 
+3. Fix Creature position drawn on the stage and cursor position shown in StageForm. 
+
+0.1.6216
+1.
 
 To Do List (Arranged from near to far): 
-Fix Creature position shown on the stage. 
 move action on mainform to stageform
 add log to Creature events.
 Mutator/Disruptor/Perturber/
