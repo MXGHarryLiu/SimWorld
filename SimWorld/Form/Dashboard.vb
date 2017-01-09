@@ -2,6 +2,9 @@
 
 Public Class Dashboard
 
+    Private LogListCache() As ListViewItem = Nothing
+    Private FirstLog As Integer = 0
+
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -12,8 +15,17 @@ Public Class Dashboard
         If My.Settings.DashboardFormPos.IsEmpty = False Then
             Me.Location = My.Settings.DashboardFormPos
         End If
-        PropertyGrid1.Dock = DockStyle.Fill
+        TabControl1.Dock = DockStyle.Fill
         Me.Icon = My.Resources.ResourceManager.GetObject("SimWorld")
+        With LogListView
+            .Columns.Add("#", 30)
+            .Columns.Add("Time", 80)
+            .Columns.Add("SimTime", 40)
+            .Columns.Add("Subject", 60)
+            .Columns.Add("Description", 100)
+            .VirtualMode = True
+            .VirtualListSize = 0
+        End With
     End Sub
 
     Private Sub Dashboard_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
@@ -30,7 +42,36 @@ Public Class Dashboard
         Call MainForm.RefreshView(MainForm.CurrentStage)
     End Sub
 
-    Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub PropertyGrid1_SelectedObjectsChanged(sender As Object, e As EventArgs) Handles PropertyGrid1.SelectedObjectsChanged
+        If TypeOf PropertyGrid1.SelectedObject Is SimWorldLib.World Then
+            Call RefreshLogList(MyWorld)
+        Else
+            TabControl1.SelectedTab = TabPage1
+        End If
+    End Sub
 
+    Public Sub RefreshContent()
+        Call PropertyGrid1.Refresh()
+        Call RefreshLogList(MyWorld)
+    End Sub
+
+    Private Sub RefreshLogList(ByRef Subject As SimWorldLib.World)
+        If LogListView.VirtualListSize <> Subject.WorldLog.EntryCount Then
+            LogListView.VirtualListSize = Subject.WorldLog.EntryCount
+        End If
+    End Sub
+
+    Private Sub LogListView_RetrieveVirtualItem(sender As Object, e As RetrieveVirtualItemEventArgs) Handles LogListView.RetrieveVirtualItem
+        If Not (LogListCache Is Nothing) AndAlso e.ItemIndex >= FirstLog AndAlso e.ItemIndex < FirstLog + LogListCache.Length Then
+            e.Item = LogListCache(e.ItemIndex - FirstLog)
+        Else
+            Dim Subfields() As String = Strings.Split(MyWorld.WorldLog.Entries(e.ItemIndex), ",")
+            Dim NewRow As ListViewItem = New ListViewItem(e.ItemIndex + 1)
+            NewRow.SubItems.Add(Subfields(0))
+            NewRow.SubItems.Add(Subfields(1))
+            NewRow.SubItems.Add(Subfields(2))
+            NewRow.SubItems.Add(Subfields(3))
+            e.Item = NewRow
+        End If
     End Sub
 End Class

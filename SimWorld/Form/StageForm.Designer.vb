@@ -64,9 +64,9 @@ Partial Class StageForm
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.SimulateMB = New System.Windows.Forms.ToolStripButton()
         Me.RevertWorldMB = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.CopyImageMB = New System.Windows.Forms.ToolStripButton()
         Me.RefreshMB = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.Panel1.SuspendLayout()
         Me.ContextMenuStripBg.SuspendLayout()
         CType(Me.Stage, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -375,6 +375,11 @@ Partial Class StageForm
         Me.RevertWorldMB.Size = New System.Drawing.Size(24, 24)
         Me.RevertWorldMB.Text = "Revert to Last Saved"
         '
+        'ToolStripSeparator4
+        '
+        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 27)
+        '
         'CopyImageMB
         '
         Me.CopyImageMB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -392,11 +397,6 @@ Partial Class StageForm
         Me.RefreshMB.Name = "RefreshMB"
         Me.RefreshMB.Size = New System.Drawing.Size(24, 24)
         Me.RefreshMB.Text = "Refresh"
-        '
-        'ToolStripSeparator4
-        '
-        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 27)
         '
         'StageForm
         '

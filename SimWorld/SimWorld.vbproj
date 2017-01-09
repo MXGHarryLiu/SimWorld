@@ -298,6 +298,7 @@
     <None Include="Resources\SimWorldSMW.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\World_256x.png" />
     <Content Include="WhatsNew.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

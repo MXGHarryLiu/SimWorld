@@ -333,4 +333,8 @@
     <value>The version of the SimWorld that created the World file. </value>
     <comment>World Utility</comment>
   </data>
+  <data name="WorldLog" xml:space="preserve">
+    <value>Logs associated with the World. </value>
+    <comment>World Utility</comment>
+  </data>
 </root>

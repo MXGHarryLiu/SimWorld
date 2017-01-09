@@ -35,7 +35,6 @@ Partial Class MainForm
         Me.FileMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.NewMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.NewWorldMI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.WorldfromCreatorMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.StartPageMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
@@ -146,7 +145,7 @@ Partial Class MainForm
         '
         'NewMI
         '
-        Me.NewMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewWorldMI, Me.WorldfromCreatorMI})
+        Me.NewMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewWorldMI})
         Me.NewMI.Image = Global.SimWorld.My.Resources.Resources.Create_256x
         Me.NewMI.Name = "NewMI"
         Me.NewMI.Size = New System.Drawing.Size(262, 26)
@@ -154,17 +153,11 @@ Partial Class MainForm
         '
         'NewWorldMI
         '
+        Me.NewWorldMI.Image = Global.SimWorld.My.Resources.Resources.World_256x
         Me.NewWorldMI.Name = "NewWorldMI"
         Me.NewWorldMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
-        Me.NewWorldMI.Size = New System.Drawing.Size(237, 26)
+        Me.NewWorldMI.Size = New System.Drawing.Size(187, 26)
         Me.NewWorldMI.Text = "&World"
-        '
-        'WorldfromCreatorMI
-        '
-        Me.WorldfromCreatorMI.Image = Global.SimWorld.My.Resources.Resources.DataMining_256x
-        Me.WorldfromCreatorMI.Name = "WorldfromCreatorMI"
-        Me.WorldfromCreatorMI.Size = New System.Drawing.Size(237, 26)
-        Me.WorldfromCreatorMI.Text = "World (from Creator)"
         '
         'OpenMI
         '
@@ -392,7 +385,6 @@ Partial Class MainForm
     Friend WithEvents TileVerticallyMI As ToolStripMenuItem
     Friend WithEvents TileHorizontallyMI As ToolStripMenuItem
     Friend WithEvents DashboardMI As ToolStripMenuItem
-    Friend WithEvents WorldfromCreatorMI As ToolStripMenuItem
     Friend WithEvents HelpMI As ToolStripMenuItem
     Friend WithEvents AboutUsMI As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator6 As ToolStripSeparator

@@ -423,6 +423,16 @@ Namespace My.Resources
         '''<summary>
         '''  查找 System.Drawing.Bitmap 类型的本地化资源。
         '''</summary>
+        Friend ReadOnly Property World_256x() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("World_256x", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找 System.Drawing.Bitmap 类型的本地化资源。
+        '''</summary>
         Friend ReadOnly Property ZoomIn_256x() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ZoomIn_256x", resourceCulture)

@@ -5,9 +5,6 @@ Imports System.Drawing
 Imports System.Runtime.Serialization
 Imports System.Windows.Media.Media3D
 
-'BrowsableAttribute
-' <System.ComponentModel.ReadOnlyAttribute(True)>
-
 ''' <summary>
 ''' SimWorld World Class
 ''' </summary>
@@ -63,7 +60,7 @@ Public Class World
     <Category("Utility")>
     <Description(NameOf(CreationTime))>
     <System.ComponentModel.ReadOnlyAttribute(True)>
-    Public Property CreationTime As String = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")
+    Public Property CreationTime As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
 
     <DataMember>
     <Category("Utility")>
@@ -80,6 +77,13 @@ Public Class World
     <Description(NameOf(WorldFileDir))>
     <System.ComponentModel.ReadOnlyAttribute(True)>
     Public Property WorldFileDir As String = ""
+
+    <DataMember>
+    <Category("Utility")>
+    <Description(NameOf(WorldLog))>
+    <System.ComponentModel.TypeConverter(GetType(System.ComponentModel.ExpandableObjectConverter))>
+    <ComponentModel.Browsable(False)>
+    Public Property WorldLog As Log = New Log()
 
 #End Region
 
@@ -297,6 +301,11 @@ Public Class World
 
     ' ============= Methods =============
 
+    Public Function LogUserAction(ByVal Message As String) As String
+        WorldLog.AddLog(DateTime.Now, Me.T, "User", Message)
+        Return "User: " & Message
+    End Function
+
     Public Sub AddCreature(Optional ByRef NewCreature As Creature = Nothing)
         If NewCreature Is Nothing Then
             NewCreature = New Creature(Me)
@@ -306,7 +315,7 @@ Public Class World
 
     Public Sub CreatureDeath(ByRef sender As Creature,
                              Optional ByVal DeathReason As DeathReasons = DeathReasons.UNKNOWN)
-        MsgBox("a creature had died. " & "Creature: " & sender.ID & " Reason " & DeathReason) 'log
+        WorldLog.AddLog(DateTime.Now, Me.T, sender.ID, "Creature death.Reason: " & DeathReason)
         Creatures.Remove(sender)
     End Sub
 

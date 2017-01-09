@@ -42,15 +42,15 @@ SimWorld
 3. Fix Creature position drawn on the stage and cursor position shown in StageForm. 
 4. Move the Action menu on MainForm to StageForm. 
 
-0.1.6216
-1.
+0.1.6217
+1. *** Add Log class to store Creature and World events.
+
 
 To Do List (Arranged from near to far): 
-
-add log to Creature events.
+tutorial
 Mutator/Disruptor/Perturber/
 move creature update to task to run in parallel
-creature avoid/approach each other
+Nearest neigbor: creature avoid/approach each other
 Creature property: 
 	life stage (e.g. seed/plant, worker ant and queen, tadpole and frog)
 creature templete: 

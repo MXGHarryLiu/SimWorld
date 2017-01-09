@@ -532,6 +532,15 @@ Friend Class en_US
     End Property
     
     '''<summary>
+    '''  查找类似 Logs associated with the World.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property WorldLog() As String
+        Get
+            Return ResourceManager.GetString("WorldLog", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  查找类似 World File version.  的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property WorldVersion() As String

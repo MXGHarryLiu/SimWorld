@@ -601,7 +601,7 @@ Public Class CreatureFromFile
     <Category("Utility")>
     <Description(NameOf(CreationTime))>
     <System.ComponentModel.ReadOnlyAttribute(True)>
-    Public Property CreationTime As String = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")
+    Public Property CreationTime As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
 
     <DataMember>
     <Category("Utility")>

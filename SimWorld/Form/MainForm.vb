@@ -110,10 +110,10 @@ Public Class MainForm
             End If
         End While
         Call HideStartPage()
-        MyWorld = New World(EntryDiag.Results(0), EntryDiag.Results(1), 0)
+        MyWorld = New World(InputWidth, InputHeight, 0)
         MyWorld.WorldFile = "Untitled World.smw"
         Call LoadWorld(MyWorld)
-        SimStatusLabel.Text = "Initialized! "
+        SimStatusLabel.Text = MyWorld.LogUserAction(String.Format("Initialize World ({0}x{1})", InputWidth, InputHeight))
     End Sub
 
     Public Sub OpenMI_Click(sender As Object, e As EventArgs, Optional ByVal inPath As String = Nothing) Handles OpenMI.Click
@@ -684,6 +684,7 @@ Public Class MainForm
 
     Private Sub DebugMI_Click(sender As Object, e As EventArgs) Handles DebugMI.Click
         'MsgBox(Distributions.Normal.CDF(0, 2, 0))
+
     End Sub
 
     Private Sub SoilLayerMI_Click(sender As Object, e As EventArgs) Handles SoilLayerMI.Click

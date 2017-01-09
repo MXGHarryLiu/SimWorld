@@ -79,6 +79,7 @@
     </Compile>
     <Compile Include="ErrMsg.vb" />
     <Compile Include="Localization.vb" />
+    <Compile Include="Log.vb" />
     <Compile Include="Map.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

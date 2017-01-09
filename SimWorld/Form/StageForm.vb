@@ -293,6 +293,7 @@ Public Class StageForm
                     For i = 0 To PopulateCreatureIDs.Count - 1 Step 1
                         Dim ii As Integer = i
                         MyWorld.Creatures.Find(Function(x) x.ID = PopulateCreatureIDs(ii)).Marked = False
+                        MyWorld.LogUserAction(String.Format("Add Creature {0} according to Creature {1}", PopulateCreatureIDs(i), TempCreature.ID))
                     Next
                     PopulateCreatureIDs.Clear()
                     TempCreature.Marked = False
@@ -300,6 +301,9 @@ Public Class StageForm
                     PopulateFromExistingCreatureMI.Checked = False
                     PopulateFromFileMI.Checked = False
                     PopulateFromRNGMI.Checked = False
+                    If MainForm.CurrentDashboard IsNot Nothing Then
+                        Call MainForm.CurrentDashboard.RefreshContent()
+                    End If
                 Else
                     MsgBox("Please select a template Creature to continue... ", MsgBoxStyle.Information + MsgBoxStyle.OkOnly, "SimWorld - Populate")
                 End If
@@ -441,7 +445,7 @@ Public Class StageForm
                 End If
                 Call MainForm.RefreshView(Stage)
                 If MainForm.CurrentDashboard IsNot Nothing Then
-                    Call MainForm.CurrentDashboard.PropertyGrid1.Refresh()
+                    Call MainForm.CurrentDashboard.RefreshContent()
                 End If
             End If
             MainForm.AbsTimeLabel.Text = CInt(MyWorld.T).ToString() & " s"
@@ -550,7 +554,7 @@ Public Class StageForm
         Dim OpenFileDiag As New OpenFileDialog
         OpenFileDiag.Filter = "SimWorld Creature Files|*.smc"
         If OpenFileDiag.ShowDialog() = DialogResult.OK Then
-            TempCreature = New CreatureFromFile(OpenFileDiag.FileName).ToCreature().Copy()
+            TempCreature = New CreatureFromFile(OpenFileDiag.FileName).ToCreature().Clone()
             PopulateFromFileMI.Checked = True
             MouseState = (MouseState Or MouseStates.POPULATE)
         End If
@@ -604,15 +608,26 @@ Public Class StageForm
                        MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "SimWorld - Populate")
             End If
         End While
-        Dim RNG As Random = New Random()
-        For i = 0 To CreatureNum - 1 Step 1
-            MyWorld.AddCreature()
-            Threading.Thread.Sleep(RNG.Next(1, 100))      'Sleep thread to get quite random results !!!!!!!!!!!!!!!!
-            MainForm.SimStatusLabel.Text = String.Format("Populating ({0}/{1})", i + 1, CreatureNum)
-            Application.DoEvents()
-        Next i
-        MainForm.SimStatusLabel.Text = String.Format("Populating finished: added {0} Creature(s). ", CreatureNum)
-        Call MainForm.RefreshView(Stage)
+        Try
+            Dim RNG As Random = New Random()
+            Dim NewCreature As Creature = Nothing
+            For i = 0 To CreatureNum - 1 Step 1
+                NewCreature = New Creature(MyWorld)
+                MyWorld.AddCreature(NewCreature)
+                Threading.Thread.Sleep(RNG.Next(1, 100))      'Sleep thread to get quite random results !!!!!!!!!!!!!!!!
+                MainForm.SimStatusLabel.Text = String.Format("Populating ({0}/{1}): {2}", i + 1, CreatureNum, NewCreature.ID)
+                MyWorld.LogUserAction("Add Creature: " & NewCreature.ID)
+                Application.DoEvents()
+            Next i
+            MainForm.SimStatusLabel.Text = String.Format("Populating finished: added {0} Creature(s). ", CreatureNum)
+            Call MainForm.RefreshView(Stage)
+            If MainForm.CurrentDashboard IsNot Nothing Then
+                Call MainForm.CurrentDashboard.RefreshContent()
+            End If
+        Catch ex As Exception
+            MsgBox("Populating terminated! " & vbCrLf & ex.Message,
+                MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, "SimWorld - Populate")
+        End Try
     End Sub
 
     Private Sub CancelPopulatingMI_Click(sender As Object, e As EventArgs) Handles CancelPopulatingMI.Click
