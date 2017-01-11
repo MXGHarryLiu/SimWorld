@@ -29,6 +29,8 @@ Public Class World
         Select Case item
             Case NameOf(Size)           ' Environment
                 Return New Point3D(600, 400, 0)
+            Case NameOf(GridSize)
+                Return 50.0R
             Case NameOf(Temperature)
                 Return 25.0R
             Case NameOf(DayLen)
@@ -94,8 +96,7 @@ Public Class World
     <Description(NameOf(Size))>
     <System.ComponentModel.TypeConverter(GetType(System.ComponentModel.ExpandableObjectConverter))>
     <DefaultValueAttribute(NameOf(Size))>
-    Public Property Size As Windows.Media.Media3D.Point3D = DefaultValue(NameOf(Size))  'Dimension of the World
-    'read only!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    Public Property Size As Windows.Media.Media3D.Point3D = DefaultValue(NameOf(Size))
 
     Private _Temperature As Double = DefaultValue(NameOf(Temperature))  'Celsius
     <DataMember>
@@ -239,23 +240,57 @@ Public Class World
         End Set
     End Property
 
-    Private pRefreshRate As Integer = DefaultValue(NameOf(RefreshRate))     'multiple of dT
-
+    Private _RefreshRate As Integer = DefaultValue(NameOf(RefreshRate))     'multiple of dT
     <DataMember>
     <Category("Simulation")>
     <Description(NameOf(RefreshRate))>
     <DefaultValueAttribute(NameOf(RefreshRate))>
     Public Property RefreshRate As Integer
         Get
-            Return pRefreshRate
+            Return _RefreshRate
         End Get
         Set(ByVal value As Integer)
             If value <= 0 Then
                 ShowErrMsg(NameOf(RefreshRate), ErrType.MUSTPOSITIVE)
             Else
-                pRefreshRate = value
+                _RefreshRate = value
             End If
         End Set
+    End Property
+
+    Private _GridSize As Double = DefaultValue(NameOf(GridSize))
+    <DataMember>
+    <Category("Simulation")>
+    <Description(NameOf(GridSize))>
+    <DefaultValueAttribute(NameOf(GridSize))>
+    Public Property GridSize As Double
+        Get
+            Return _GridSize
+        End Get
+        Set(value As Double)
+            If value <= 0 Then
+                ShowErrMsg(NameOf(GridSize), ErrType.MUSTPOSITIVE)
+            Else
+                If value <> _GridSize Then
+                    _GridSize = value
+                    Me.MapGrid = New Grid(Me)
+                End If
+            End If
+        End Set
+    End Property
+
+    <DataMember>
+    <Category("Simulation")>
+    <Description(NameOf(MapGrid))>
+    <ComponentModel.Browsable(False)>
+    Public Property MapGrid As Grid
+
+    <Category("Simulation")>
+    <Description(NameOf(GridCount))>
+    Public ReadOnly Property GridCount As Integer
+        Get
+            Return MapGrid.XMax * MapGrid.YMax
+        End Get
     End Property
 
 #End Region
@@ -265,11 +300,13 @@ Public Class World
     Public Sub New()
         ' Necessary for serialization
         Soil = New Map(Size.X, Size.Y, 0.5F)
+        MapGrid = New Grid(Me)
     End Sub
 
     Public Sub New(ByVal X As Double, ByVal Y As Double, ByVal Z As Double)
         Size = New Vector3D(X, Y, Z)
         Soil = New Map(Size.X, Size.Y, 0.5F)
+        MapGrid = New Grid(Me)
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -321,21 +358,14 @@ Public Class World
 
     Public Sub Passage()    'simulate the world for one time step
         T = T + DT
+        Call MapGrid.UpdateGrid(Me.Creatures)
         Dim i As Integer = 0
         Dim LastCount As Integer = 0
         While i < Creatures.Count
             LastCount = Creatures.Count
             Creatures(i).LiveDT(Me)
-            If Creatures.Count = LastCount Then
+            If Creatures.Count = LastCount Then ' Death can only occur once!
                 i = i + 1
-                'else a creature has died or been born
-                'ElseIf Creatures.Count > LastCount Then
-                '    'Dim a As EventHandler
-                '    For i = 0 To Creatures.Count - 1 Step 1
-                '        If Creatures(1).DeathEvent IsNot Nothing Then
-
-                '        End If
-                '    Next i
             End If
         End While
 

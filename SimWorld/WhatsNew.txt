@@ -1,52 +1,12 @@
 SimWorld
 
-0.1.6208
-1. Add What's new. 
-2. Add Version number to release date/time conversion function. 
-3. Add ToolStripPanel to MainForm. 
-4. Add Settings to: StageForm size, location. Dashboard location. 
-5. Allow sub form's menu to merge into that of the MainForm.  
-
-0.1.6209
-1. *** Add Map class to use as a 2D data array. 
-2. Optimize Creature Collection Editor. 
-3. Add language support menu. 
-4. Optimize ActStates class TypeConvertor. 
-
-0.1.6210
-1. *** Add ErrMsg class to validate data fields. 
-2. Correct the center position of the Creature marker. 
-3. Add export desolate World, and single Creature.  
-4. Structured the MainForm code. 
-5. Optimize Toolstrip buttons behavior of all the forms. 
-6. Start to use Events between Creatures. 
-
-0.1.6211
-1. *** Add CreatureFromFile class to package the creature when import/export. 
-2. Creature Collection Editor now support adding creature from file. 
-
-0.1.6212
-1. *** Add populate (from existing Creature) to the StageForm. 
-2. !!! Abandon using Events between Creatures. 
-3. Move MyWorld to top level global. 
-4. Make FileDialogs dynamic, i.e. generate new instances at runtime. 
-5. Fix icon size problem when maximizing MDI child forms. 
-
-0.1.6213
-1. *** Separate all custom class into a dll and start to use MathNet.Numerics. 
-2. Add populate (from file) to the StageForm. 
-
-0.1.6215
-1. *** Add EntryDialog class to handle multiple-entry input at World initialization. 
-2. Add populate (from RNG) to the StageForm. 
-3. Fix Creature position drawn on the stage and cursor position shown in StageForm. 
-4. Move the Action menu on MainForm to StageForm. 
-
-0.1.6217
-1. *** Add Log class to store Creature and World events.
-
+0.1.6220
+1. *** Add Grid class to the World to help locate the Creatures. 
+2. Write the Nearest Neighbor search function under Grid class. 
+3. Add grid lines on the Stage. 
 
 To Do List (Arranged from near to far): 
+Add massacre function to kill a percentage of Creature randomly. 
 tutorial
 Mutator/Disruptor/Perturber/
 move creature update to task to run in parallel
@@ -59,3 +19,47 @@ creature templete:
 	c. Animal. 
 convert MDI forms to tab. 
 
+0.1.6217
+1. *** Add Log class to store Creature and World events.
+
+0.1.6215
+1. *** Add EntryDialog class to handle multiple-entry input at World initialization. 
+2. Add populate (from RNG) to the StageForm. 
+3. Fix Creature position drawn on the stage and cursor position shown in StageForm. 
+4. Move the Action menu on MainForm to StageForm. 
+
+0.1.6213
+1. *** Separate all custom class into a dll and start to use MathNet.Numerics. 
+2. Add populate (from file) to the StageForm. 
+
+0.1.6212
+1. *** Add populate (from existing Creature) to the StageForm. 
+2. !!! Abandon using Events between Creatures. 
+3. Move MyWorld to top level global. 
+4. Make FileDialogs dynamic, i.e. generate new instances at runtime. 
+5. Fix icon size problem when maximizing MDI child forms. 
+
+0.1.6211
+1. *** Add CreatureFromFile class to package the creature when import/export. 
+2. Creature Collection Editor now support adding creature from file. 
+
+0.1.6210
+1. *** Add ErrMsg class to validate data fields. 
+2. Correct the center position of the Creature marker. 
+3. Add export desolate World, and single Creature.  
+4. Structured the MainForm code. 
+5. Optimize Toolstrip buttons behavior of all the forms. 
+6. Start to use Events between Creatures. 
+
+0.1.6209
+1. *** Add Map class to use as a 2D data array. 
+2. Optimize Creature Collection Editor. 
+3. Add language support menu. 
+4. Optimize ActStates class TypeConvertor. 
+
+0.1.6208
+1. Add What's new. 
+2. Add Version number to release date/time conversion function. 
+3. Add ToolStripPanel to MainForm. 
+4. Add Settings to: StageForm size, location. Dashboard location. 
+5. Allow sub form's menu to merge into that of the MainForm.  

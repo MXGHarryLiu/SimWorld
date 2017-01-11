@@ -299,6 +299,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\World_256x.png" />
+    <None Include="Resources\Death_256x.png" />
     <Content Include="WhatsNew.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -63,6 +63,8 @@ Partial Class MainForm
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.AboutUsMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.DebugMI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OneclickRunMI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Debug2ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -338,9 +340,22 @@ Partial Class MainForm
         '
         'DebugMI
         '
+        Me.DebugMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OneclickRunMI, Me.Debug2ToolStripMenuItem})
         Me.DebugMI.Name = "DebugMI"
         Me.DebugMI.Size = New System.Drawing.Size(70, 24)
         Me.DebugMI.Text = "Debug"
+        '
+        'OneclickRunMI
+        '
+        Me.OneclickRunMI.Name = "OneclickRunMI"
+        Me.OneclickRunMI.Size = New System.Drawing.Size(184, 26)
+        Me.OneclickRunMI.Text = "One-click Run"
+        '
+        'Debug2ToolStripMenuItem
+        '
+        Me.Debug2ToolStripMenuItem.Name = "Debug2ToolStripMenuItem"
+        Me.Debug2ToolStripMenuItem.Size = New System.Drawing.Size(184, 26)
+        Me.Debug2ToolStripMenuItem.Text = "Debug2"
         '
         'MainForm
         '
@@ -402,4 +417,6 @@ Partial Class MainForm
     Friend WithEvents SoilLayerMI As ToolStripMenuItem
     Friend WithEvents TutorialMI As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
+    Friend WithEvents OneclickRunMI As ToolStripMenuItem
+    Friend WithEvents Debug2ToolStripMenuItem As ToolStripMenuItem
 End Class

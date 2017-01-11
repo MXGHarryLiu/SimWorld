@@ -138,9 +138,9 @@ Friend Class en_US
     '''<summary>
     '''  查找类似 List of the Creatures within the World.  的本地化字符串。
     '''</summary>
-    Friend Shared ReadOnly Property CreatureList() As String
+    Friend Shared ReadOnly Property Creatures() As String
         Get
-            Return ResourceManager.GetString("CreatureList", resourceCulture)
+            Return ResourceManager.GetString("Creatures", resourceCulture)
         End Get
     End Property
     
@@ -213,6 +213,24 @@ Friend Class en_US
     Friend Shared ReadOnly Property Graphics() As String
         Get
             Return ResourceManager.GetString("Graphics", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Number of grid units in the World.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property GridCount() As String
+        Get
+            Return ResourceManager.GetString("GridCount", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Size of the square grids used to locate the Creatures. In order to speed up the simulation running time, we recommend to set the value such that GridCount is less than 300. 的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property GridSize() As String
+        Get
+            Return ResourceManager.GetString("GridSize", resourceCulture)
         End Get
     End Property
     

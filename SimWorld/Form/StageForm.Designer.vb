@@ -60,6 +60,7 @@ Partial Class StageForm
         Me.CurrentObjToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MarkInTheFieldCMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExportCurrentCreatureCMI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PopulateFromItCMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.SimulateMB = New System.Windows.Forms.ToolStripButton()
@@ -67,6 +68,13 @@ Partial Class StageForm
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.CopyImageMB = New System.Windows.Forms.ToolStripButton()
         Me.RefreshMB = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.PopulateMB = New System.Windows.Forms.ToolStripSplitButton()
+        Me.PopulateFromRNGMB = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PopulateFromFileMB = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PopulateFromExistingCreatureMB = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ManipulateMI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MassacreMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1.SuspendLayout()
         Me.ContextMenuStripBg.SuspendLayout()
         CType(Me.Stage, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -169,7 +177,7 @@ Partial Class StageForm
         '
         'ActionMI
         '
-        Me.ActionMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SimulateMI, Me.RevertWorldMI, Me.ActionMISeparator1, Me.CopyImageMI, Me.RefreshMI, Me.ToolStripSeparator2, Me.PopulateMI})
+        Me.ActionMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SimulateMI, Me.RevertWorldMI, Me.ActionMISeparator1, Me.CopyImageMI, Me.RefreshMI, Me.ToolStripSeparator2, Me.PopulateMI, Me.ManipulateMI})
         Me.ActionMI.Name = "ActionMI"
         Me.ActionMI.Size = New System.Drawing.Size(69, 24)
         Me.ActionMI.Text = "&Action"
@@ -323,9 +331,9 @@ Partial Class StageForm
         'ContextMenuStripFg
         '
         Me.ContextMenuStripFg.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.ContextMenuStripFg.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CurrentObjToolStripMenuItem, Me.MarkInTheFieldCMI, Me.ExportCurrentCreatureCMI})
+        Me.ContextMenuStripFg.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CurrentObjToolStripMenuItem, Me.MarkInTheFieldCMI, Me.ExportCurrentCreatureCMI, Me.PopulateFromItCMI})
         Me.ContextMenuStripFg.Name = "ContextMenuStripFg"
-        Me.ContextMenuStripFg.Size = New System.Drawing.Size(271, 100)
+        Me.ContextMenuStripFg.Size = New System.Drawing.Size(271, 132)
         '
         'CurrentObjToolStripMenuItem
         '
@@ -346,14 +354,20 @@ Partial Class StageForm
         Me.ExportCurrentCreatureCMI.Size = New System.Drawing.Size(270, 32)
         Me.ExportCurrentCreatureCMI.Text = "&Export Current Creature..."
         '
+        'PopulateFromItCMI
+        '
+        Me.PopulateFromItCMI.Name = "PopulateFromItCMI"
+        Me.PopulateFromItCMI.Size = New System.Drawing.Size(270, 32)
+        Me.PopulateFromItCMI.Text = "Populate from it"
+        '
         'ToolStrip1
         '
         Me.ToolStrip1.Dock = System.Windows.Forms.DockStyle.None
         Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SimulateMB, Me.RevertWorldMB, Me.ToolStripSeparator4, Me.CopyImageMB, Me.RefreshMB})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SimulateMB, Me.RevertWorldMB, Me.ToolStripSeparator4, Me.CopyImageMB, Me.RefreshMB, Me.ToolStripSeparator5, Me.PopulateMB})
         Me.ToolStrip1.Location = New System.Drawing.Point(407, 34)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(114, 27)
+        Me.ToolStrip1.Size = New System.Drawing.Size(159, 27)
         Me.ToolStrip1.TabIndex = 2
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -397,6 +411,55 @@ Partial Class StageForm
         Me.RefreshMB.Name = "RefreshMB"
         Me.RefreshMB.Size = New System.Drawing.Size(24, 24)
         Me.RefreshMB.Text = "Refresh"
+        '
+        'ToolStripSeparator5
+        '
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 27)
+        '
+        'PopulateMB
+        '
+        Me.PopulateMB.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.PopulateMB.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PopulateFromRNGMB, Me.PopulateFromFileMB, Me.PopulateFromExistingCreatureMB})
+        Me.PopulateMB.Image = Global.SimWorld.My.Resources.Resources.AddMember_256x
+        Me.PopulateMB.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.PopulateMB.Name = "PopulateMB"
+        Me.PopulateMB.Size = New System.Drawing.Size(39, 24)
+        Me.PopulateMB.Text = "Populate"
+        '
+        'PopulateFromRNGMB
+        '
+        Me.PopulateFromRNGMB.Name = "PopulateFromRNGMB"
+        Me.PopulateFromRNGMB.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.P), System.Windows.Forms.Keys)
+        Me.PopulateFromRNGMB.Size = New System.Drawing.Size(249, 26)
+        Me.PopulateFromRNGMB.Text = "From &RNG..."
+        '
+        'PopulateFromFileMB
+        '
+        Me.PopulateFromFileMB.Name = "PopulateFromFileMB"
+        Me.PopulateFromFileMB.Size = New System.Drawing.Size(249, 26)
+        Me.PopulateFromFileMB.Text = "From &File..."
+        '
+        'PopulateFromExistingCreatureMB
+        '
+        Me.PopulateFromExistingCreatureMB.Name = "PopulateFromExistingCreatureMB"
+        Me.PopulateFromExistingCreatureMB.Size = New System.Drawing.Size(249, 26)
+        Me.PopulateFromExistingCreatureMB.Text = "From &Existing Creature"
+        '
+        'ManipulateMI
+        '
+        Me.ManipulateMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MassacreMI})
+        Me.ManipulateMI.Image = Global.SimWorld.My.Resources.Resources.DataMining_256x
+        Me.ManipulateMI.Name = "ManipulateMI"
+        Me.ManipulateMI.Size = New System.Drawing.Size(233, 26)
+        Me.ManipulateMI.Text = "Manipulate"
+        '
+        'MassacreMI
+        '
+        Me.MassacreMI.Image = Global.SimWorld.My.Resources.Resources.Death_256x
+        Me.MassacreMI.Name = "MassacreMI"
+        Me.MassacreMI.Size = New System.Drawing.Size(181, 26)
+        Me.MassacreMI.Text = "Massacre..."
         '
         'StageForm
         '
@@ -465,4 +528,12 @@ Partial Class StageForm
     Friend WithEvents SimulateMB As ToolStripButton
     Friend WithEvents SimulateMI As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
+    Friend WithEvents PopulateMB As ToolStripSplitButton
+    Friend WithEvents PopulateFromRNGMB As ToolStripMenuItem
+    Friend WithEvents PopulateFromFileMB As ToolStripMenuItem
+    Friend WithEvents PopulateFromExistingCreatureMB As ToolStripMenuItem
+    Friend WithEvents PopulateFromItCMI As ToolStripMenuItem
+    Friend WithEvents ManipulateMI As ToolStripMenuItem
+    Friend WithEvents MassacreMI As ToolStripMenuItem
 End Class

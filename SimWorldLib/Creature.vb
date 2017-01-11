@@ -21,8 +21,7 @@ Public Class Creature
 
 #Region "Static or Shared"
 
-    '<Category("Utility")>
-    Private RNG As Random = New Random()
+    Private RNG As System.Random = New Random()
 
     ''' <param name="item">Name of the property. </param>
     ''' <remarks>
@@ -46,6 +45,7 @@ Public Class Creature
     Public Enum DeathReasons As Byte
         UNKNOWN = &B0
         HUNGER = &B1
+        MATERNAL = &B10
     End Enum
 
     'Public Shared Widening Operator CType(ByVal thisCreature As CreatureFromFile) As Creature
@@ -125,6 +125,8 @@ Public Class Creature
     <System.ComponentModel.TypeConverter(GetType(ActStatesConverter))>
     Public Property ActState As ActStates = New ActStates()
 
+    'facing direction
+
     <DataContract>
     <Serializable>
     <System.ComponentModel.DefaultProperty("Alive")>
@@ -170,7 +172,7 @@ Public Class Creature
 
 #Region "Energy Properties"
 
-    Private _BornEnergy As Double = 0   'J  as a function of weight later
+    Private _BornEnergy As Double = 0   'J
     <DataMember>
     <Category("Energy")>
     <Description(NameOf(BornEnergy))>
@@ -430,15 +432,13 @@ Public Class Creature
         MovingVector = New Vector3D(4 * (RNG.NextDouble() - 0.5), 4 * (RNG.NextDouble() - 0.5), 0)
         Position = New Point3D(RNG.NextDouble() * thisWorld.Size.X, RNG.NextDouble() * thisWorld.Size.Y, 0)
         ' Genetic Variables
-
         MaxEnergyStorage = 1500
         BaseEExpend = 2
-        PhotoSynRate = 0.01
+        PhotoSynRate = 0.02
         EtoWRate = 1 / 100
         WtoERate = 100
         Joule = 500 * RNG.NextDouble() + 100
         BornEnergy = 500 * RNG.NextDouble() + 100
-
         Weight = 1
         BornWeight = 1
         Sex = (RNG.NextDouble() > MaleRatio)
@@ -463,7 +463,7 @@ Public Class Creature
     End Function
 
     ''' <summary>
-    ''' Clone the world and perform necessary update of property ID. 
+    ''' Clone the Creature and perform necessary update of property ID. 
     ''' </summary>
     Public Function Copy() As Creature
         Dim NewCreature As Creature = Me.Clone()
@@ -490,25 +490,29 @@ Public Class Creature
 
     ' ============= Methods =============
 
+    Public Shared Sub BoundPosition(ByRef thisWorld As World, ByRef Position As Point3D)
+        If Position.X < 0 Then
+            Position.X = 0
+        ElseIf Position.X > thisWorld.Size.X Then
+            Position.X = thisWorld.Size.X
+        End If
+        If Position.Y < 0 Then
+            Position.Y = 0
+        ElseIf Position.Y > thisWorld.Size.Y Then
+            Position.Y = thisWorld.Size.Y
+        End If
+        If Position.Z < 0 Then
+            Position.Z = 0
+        ElseIf Position.Z > thisWorld.Size.Z Then
+            Position.Z = thisWorld.Size.Z
+        End If
+    End Sub
+
     Private Sub Rove(ByRef thisWorld As World)
         If ActState.Move = True Then 'rove
             ' Kalman filter!!!
             Position = Position + MovingVector * thisWorld.DT
-            If Position.X < 0 Then
-                Position = New Point3D(0, Position.Y, Position.Z)
-            ElseIf Position.X > thisWorld.Size.X Then
-                Position = New Point3D(thisWorld.Size.X, Position.Y, Position.Z)
-            End If
-            If Position.Y < 0 Then
-                Position = New Point3D(Position.X, 0, Position.Z)
-            ElseIf Position.Y > thisWorld.Size.Y Then
-                Position = New Point3D(Position.X, thisWorld.Size.Y, Position.Z)
-            End If
-            'If Position(2) < 0 Then
-            '   Position(2) = 0
-            'ElseIf Position(2) > thisWorld.getZ Then
-            '   Position(2) = thisWorld.getZ
-            'End If
+            BoundPosition(thisWorld, Position)
             ' Kalman filter!!!
             MovingVector = New Vector3D(4 * (RNG.NextDouble() - 0.5), 4 * (RNG.NextDouble() - 0.5), 0)
         End If
@@ -519,51 +523,63 @@ Public Class Creature
         If ActState.Photosynthesize = True Then
             _Joule = _Joule + thisWorld.DayColor(True) * thisWorld.DT * PhotoSynRate
         End If
-        If ActState.Move = True Then
 
+        If ActState.Move = True Then
+            '_Joule = _Joule - 1 * Weight * MovingVector.Length
         End If
 
-        'baseline
-        _Joule = _Joule - BaseEExpend * thisWorld.DT
+        _Joule = _Joule - BaseEExpend * thisWorld.DT ' Baseline 
+
         If _Joule < 0 Then
             _Joule = 0
-            ActState.Alive = False          'DEATH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            ActState.Alive = False
             thisWorld.CreatureDeath(Me, DeathReasons.HUNGER)
             Exit Sub
         ElseIf _Joule > MaxEnergyStorage Then
-            Dim ESurplus As Double
-            ESurplus = Joule - MaxEnergyStorage
+            Dim ESurplus As Double = _Joule - MaxEnergyStorage
             Weight = Weight + ESurplus * EtoWRate
-            Joule = MaxEnergyStorage
+            _Joule = MaxEnergyStorage
         End If
 
     End Sub
 
     Private Sub ReproRefresh(ByRef thisWorld As World)
-
         Age = Age + thisWorld.DT
 
-        Return
-        If Age > MinMateAge Then
+        If Age >= MinMateAge Then
             MateReady = True
-            MarkerSize = 15               'Debug use
+            MarkerSize = 15   'Debug use
         End If
-        If MateReady = True Then
-            'ActState = ActState + ActState.PREGNANT
 
-            If Weight > 2 * BornWeight Then
-                Dim NewBorn As Creature
+
+        If MateReady = True Then
+            ActState.Pregnant = True  'immediately pregnanted
+
+            If Weight >= (LitterSize + 1) * BornWeight Then ' Deliver new born 'MAGIC NUMBER
+                ActState.Pregnant = False
+                Dim NewBorn As Creature = Nothing
                 Dim NewBornPos(2) As Double
-                Dim i As UInteger = 1
-                For i = 1 To LitterSize Step 1
-                    NewBorn = New Creature(thisWorld)
-                    '.Weight = .Weight - NewBorn.Repro.BornWeight
-                    'Joule = Joule - NewBorn.BornEnergy
-                    'NewBornPos(0) = Position(0) + Math.Cos(RNG.NextDouble() * 2 * Math.PI) * (.Size + NewBorn.Size) / 2
-                    'NewBornPos(1) = Position(1) + Math.Sin(RNG.NextDouble() * 2 * Math.PI) * (.Size + NewBorn.Size) / 2
-                    'NewBornPos(2) = 0
-                    'NewBorn.Pos = NewBornPos
+                For i As Integer = 1 To LitterSize Step 1
+                    _Joule = _Joule - BornEnergy
+                    If _Joule < 0 Then
+                        _Joule = 0
+                        ActState.Alive = False
+                        thisWorld.CreatureDeath(Me, DeathReasons.MATERNAL)
+                        Exit Sub
+                    End If
+                    NewBorn = Me.Copy() ' finally replaced by empty creature
+                    Mutator.Mutate(thisWorld, NewBorn, GetType(Creature).GetProperty(NameOf(Position)))
+                    Mutator.Mutate(thisWorld, NewBorn, GetType(Creature).GetProperty(NameOf(Sex)))
+
+                    Weight = Weight - BornWeight
+                    NewBorn.Age = 0
+                    NewBorn.Joule = Me.BornEnergy
+                    NewBorn.Weight = Me.Weight
+                    NewBorn.ActState.Photosynthesize = True
+
                     thisWorld.AddCreature(NewBorn)
+                    thisWorld.WorldLog.AddLog(DateTime.Now, thisWorld.T, NewBorn.ID,
+                                              String.Format("Creature is born by {0}.", Me.ID))
 
                 Next i
 

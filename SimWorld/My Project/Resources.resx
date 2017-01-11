@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ZoomToFit_32x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ZoomToFit_32x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Contrast_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Contrast_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -126,9 +129,6 @@
   </data>
   <data name="SimWorldSMW" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SimWorldSMW.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Cancel_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Cancel_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="plus_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\plus-2-256.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -145,8 +145,8 @@
   <data name="Upload_gray_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Upload_gray_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AddMember_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\AddMember_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SimWorld" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SimWorld.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SimWorldSMC" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SimWorldSMC.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -163,9 +163,6 @@
   <data name="Member_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Member_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SimWorld" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SimWorld.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="CopyToClipboard_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CopyToClipboard_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -178,8 +175,8 @@
   <data name="checkboardbg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\checkboardbg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="originalsize_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\originalsize_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="World_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\World_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Datalist_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Datalist_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -190,6 +187,12 @@
   <data name="Run_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Run_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Redo_grey_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Redo_grey_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Numeric_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Numeric_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="StatusHelp_cyan_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\StatusHelp_cyan_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -199,8 +202,8 @@
   <data name="Save_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Save_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Redo_grey_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Redo_grey_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Cancel_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Cancel_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Refresh_grey_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Refresh_grey_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -226,16 +229,16 @@
   <data name="ZoomOut_32x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ZoomOut_32x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ZoomToFit_32x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ZoomToFit_32x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Numeric_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Numeric_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="originalsize_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\originalsize_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="String_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\String_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="World_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\World_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="AddMember_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AddMember_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Death_256x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Death_256x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

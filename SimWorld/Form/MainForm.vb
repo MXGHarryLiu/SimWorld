@@ -579,7 +579,6 @@ Public Class MainForm
         For i = 0 To MyWorld.CreatureCount - 1 Step 1
             GraphicsPaths.NextMarker(Subpath)
             If MyWorld.Creatures(i).Marked = True Then
-                'Array.Copy(MyWorld.CreatureList(i).Pos, Pos, 3)
                 Size = MyWorld.Creatures(i).MarkerSize
                 Pos = MyWorld.Creatures(i).Position
                 Target.FillEllipse(New SolidBrush(Color.Red),
@@ -594,6 +593,16 @@ Public Class MainForm
                 Target.FillPath(New SolidBrush(Color.Pink), Subpath)
             End If
         Next i
+        If True Then        'Show MapGrid on the Canvas
+            Dim DashPen As Pen = New Pen(Color.Gray)
+            DashPen.DashStyle = DashStyle.Dash
+            For X As Integer = 1 To MyWorld.MapGrid.XMax Step 1
+                Target.DrawLine(DashPen, CSng(X * MyWorld.GridSize), 0.0F, CSng(X * MyWorld.GridSize), CSng(MyWorld.Size.Y))
+            Next X
+            For Y As Single = 1 To MyWorld.MapGrid.YMax Step 1
+                Target.DrawLine(DashPen, 0.0F, CSng(Y * MyWorld.GridSize), CSng(MyWorld.Size.X), CSng(Y * MyWorld.GridSize))
+            Next Y
+        End If
         Target.Dispose()
         Container.Refresh()
     End Sub
@@ -682,11 +691,6 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub DebugMI_Click(sender As Object, e As EventArgs) Handles DebugMI.Click
-        'MsgBox(Distributions.Normal.CDF(0, 2, 0))
-
-    End Sub
-
     Private Sub SoilLayerMI_Click(sender As Object, e As EventArgs) Handles SoilLayerMI.Click
         SoilLayerMI.Checked = Not SoilLayerMI.Checked
         'Dim Target As Graphics = Graphics.FromImage(CurrentStage.Image)
@@ -702,4 +706,27 @@ Public Class MainForm
         End If
     End Sub
 
+    Private Sub OneclickRunMI_Click(sender As Object, e As EventArgs) Handles OneclickRunMI.Click
+        'MsgBox(Distributions.Normal.CDF(0, 2, 0))
+        MyWorld = New World(600, 400, 0)
+        MyWorld.WorldFile = "Untitled World.smw"
+        Call LoadWorld(MyWorld)
+        Dim RNG As System.Random = New System.Random()
+        Dim NewCreature As Creature = Nothing
+        For i = 0 To 10 - 1 Step 1
+            NewCreature = New Creature(MyWorld)
+            MyWorld.AddCreature(NewCreature)
+            Threading.Thread.Sleep(RNG.Next(1, 100))      'Sleep thread to get quite random results !!!!!!!!!!!!!!!!
+            Application.DoEvents()
+        Next i
+        Call RefreshView(CurrentStage)
+    End Sub
+
+    Private Sub Debug2ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Debug2ToolStripMenuItem.Click
+        MyWorld.MapGrid.UpdateGrid(MyWorld.Creatures)
+        Dim a As Integer = InputBox("Center Creature")
+        Dim TrueDist As Double = InputBox("GridDist",, "1")
+        MsgBox(MyWorld.MapGrid.FindNearestNeighbor(MyWorld.Creatures, MyWorld.Creatures(a), TrueDist))
+
+    End Sub
 End Class

@@ -536,7 +536,7 @@ Public Class StageForm
 
 #Region "Populate Menu"
 
-    Private Sub PopulateFromExistingCreatureMI_Click(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.Click
+    Private Sub PopulateFromExistingCreatureMI_Click(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.Click, PopulateFromExistingCreatureMB.Click
         MsgBox("To start populate the World from existing Creature: " & vbNewLine &
                "1. Click the template Creature in view; " & vbNewLine &
                "2. Double-click on the location to populate; " & vbNewLine &
@@ -546,7 +546,7 @@ Public Class StageForm
         TempCreature = Nothing
     End Sub
 
-    Private Sub PopulateFromFileMI_Click(sender As Object, e As EventArgs) Handles PopulateFromFileMI.Click
+    Private Sub PopulateFromFileMI_Click(sender As Object, e As EventArgs) Handles PopulateFromFileMI.Click, PopulateFromFileMB.Click
         MsgBox("To start populate the World from Creature file: " & vbNewLine &
                "1. Select the Creature file in the file open dialog; " & vbNewLine &
                "2. Double-click on the location to populate; " & vbNewLine &
@@ -571,7 +571,7 @@ Public Class StageForm
         End If
     End Sub
 
-    Private Sub PopulateFromExistingCreatureMI_CheckedChanged(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.CheckedChanged, PopulateFromFileMI.CheckedChanged, PopulateFromRNGMI.CheckedChanged
+    Private Sub Populate_CheckedChanged(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.CheckedChanged, PopulateFromFileMI.CheckedChanged, PopulateFromRNGMI.CheckedChanged
         If TryCast(sender, ToolStripMenuItem).Checked = True Then 'Start populate
             SimulateMI.Enabled = False
             RevertWorldMI.Enabled = False
@@ -591,7 +591,19 @@ Public Class StageForm
         End If
     End Sub
 
-    Private Sub PopulateFromRNGMI_Click(sender As Object, e As EventArgs) Handles PopulateFromRNGMI.Click
+    Private Sub PopulateFromRNGMI_EnabledChanged(sender As Object, e As EventArgs) Handles PopulateFromRNGMI.EnabledChanged
+        PopulateFromRNGMB.Enabled = PopulateFromRNGMI.Enabled
+    End Sub
+
+    Private Sub PopulateFromFileMI_EnabledChanged(sender As Object, e As EventArgs) Handles PopulateFromFileMI.EnabledChanged
+        PopulateFromFileMB.Enabled = PopulateFromFileMI.Enabled
+    End Sub
+
+    Private Sub PopulateFromExistingCreatureMI_EnabledChanged(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.EnabledChanged
+        PopulateFromExistingCreatureMB.Enabled = PopulateFromExistingCreatureMI.Enabled
+    End Sub
+
+    Private Sub PopulateFromRNGMI_Click(sender As Object, e As EventArgs) Handles PopulateFromRNGMI.Click, PopulateFromRNGMB.Click, PopulateMB.ButtonClick
         Dim EntryDiag As EntryDialog = New EntryDialog(1, "SimWorld - Populate", "Please enter the number of" & vbCrLf & "randomly generated Creatures: ")
         Dim ValueChecked As Boolean = False
         Dim CreatureNum As Integer = 5
@@ -630,6 +642,15 @@ Public Class StageForm
         End Try
     End Sub
 
+    Private Sub PopulateFromItCMI_Click(sender As Object, e As EventArgs) Handles PopulateFromItCMI.Click
+        MsgBox("To start populate the World from this Creature: " & vbNewLine &
+               "1. Double-click on the location to populate; " & vbNewLine &
+               "2. Press <Enter> to confirm the edit or <Esc> to revoke the edit. ", MsgBoxStyle.Information + MsgBoxStyle.OkOnly, "SimWorld - Populate")
+        PopulateFromExistingCreatureMI.Checked = True
+        MouseState = (MouseState Or MouseStates.POPULATE)
+        TempCreature = MyWorld.Creatures(MouseHoverObj - 1)
+    End Sub
+
     Private Sub CancelPopulatingMI_Click(sender As Object, e As EventArgs) Handles CancelPopulatingMI.Click
         Dim ee As KeyEventArgs = New KeyEventArgs(Keys.Escape)
         Call StageForm_KeyDown(Me, ee)
@@ -640,7 +661,7 @@ Public Class StageForm
         Call StageForm_KeyDown(Me, ee)
     End Sub
 
-#End Region
 
+#End Region
 
 End Class

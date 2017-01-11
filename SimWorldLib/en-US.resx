@@ -197,7 +197,7 @@
     <value>The mass of the Creature's offsprings at birth. </value>
     <comment>Creature Reproduction</comment>
   </data>
-  <data name="CreatureList" xml:space="preserve">
+  <data name="Creatures" xml:space="preserve">
     <value>List of the Creatures within the World. </value>
     <comment>World Life</comment>
   </data>
@@ -336,5 +336,13 @@
   <data name="WorldLog" xml:space="preserve">
     <value>Logs associated with the World. </value>
     <comment>World Utility</comment>
+  </data>
+  <data name="GridSize" xml:space="preserve">
+    <value>Size of the square grids used to locate the Creatures. In order to speed up the simulation running time, we recommend to set the value such that GridCount is less than 300.</value>
+    <comment>World Simulation</comment>
+  </data>
+  <data name="GridCount" xml:space="preserve">
+    <value>Number of grid units in the World. </value>
+    <comment>World Simulation</comment>
   </data>
 </root>

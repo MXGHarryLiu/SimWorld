@@ -78,6 +78,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="ErrMsg.vb" />
+    <Compile Include="Grid.vb" />
     <Compile Include="Localization.vb" />
     <Compile Include="Log.vb" />
     <Compile Include="Map.vb" />
