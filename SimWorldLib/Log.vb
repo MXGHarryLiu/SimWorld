@@ -14,14 +14,20 @@ Public Class Log
         End Get
     End Property
 
-    Public ReadOnly Property Entries As List(Of String)
+    Public ReadOnly Property Entries(ByVal Index As Integer, ByVal SubIndex As Integer) As String
         Get
-            Dim EntryString As List(Of String) = New List(Of String)
-            For Each Entry In Memory
-                EntryString.Add(String.Format("{0},{1},{2},{3}", Entry.Time.ToString("HH:mm:ss"),
-                                Entry.SimTime, Entry.Subject, Entry.Description))
-            Next
-            Return EntryString
+            Select Case SubIndex
+                Case 0
+                    Return Memory(Index).Time.ToString("HH:mm:ss")
+                Case 1
+                    Return Memory(Index).SimTime
+                Case 2
+                    Return Memory(Index).Subject
+                Case 3
+                    Return Memory(Index).Description
+                Case Else
+                    Return ""
+            End Select
         End Get
     End Property
 

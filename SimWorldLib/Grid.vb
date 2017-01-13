@@ -195,6 +195,8 @@ Public Class Grid
         Return -1 ' Nothing, No other neighbor 
     End Function
 
+    ' Public FindAllNeighbor()
+
     Public Sub UpdateGrid(ByRef Creatures As List(Of Creature))
         ReDim Grids(XMax, YMax)
         Dim X As Integer = 0

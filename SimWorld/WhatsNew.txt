@@ -1,16 +1,15 @@
 SimWorld
 
-0.1.6220
-1. *** Add Grid class to the World to help locate the Creatures. 
-2. Write the Nearest Neighbor search function under Grid class. 
-3. Add grid lines on the Stage. 
+0.1.6221
+1. Improve Log data read speed. 
+2. Add depopulate function to kill a number of Creatures (randomly). 
 
 To Do List (Arranged from near to far): 
-Add massacre function to kill a percentage of Creature randomly. 
 tutorial
 Mutator/Disruptor/Perturber/
 move creature update to task to run in parallel
 Nearest neigbor: creature avoid/approach each other
+Vision and occlusion
 Creature property: 
 	life stage (e.g. seed/plant, worker ant and queen, tadpole and frog)
 creature templete: 
@@ -18,6 +17,11 @@ creature templete:
 	b. Plant: seed traveling. 
 	c. Animal. 
 convert MDI forms to tab. 
+
+0.1.6220
+1. *** Add Grid class to the World to help locate the Creatures. 
+2. Write the Nearest Neighbor search function under Grid class. 
+3. Add grid lines on the Stage. 
 
 0.1.6217
 1. *** Add Log class to store Creature and World events.

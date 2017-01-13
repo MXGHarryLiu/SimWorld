@@ -8,6 +8,7 @@ Public Class StageForm
         NORMAL = &B0
         DRAGCANVAS = &B1
         POPULATE = &B10
+        DEPOPULATE = &B100
     End Enum
     Private MouseState As MouseStates = MouseStates.NORMAL
     Private MouseOrigin As Point
@@ -182,7 +183,7 @@ Public Class StageForm
                         Me.Cursor = Cursors.Hand
                         Stage.ContextMenuStrip = ContextMenuStripFg
                         MouseInfo = "Creature: #" & MouseHoverObj
-                        CurrentObjToolStripMenuItem.Text = "Creature: #" & MouseHoverObj
+                        CurrentObjCMFgTitle.Text = "Creature: #" & MouseHoverObj
                 End Select
                 If MainForm.SoilLayerMI.Checked = True Then
                     If CInt(e.X / ZoomRate) < MyWorld.Size.X And CInt(e.Y / ZoomRate) < MyWorld.Size.Y Then
@@ -300,7 +301,6 @@ Public Class StageForm
                     Call MainForm.RefreshView(Stage)
                     PopulateFromExistingCreatureMI.Checked = False
                     PopulateFromFileMI.Checked = False
-                    PopulateFromRNGMI.Checked = False
                     If MainForm.CurrentDashboard IsNot Nothing Then
                         Call MainForm.CurrentDashboard.RefreshContent()
                     End If
@@ -312,7 +312,6 @@ Public Class StageForm
                 MouseState = (MouseState And Not (MouseStates.POPULATE))
                 PopulateFromExistingCreatureMI.Checked = False
                 PopulateFromFileMI.Checked = False
-                PopulateFromRNGMI.Checked = False
                 If TempCreature IsNot Nothing Then
                     For i = 0 To PopulateCreatureIDs.Count - 1 Step 1
                         Dim ii As Integer = i
@@ -571,36 +570,57 @@ Public Class StageForm
         End If
     End Sub
 
-    Private Sub Populate_CheckedChanged(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.CheckedChanged, PopulateFromFileMI.CheckedChanged, PopulateFromRNGMI.CheckedChanged
+    Private Sub Populate_CheckedChanged(sender As Object, e As EventArgs) Handles _
+        PopulateFromExistingCreatureMI.CheckedChanged, PopulateFromFileMI.CheckedChanged,
+        PopulateFromRNGMI.CheckedChanged, RandomMassacreMI.CheckedChanged, DepopulateManuallyPointMI.CheckedChanged
         If TryCast(sender, ToolStripMenuItem).Checked = True Then 'Start populate
             SimulateMI.Enabled = False
             RevertWorldMI.Enabled = False
+            '-----
+            PopulateMB.Enabled = False
             PopulateFromExistingCreatureMI.Enabled = False
             PopulateFromFileMI.Enabled = False
             PopulateFromRNGMI.Enabled = False
-            FinishPopulatingMI.Enabled = True
-            CancelPopulatingMI.Enabled = True
+            If sender Is PopulateFromExistingCreatureMI Or sender Is PopulateFromFileMI Then
+                FinishPopulatingMI.Enabled = True
+                CancelPopulatingMI.Enabled = True
+            End If
+            '-----
+            DepopulateMB.Enabled = False                '>
+            RandomMassacreMI.Enabled = False
+            DepopulateManuallyPointMI.Enabled = False
+            DepopulateScreeningMI.Enabled = False
         Else
             SimulateMI.Enabled = True
             RevertWorldMI.Enabled = True
+            '-----
+            PopulateMB.Enabled = True
             PopulateFromExistingCreatureMI.Enabled = True
             PopulateFromFileMI.Enabled = True
             PopulateFromRNGMI.Enabled = True
             FinishPopulatingMI.Enabled = False
             CancelPopulatingMI.Enabled = False
+            '-----
+            DepopulateMB.Enabled = True                '>
+            RandomMassacreMI.Enabled = True
+            DepopulateManuallyPointMI.Enabled = True
+            DepopulateScreeningMI.Enabled = True
         End If
     End Sub
 
     Private Sub PopulateFromRNGMI_EnabledChanged(sender As Object, e As EventArgs) Handles PopulateFromRNGMI.EnabledChanged
         PopulateFromRNGMB.Enabled = PopulateFromRNGMI.Enabled
+        PopulateFromRNGMB.Checked = PopulateFromRNGMI.Checked
     End Sub
 
     Private Sub PopulateFromFileMI_EnabledChanged(sender As Object, e As EventArgs) Handles PopulateFromFileMI.EnabledChanged
         PopulateFromFileMB.Enabled = PopulateFromFileMI.Enabled
+        PopulateFromFileMB.Checked = PopulateFromFileMI.Checked
     End Sub
 
     Private Sub PopulateFromExistingCreatureMI_EnabledChanged(sender As Object, e As EventArgs) Handles PopulateFromExistingCreatureMI.EnabledChanged
         PopulateFromExistingCreatureMB.Enabled = PopulateFromExistingCreatureMI.Enabled
+        PopulateFromExistingCreatureMB.Checked = PopulateFromExistingCreatureMI.Checked
     End Sub
 
     Private Sub PopulateFromRNGMI_Click(sender As Object, e As EventArgs) Handles PopulateFromRNGMI.Click, PopulateFromRNGMB.Click, PopulateMB.ButtonClick
@@ -621,21 +641,24 @@ Public Class StageForm
             End If
         End While
         Try
+            PopulateFromRNGMI.Checked = True
             Dim RNG As Random = New Random()
             Dim NewCreature As Creature = Nothing
             For i = 0 To CreatureNum - 1 Step 1
                 NewCreature = New Creature(MyWorld)
                 MyWorld.AddCreature(NewCreature)
-                Threading.Thread.Sleep(RNG.Next(1, 100))      'Sleep thread to get quite random results !!!!!!!!!!!!!!!!
-                MainForm.SimStatusLabel.Text = String.Format("Populating ({0}/{1}): {2}", i + 1, CreatureNum, NewCreature.ID)
+                If MainForm.CurrentDashboard IsNot Nothing Then
+                    Call MainForm.CurrentDashboard.RefreshContent()
+                Else
+                    Threading.Thread.Sleep(RNG.Next(1, 50))
+                End If
+                MainForm.SimStatusLabel.Text = String.Format("Populating ({0}/{1})... ", i + 1, CreatureNum)
                 MyWorld.LogUserAction("Add Creature: " & NewCreature.ID)
+                Call MainForm.RefreshView(Stage)
                 Application.DoEvents()
             Next i
             MainForm.SimStatusLabel.Text = String.Format("Populating finished: added {0} Creature(s). ", CreatureNum)
-            Call MainForm.RefreshView(Stage)
-            If MainForm.CurrentDashboard IsNot Nothing Then
-                Call MainForm.CurrentDashboard.RefreshContent()
-            End If
+            PopulateFromRNGMI.Checked = False
         Catch ex As Exception
             MsgBox("Populating terminated! " & vbCrLf & ex.Message,
                 MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, "SimWorld - Populate")
@@ -660,6 +683,72 @@ Public Class StageForm
         Dim ee As KeyEventArgs = New KeyEventArgs(Keys.Enter)
         Call StageForm_KeyDown(Me, ee)
     End Sub
+
+#End Region
+
+#Region "Depopulate Menu"
+
+    Private Sub RandomMassacreMI_Click(sender As Object, e As EventArgs) Handles RandomMassacreMI.Click, RandomMassacreMB.Click, DepopulateMB.ButtonClick
+        Dim EntryDiag As EntryDialog = New EntryDialog(1, "SimWorld - Depopulate", "Please enter the number of " & vbCrLf & "Creatures to be killed: ")
+        Dim ValueChecked As Boolean = False
+        Dim CreatureNum As Integer = MyWorld.CreatureCount
+        EntryDiag.SetInitialText(CreatureNum.ToString())
+        While ValueChecked = False
+            EntryDiag.Show(Me)
+            If EntryDiag.Confirmed = False Then
+                Exit Sub
+            End If
+            If Integer.TryParse(EntryDiag.Results(0), CreatureNum) = True And CreatureNum > 0 And CreatureNum <= MyWorld.CreatureCount Then
+                ValueChecked = True
+            Else
+                MsgBox("The number of Creatures must be a positive integer and smaller or equal to the total number of Creatures available. ",
+                       MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "SimWorld - Depopulate")
+            End If
+        End While
+        Try
+            RandomMassacreMI.Checked = True
+            Dim RNG As Random = New Random()
+            Dim RemoveIdx As Integer = -1
+            For i = 0 To CreatureNum - 1 Step 1
+                RemoveIdx = RNG.Next(0, MyWorld.Creatures.Count - 1)
+                If MainForm.CurrentDashboard IsNot Nothing Then
+                    Call MainForm.CurrentDashboard.RefreshContent()
+                Else
+                    Threading.Thread.Sleep(RNG.Next(1, 50))
+                End If
+                MainForm.SimStatusLabel.Text = String.Format("Depopulating ({0}/{1})... ", i + 1, CreatureNum)
+                MyWorld.LogUserAction("Remove Creature: " & MyWorld.Creatures(RemoveIdx).ID)
+                MyWorld.Creatures.RemoveAt(RemoveIdx)
+                Call MainForm.RefreshView(Stage)
+                Application.DoEvents()
+            Next i
+            RandomMassacreMI.Checked = False
+            MainForm.SimStatusLabel.Text = String.Format("Depopulating finished: removed {0} Creature(s). ", CreatureNum)
+        Catch ex As Exception
+            MsgBox("Depopulating terminated! " & vbCrLf & ex.Message,
+                MsgBoxStyle.Critical + MsgBoxStyle.OkOnly, "SimWorld - Depopulate")
+        End Try
+    End Sub
+
+    Private Sub DepopulateManuallyPointMI_Click(sender As Object, e As EventArgs) Handles DepopulateManuallyPointMI.Click
+        Dim EntryDiag As EntryDialog = New EntryDialog(1, "SimWorld - Depopulate", "Please enter the number of " & vbCrLf & "Creatures to be killed: ")
+
+
+    End Sub
+
+    Private Sub KillItCMI_Click(sender As Object, e As EventArgs) Handles KillItCMI.Click
+        MyWorld.LogUserAction("Remove Creature: " & MyWorld.Creatures(MouseHoverObj - 1).ID)
+        Call MyWorld.Creatures.RemoveAt(MouseHoverObj - 1)
+        Call MainForm.RefreshView(Stage)
+        If MainForm.CurrentDashboard IsNot Nothing Then
+            MainForm.CurrentDashboard.PropertyGrid1.SelectedObject = MyWorld
+        End If
+    End Sub
+
+    Private Sub RandomMassacreMI_EnabledChanged(sender As Object, e As EventArgs) Handles RandomMassacreMI.EnabledChanged
+        RandomMassacreMB.Enabled = RandomMassacreMI.Enabled
+    End Sub
+
 
 
 #End Region

@@ -65,12 +65,11 @@ Public Class Dashboard
         If Not (LogListCache Is Nothing) AndAlso e.ItemIndex >= FirstLog AndAlso e.ItemIndex < FirstLog + LogListCache.Length Then
             e.Item = LogListCache(e.ItemIndex - FirstLog)
         Else
-            Dim Subfields() As String = Strings.Split(MyWorld.WorldLog.Entries(e.ItemIndex), ",")
             Dim NewRow As ListViewItem = New ListViewItem(e.ItemIndex + 1)
-            NewRow.SubItems.Add(Subfields(0))
-            NewRow.SubItems.Add(Subfields(1))
-            NewRow.SubItems.Add(Subfields(2))
-            NewRow.SubItems.Add(Subfields(3))
+            NewRow.SubItems.Add(MyWorld.WorldLog.Entries(e.ItemIndex, 0))
+            NewRow.SubItems.Add(MyWorld.WorldLog.Entries(e.ItemIndex, 1))
+            NewRow.SubItems.Add(MyWorld.WorldLog.Entries(e.ItemIndex, 2))
+            NewRow.SubItems.Add(MyWorld.WorldLog.Entries(e.ItemIndex, 3))
             e.Item = NewRow
         End If
     End Sub
