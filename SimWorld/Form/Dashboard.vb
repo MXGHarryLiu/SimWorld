@@ -1,4 +1,5 @@
 ﻿Option Explicit On
+Imports SimWorldLib
 
 Public Class Dashboard
 
@@ -71,6 +72,18 @@ Public Class Dashboard
             NewRow.SubItems.Add(MyWorld.WorldLog.Entries(e.ItemIndex, 2))
             NewRow.SubItems.Add(MyWorld.WorldLog.Entries(e.ItemIndex, 3))
             e.Item = NewRow
+        End If
+    End Sub
+
+    Private Sub PropertyGrid1_SelectedGridItemChanged(sender As Object, e As SelectedGridItemChangedEventArgs) Handles PropertyGrid1.SelectedGridItemChanged
+        PropertyGrid1.ContextMenuStrip = Nothing
+        If e.NewSelection.GridItemType = GridItemType.Category Then
+            Exit Sub
+        End If
+        If e.NewSelection.PropertyDescriptor.PropertyType Is GetType(List(Of Creature)) Then
+            PropertyGrid1.ContextMenuStrip = ContextMenuStrip1
+        Else
+
         End If
     End Sub
 End Class

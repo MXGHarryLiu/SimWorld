@@ -723,10 +723,13 @@ Public Class MainForm
     End Sub
 
     Private Sub Debug2ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Debug2ToolStripMenuItem.Click
-        MyWorld.MapGrid.UpdateGrid(MyWorld.Creatures)
-        Dim a As Integer = InputBox("Center Creature")
-        Dim TrueDist As Double = InputBox("GridDist",, "1")
-        MsgBox(MyWorld.MapGrid.FindNearestNeighbor(MyWorld.Creatures, MyWorld.Creatures(a), TrueDist))
+        'MyWorld.MapGrid.UpdateGrid(MyWorld.Creatures)
+        'Dim a As Integer = InputBox("Center Creature")
+        'Dim TrueDist As Double = InputBox("GridDist",, "1")
+        'MsgBox(MyWorld.MapGrid.FindNearestNeighbor(MyWorld.Creatures, MyWorld.Creatures(a), TrueDist))
+        'For Each CreatureProp As Reflection.PropertyInfo In GetType(Creature).GetProperties
+        '    ToolStripComboBox1.Items.Add(CreatureProp.Name)
+        'Next
 
     End Sub
 End Class

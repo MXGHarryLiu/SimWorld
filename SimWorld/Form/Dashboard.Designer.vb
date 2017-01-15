@@ -29,38 +29,43 @@ Partial Class Dashboard
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.LogListView = New System.Windows.Forms.ListView()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.SwitchToCMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'PropertyGrid1
         '
         Me.PropertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PropertyGrid1.Location = New System.Drawing.Point(3, 3)
-        Me.PropertyGrid1.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.PropertyGrid1.Location = New System.Drawing.Point(2, 2)
+        Me.PropertyGrid1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.PropertyGrid1.Name = "PropertyGrid1"
         Me.PropertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Categorized
-        Me.PropertyGrid1.Size = New System.Drawing.Size(293, 424)
+        Me.PropertyGrid1.Size = New System.Drawing.Size(218, 343)
         Me.PropertyGrid1.TabIndex = 22
         '
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(26, 26)
+        Me.TabControl1.Location = New System.Drawing.Point(20, 21)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(307, 459)
+        Me.TabControl1.Size = New System.Drawing.Size(230, 373)
         Me.TabControl1.TabIndex = 23
         '
         'TabPage1
         '
         Me.TabPage1.Controls.Add(Me.PropertyGrid1)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 25)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(299, 430)
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage1.Size = New System.Drawing.Size(222, 347)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Property"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -68,10 +73,11 @@ Partial Class Dashboard
         'TabPage2
         '
         Me.TabPage2.Controls.Add(Me.LogListView)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 25)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(299, 430)
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage2.Size = New System.Drawing.Size(222, 347)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Log"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -82,26 +88,40 @@ Partial Class Dashboard
         Me.LogListView.Dock = System.Windows.Forms.DockStyle.Fill
         Me.LogListView.FullRowSelect = True
         Me.LogListView.HideSelection = False
-        Me.LogListView.Location = New System.Drawing.Point(3, 3)
+        Me.LogListView.Location = New System.Drawing.Point(2, 2)
+        Me.LogListView.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.LogListView.Name = "LogListView"
-        Me.LogListView.Size = New System.Drawing.Size(293, 424)
+        Me.LogListView.Size = New System.Drawing.Size(218, 343)
         Me.LogListView.TabIndex = 0
         Me.LogListView.UseCompatibleStateImageBehavior = False
         Me.LogListView.View = System.Windows.Forms.View.Details
         '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SwitchToCMI})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(153, 48)
+        '
+        'SwitchToCMI
+        '
+        Me.SwitchToCMI.Name = "SwitchToCMI"
+        Me.SwitchToCMI.Size = New System.Drawing.Size(152, 22)
+        Me.SwitchToCMI.Text = "Switch To"
+        '
         'Dashboard
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(345, 523)
+        Me.ClientSize = New System.Drawing.Size(259, 425)
         Me.Controls.Add(Me.TabControl1)
-        Me.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.Name = "Dashboard"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "Dashboard"
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -111,4 +131,6 @@ Partial Class Dashboard
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents LogListView As ListView
+    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
+    Friend WithEvents SwitchToCMI As ToolStripMenuItem
 End Class

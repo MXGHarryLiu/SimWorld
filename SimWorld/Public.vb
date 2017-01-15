@@ -1,4 +1,6 @@
-﻿Public Module PublicFunctions
+﻿Imports SimWorldLib.Localization
+
+Public Module PublicFunctions
 
     Friend Const WINDOWSMENUOFFSET As Integer = 4 + 1
     Friend Const MAXLASTOPENENTRY As Integer = 3
@@ -40,21 +42,21 @@ End Module
 
 'Dim a As New PropertyGrid.PropertyTabCollection()
 
-'Public Class Vector3D
-'    Inherits Windows.Media.Media3D.Point3D
+'Public Class Point3D
+'    Inherits System.Windows.Media.Media3D.Point3D
 
-'    'Private _vector As Windows.Media.Media3D.Vector3D
+'    Private _vector As Windows.Media.Media3D.Vector3D
 
-'    <CategoryAttribute("Value")>
+'    <Category("Value")>
 '    Public Property X As Double = 0
 
-'    <CategoryAttribute("Value")>
+'    <Category("Value")>
 '    Public Property Y As Double = 0
 
-'    <CategoryAttribute("Value")>
+'    <Category("Value")>
 '    Public Property Z As Double = 0
 
-'    <CategoryAttribute("Derived")>
+'    <Category("Derived")>
 '    Public ReadOnly Property Norm As Double
 '        Get
 '            Return Math.Sqrt(X ^ 2 + Y ^ 2 + Z ^ 2)

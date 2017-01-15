@@ -1,8 +1,8 @@
 SimWorld
 
-0.1.6221
-1. Improve Log data read speed. 
-2. Add depopulate function to kill a number of Creatures (randomly). 
+0.1.6223
+1. Fix editing of Structures (Point3D, Vector3D) in PropertyGrid. 
+2. 
 
 To Do List (Arranged from near to far): 
 tutorial
@@ -17,6 +17,10 @@ creature templete:
 	b. Plant: seed traveling. 
 	c. Animal. 
 convert MDI forms to tab. 
+
+0.1.6221
+1. Improve Log data read speed. 
+2. Add depopulate function to kill a number of Creatures (randomly). 
 
 0.1.6220
 1. *** Add Grid class to the World to help locate the Creatures. 

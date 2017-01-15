@@ -1,4 +1,5 @@
-﻿Imports System.Drawing
+﻿Imports System.ComponentModel
+Imports System.Drawing
 Imports System.Drawing.Design
 Imports System.Globalization
 Imports System.Windows.Forms
@@ -191,6 +192,297 @@ Namespace Localization
             CreatureCollectionForm.Height = 1.5 * CreatureCollectionForm.Height
             Return CreatureCollectionForm
         End Function
+
+    End Class
+
+    Public Class StructureConverter(Of T As Structure)
+        Inherits System.ComponentModel.ExpandableObjectConverter
+
+        Public Overrides Function GetCreateInstanceSupported(ByVal context As ITypeDescriptorContext) As Boolean
+            Return True
+        End Function
+
+        Public Overrides Function CreateInstance(ByVal context As ITypeDescriptorContext,
+                                                 ByVal propertyValues As IDictionary) As Object
+            Dim ret As T = context.PropertyDescriptor.GetValue(context.Instance)
+            Dim NewT As ValueType = ret
+            For Each Entry As DictionaryEntry In propertyValues
+                Dim propinfo As Reflection.PropertyInfo = ret.GetType().GetProperty(Entry.Key.ToString())
+                If propinfo IsNot Nothing And propinfo.CanWrite = True Then
+                    propinfo.SetValue(NewT, Convert.ChangeType(Entry.Value, propinfo.PropertyType))
+                End If
+            Next
+            Return CType(NewT, T)
+        End Function
+
+    End Class
+
+    Public Class GenomeConverter
+        Inherits ExpandableObjectConverter
+
+        Public Overrides Function GetProperties(ByVal context As ITypeDescriptorContext, ByVal value As Object,
+                                                ByVal attributes() As Attribute) As PropertyDescriptorCollection
+            Dim CurrentGenome As List(Of Gene) = TryCast(value, List(Of Gene))
+            Dim props(CurrentGenome.Count - 1) As PropertyDescriptor
+            For i As Integer = 0 To CurrentGenome.Count - 1 Step 1
+                Dim AttributeList() As Attribute = {
+                    New DescriptionAttribute(CurrentGenome(i).ToString()),
+                    New TypeConverterAttribute(GetType(GeneConverter))
+                }
+                props(i) = New GenomePropertyDescriptor(CurrentGenome(i).ToString(), AttributeList, i)
+            Next i
+            Return New PropertyDescriptorCollection(props)
+        End Function
+
+        Public Overloads Overrides Function CanConvertTo(
+                             ByVal context As System.ComponentModel.ITypeDescriptorContext,
+                             ByVal destinationType As Type) As Boolean
+            If destinationType Is GetType(String) Then
+                Return True
+            End If
+            Return MyBase.CanConvertTo(context, destinationType)
+        End Function
+
+        Public Overloads Overrides Function ConvertTo(
+                              ByVal context As System.ComponentModel.ITypeDescriptorContext,
+                              ByVal culture As CultureInfo,
+                              ByVal value As Object,
+                              ByVal destinationType As Type) As Object
+            If (destinationType Is GetType(String) AndAlso TypeOf value Is List(Of Gene)) Then
+                Return String.Format("{0} Gene(s)", TryCast(value, List(Of Gene)).Count)
+            End If
+            Return MyBase.ConvertTo(context, culture, value, destinationType)
+        End Function
+
+    End Class
+
+    Public Class GenomeUIEditor
+        Inherits System.Drawing.Design.UITypeEditor
+
+        Public Overrides Function GetEditStyle(ByVal context As System.ComponentModel.ITypeDescriptorContext) As UITypeEditorEditStyle
+            Return UITypeEditorEditStyle.None
+        End Function
+
+    End Class
+
+    Public Class GeneConverter
+        Inherits ExpandableObjectConverter
+
+        Public Overrides Function GetProperties(ByVal context As ITypeDescriptorContext, ByVal value As Object,
+                                                ByVal attributes() As Attribute) As PropertyDescriptorCollection
+            Dim CurrentGene As Gene = TryCast(value, Gene)
+            Dim AttributeList() As Attribute
+            Dim props() As PropertyDescriptor
+            ReDim props(1)
+            AttributeList = {New DescriptionAttribute(NameOf(Gene.Minimum))}
+            props(0) = New GenePropertyDescriptor(NameOf(Gene.Minimum), AttributeList, 0)
+            AttributeList = {New DescriptionAttribute(NameOf(Gene.Maximum))}
+            props(1) = New GenePropertyDescriptor(NameOf(Gene.Maximum), AttributeList, 1)
+            Select Case CurrentGene.Model
+                Case Gene.MathModels.UNKNOWN
+
+                Case Gene.MathModels.UNIFORM
+
+                Case Gene.MathModels.NORMAL
+                    ReDim Preserve props(3)
+                    AttributeList = {New DescriptionAttribute("Mu")}
+                    props(2) = New GenePropertyDescriptor("Mu", AttributeList, 2)
+                    AttributeList = {New DescriptionAttribute("Sigma")}
+                    props(3) = New GenePropertyDescriptor("Sigma", AttributeList, 3)
+                Case Gene.MathModels.EXPONENTIAL
+                    'ReDim Preserve props(2)
+                    'AttributeList = {New DescriptionAttribute("Lambda")}
+                    'props(2) = New GenePropertyDescriptor("Lambda", AttributeList, 2)
+                Case Else
+                    ' Do nothing
+            End Select
+            Return New PropertyDescriptorCollection(props)
+        End Function
+
+        Public Overrides Function CanConvertFrom(ByVal context As ITypeDescriptorContext,
+                                                 ByVal sourceType As Type) As Boolean
+            If sourceType Is GetType(String) Then
+                Return True
+            End If
+            Return MyBase.CanConvertFrom(context, sourceType)
+        End Function
+
+        Public Overrides Function ConvertFrom(ByVal context As ITypeDescriptorContext,
+                                              ByVal culture As CultureInfo,
+                                              ByVal value As Object) As Object
+            If TypeOf value Is String Then
+                Dim NewMathModel As Gene.MathModels
+                [Enum].TryParse(value, NewMathModel)
+                Return NewMathModel
+            End If
+            Return MyBase.ConvertFrom(context, culture, value)
+        End Function
+
+        Public Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
+            Return True
+        End Function
+
+        Public Overrides Function GetStandardValuesExclusive(ByVal context As ITypeDescriptorContext) As Boolean
+            Return True
+        End Function
+
+        Public Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As StandardValuesCollection
+            Dim StandardValues As StandardValuesCollection = New StandardValuesCollection(System.Enum.GetNames(GetType(Gene.MathModels)))
+            Return StandardValues
+        End Function
+
+        Public Overrides Function CanConvertTo(ByVal context As ITypeDescriptorContext,
+                                               ByVal destinationType As Type) As Boolean
+            If destinationType Is GetType(String) Then
+                Return True
+            End If
+            Return MyBase.CanConvertTo(context, destinationType)
+        End Function
+
+        Public Overloads Overrides Function ConvertTo(
+                              ByVal context As ITypeDescriptorContext,
+                              ByVal culture As CultureInfo,
+                              ByVal value As Object,
+                              ByVal destinationType As Type) As Object
+            If destinationType Is GetType(String) AndAlso TypeOf value Is Gene Then
+                Return TryCast(value, Gene).Model.ToString
+            End If
+            Return MyBase.ConvertTo(context, culture, value, destinationType)
+        End Function
+
+    End Class
+
+    Public Class GenomePropertyDescriptor
+        Inherits PropertyDescriptor
+
+        Private _Idx As Integer = 0
+
+        Public Sub New(ByVal name As String, ByVal attrs As Attribute(), ByVal Idx As Integer)
+            MyBase.New(name, attrs)
+            Me._Idx = Idx
+        End Sub
+
+        Public Overrides ReadOnly Property ComponentType As Type
+            Get
+                Return GetType(List(Of Gene))
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property IsReadOnly As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property PropertyType As Type
+            Get
+                Return GetType(Gene)
+            End Get
+        End Property
+
+        Public Overrides Sub ResetValue(component As Object)
+            TryCast(component, List(Of Gene))(_Idx).Model = Gene.MathModels.UNKNOWN
+        End Sub
+
+        Public Overrides Sub SetValue(component As Object, value As Object)
+            If TypeOf value IsNot String Then
+                TryCast(component, List(Of Gene))(_Idx).Model = CType(value, Gene.MathModels)
+            Else
+                [Enum].TryParse(value, TryCast(component, List(Of Gene))(_Idx).Model)
+            End If
+        End Sub
+
+        Public Overrides Function CanResetValue(component As Object) As Boolean
+            Return True
+        End Function
+
+        Public Overrides Function GetValue(component As Object) As Object
+            Return TryCast(component, List(Of Gene))(_Idx)
+        End Function
+
+        Public Overrides Function ShouldSerializeValue(component As Object) As Boolean
+            Return False
+        End Function
+
+    End Class
+
+    Public Class GenePropertyDescriptor
+        Inherits PropertyDescriptor
+
+        Private _Idx As Integer = 0
+
+        Public Sub New(ByVal name As String, ByVal attrs() As Attribute, ByVal Idx As Integer)
+            MyBase.New(name, attrs)
+            Me._Idx = Idx
+        End Sub
+
+        Public Overrides ReadOnly Property ComponentType As Type
+            Get
+                Return GetType(Gene)
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property IsReadOnly As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property PropertyType As Type
+            Get
+                Return GetType(Double)
+            End Get
+        End Property
+
+        Public Overrides Sub ResetValue(component As Object)
+
+        End Sub
+
+        Public Overrides Sub SetValue(component As Object, value As Object)
+            Dim CurrentGene As Gene = TryCast(component, Gene)
+            Select Case _Idx
+                Case 0
+                    CurrentGene.Minimum = value
+                Case 1
+                    CurrentGene.Maximum = value
+                Case Is >= 2
+                    CurrentGene.ModelParameters(_Idx - 2) = value
+                Case Else
+                    ' Do nothing
+            End Select
+        End Sub
+
+        Public Overrides Function CanResetValue(component As Object) As Boolean
+            Return False
+        End Function
+
+        Public Overrides Function GetValue(component As Object) As Object
+            Select Case _Idx
+                Case 0
+                    Return TryCast(component, Gene).Minimum
+                Case 1
+                    Return TryCast(component, Gene).Maximum
+                Case Is >= 2
+                    Return TryCast(component, Gene).ModelParameters(_Idx - 2)
+                Case Else
+                    Return 0
+            End Select
+        End Function
+
+        Public Overrides Function ShouldSerializeValue(component As Object) As Boolean
+            Return False
+        End Function
+    End Class
+
+    <AttributeUsage(AttributeTargets.Property)>
+    Public Class GeneticApplicableAttribute
+        Inherits Attribute
+
+        Public Property Applicable As Boolean = False
+
+        Public Sub New(ByVal Applicable As Boolean)
+            Me.Applicable = Applicable
+        End Sub
 
     End Class
 

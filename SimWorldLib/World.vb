@@ -96,6 +96,7 @@ Public Class World
     <Description(NameOf(Size))>
     <System.ComponentModel.TypeConverter(GetType(System.ComponentModel.ExpandableObjectConverter))>
     <DefaultValueAttribute(NameOf(Size))>
+    <System.ComponentModel.ReadOnlyAttribute(True)>
     Public Property Size As Windows.Media.Media3D.Point3D = DefaultValue(NameOf(Size))
 
     Private _Temperature As Double = DefaultValue(NameOf(Temperature))  'Celsius

@@ -345,4 +345,8 @@
     <value>Number of grid units in the World. </value>
     <comment>World Simulation</comment>
   </data>
+  <data name="Behavior" xml:space="preserve">
+    <value>Behavior</value>
+    <comment>Category Creature</comment>
+  </data>
 </root>

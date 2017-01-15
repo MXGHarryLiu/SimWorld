@@ -2,6 +2,7 @@
 Imports SimWorldLib.Localization
 Imports System.Runtime.Serialization
 Imports System.Windows.Media.Media3D
+Imports System.Drawing
 
 ''' <summary>
 ''' SimWorld Creature Class
@@ -21,7 +22,7 @@ Public Class Creature
 
 #Region "Static or Shared"
 
-    Private RNG As System.Random = New Random()
+    Private RNG As System.Random = New System.Random()
 
     ''' <param name="item">Name of the property. </param>
     ''' <remarks>
@@ -107,17 +108,41 @@ Public Class Creature
 
 #Region "State Properties"
 
+    Private _MovingVector As Vector3D = New Vector3D()   ' Normalized Vector ????????
     <DataMember>
     <Category("State")>
     <Description(NameOf(MovingVector))>
-    <System.ComponentModel.TypeConverter(GetType(System.ComponentModel.ExpandableObjectConverter))>
-    Public Property MovingVector As Vector3D = New Vector3D()  ' Normalized Vector ????????
+    <System.ComponentModel.TypeConverter(GetType(StructureConverter(Of Vector3D)))>
+    Public Property MovingVector As Vector3D
+        Get
+            Return _MovingVector
+        End Get
+        Set(value As Vector3D)
+            _MovingVector = value
+        End Set
+    End Property
 
+    Private _Position As Point3D = New Point3D()
     <DataMember>
     <Category("State")>
     <Description(NameOf(Position))>
-    <System.ComponentModel.TypeConverter(GetType(System.ComponentModel.ExpandableObjectConverter))>
-    Public Property Position As Point3D = New Point3D()
+    <System.ComponentModel.TypeConverter(GetType(StructureConverter(Of Point3D)))>
+    Public Property Position As Point3D
+        Get
+            Return _Position
+        End Get
+        Set(ByVal value As Point3D)
+            If value.X < 0 Then
+                ShowErrMsg(NameOf(Position.X), ErrType.NOTNEGATIVE)
+            ElseIf value.Y < 0 Then
+                ShowErrMsg(NameOf(Position.Y), ErrType.NOTNEGATIVE)
+            ElseIf value.Z < 0 Then
+                ShowErrMsg(NameOf(Position.Z), ErrType.NOTNEGATIVE)
+            Else
+                _Position = value
+            End If
+        End Set
+    End Property
 
     <DataMember>
     <Category("State")>
@@ -176,6 +201,7 @@ Public Class Creature
     <DataMember>
     <Category("Energy")>
     <Description(NameOf(BornEnergy))>
+    <GeneticApplicable(True)>
     Public Property BornEnergy As Double
         Get
             Return _BornEnergy
@@ -419,6 +445,57 @@ Public Class Creature
         End Set
     End Property
 
+    Private _Lifespan As Double = 0           'sec
+    <DataMember>
+    <Category("Reproduction")>
+    <Description(NameOf(Lifespan))>
+    Public Property Lifespan As Double
+        Get
+            Return _Lifespan
+        End Get
+        Set(ByVal value As Double)
+            If value < 0 Then
+                ShowErrMsg(NameOf(Lifespan), ErrType.NOTNEGATIVE)
+            Else
+                _Lifespan = value
+            End If
+        End Set
+    End Property
+
+#End Region
+
+#Region "Behavior Properties"
+
+    Private _VisionDepth As Double
+    <DataMember>
+    <Category("Behavior")>
+    <Description(NameOf(VisionDepth))>
+    <DefaultValueAttribute(NameOf(VisionDepth))>
+    Public Property VisionDepth As Double
+        Get
+            Return _VisionDepth
+        End Get
+        Set(value As Double)
+            If value < 0 Then
+                ShowErrMsg(NameOf(VisionDepth), ErrType.NOTNEGATIVE)
+            Else
+                _VisionDepth = value
+            End If
+        End Set
+    End Property
+
+#End Region
+
+#Region "Genome"
+
+    <DataMember>
+    <Category("Genome")>
+    <Description(NameOf(Genome))>
+    <System.ComponentModel.ReadOnlyAttribute(True)>
+    <System.ComponentModel.Editor(GetType(GenomeUIEditor), GetType(Design.UITypeEditor))>
+    <System.ComponentModel.TypeConverter(GetType(GenomeConverter))>
+    Public Property Genome As List(Of Gene) = New List(Of Gene)
+
 #End Region
 
 #Region "Constructors, Destructor, and Clone"
@@ -443,6 +520,20 @@ Public Class Creature
         BornWeight = 1
         Sex = (RNG.NextDouble() > MaleRatio)
         MinMateAge = 1000
+        VisionDepth = 50
+        Me.ActState.Move = True
+        ' Genome
+        Dim CustomAttributes() As Attribute
+        Dim propGeneticApplicableAttribute As GeneticApplicableAttribute = Nothing
+        For Each propinfo As Reflection.PropertyInfo In GetType(Creature).GetProperties
+            CustomAttributes = propinfo.GetCustomAttributes(GetType(GeneticApplicableAttribute), False)
+            If CustomAttributes.Count > 0 Then
+                propGeneticApplicableAttribute = CustomAttributes(0)
+                If propGeneticApplicableAttribute IsNot Nothing AndAlso propGeneticApplicableAttribute.Applicable = True Then
+                    Genome.Add(New Gene(propinfo.Name))
+                End If
+            End If
+        Next
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -453,13 +544,16 @@ Public Class Creature
     ''' Clone the exact copy of the Creature (including its ID). 
     ''' </summary>
     Public Function Clone() As Creature          'serialize and deserialize
-        Dim ser = New DataContractSerializer(GetType(Creature))
+        Dim ser As DataContractSerializer = New DataContractSerializer(GetType(Creature))
+        Dim NewCreature As Creature = Nothing
         Using fs As New IO.MemoryStream(), xw = Xml.XmlWriter.Create(fs)
             ser.WriteObject(xw, Me)
             xw.Flush()
             fs.Seek(0, IO.SeekOrigin.Begin)
-            Return CType(ser.ReadObject(fs), Creature)
+            NewCreature = CType(ser.ReadObject(fs), Creature)
         End Using
+        NewCreature.RNG = New System.Random()
+        Return NewCreature
     End Function
 
     ''' <summary>
@@ -511,10 +605,10 @@ Public Class Creature
     Private Sub Rove(ByRef thisWorld As World)
         If ActState.Move = True Then 'rove
             ' Kalman filter!!!
-            Position = Position + MovingVector * thisWorld.DT
-            BoundPosition(thisWorld, Position)
+            _Position = _Position + _MovingVector * thisWorld.DT
+            BoundPosition(thisWorld, _Position)
             ' Kalman filter!!!
-            MovingVector = New Vector3D(4 * (RNG.NextDouble() - 0.5), 4 * (RNG.NextDouble() - 0.5), 0)
+            _MovingVector = New Vector3D(4 * (Me.RNG.NextDouble() - 0.5), 4 * (Me.RNG.NextDouble() - 0.5), 0)
         End If
     End Sub
 

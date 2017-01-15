@@ -9,6 +9,7 @@ Public Class ErrMsg
         MUSTPOSITIVE = &B10
         PROBABILITY = &B11
         UPPERBOUNDED = &B100
+        LOWERBOUNDED = &B101
     End Enum
 
     Public Shared Sub ShowErrMsg(ByVal Msg As String)
@@ -26,6 +27,8 @@ Public Class ErrMsg
                 ShowErrMsg(PropertyName & " is a probability, therefore is from 0 to 1. ")
             Case ErrType.UPPERBOUNDED
                 ShowErrMsg(String.Format("{0} is bounded by the maximum {1}. ", PropertyName, RelatedPropertyName))
+            Case ErrType.LOWERBOUNDED
+                ShowErrMsg(String.Format("{0} is bounded by the minimum {1}. ", PropertyName, RelatedPropertyName))
             Case Else
                 ShowErrMsg(PropertyName & "'s value is invalid. ")
         End Select

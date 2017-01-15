@@ -65,6 +65,7 @@ Partial Class MainForm
         Me.DebugMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.OneclickRunMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.Debug2ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripComboBox1 = New System.Windows.Forms.ToolStripComboBox()
         Me.StatusStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -73,10 +74,10 @@ Partial Class MainForm
         '
         Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AbsTimeLabel, Me.PopulationLabel, Me.LayerStatus, Me.SimStatusLabel, Me.CurrentGraphicObj})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 903)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 732)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Padding = New System.Windows.Forms.Padding(1, 0, 13, 0)
-        Me.StatusStrip1.Size = New System.Drawing.Size(1501, 26)
+        Me.StatusStrip1.Padding = New System.Windows.Forms.Padding(1, 0, 10, 0)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1126, 23)
         Me.StatusStrip1.SizingGrip = False
         Me.StatusStrip1.TabIndex = 3
         Me.StatusStrip1.Text = "StatusStrip1"
@@ -84,13 +85,13 @@ Partial Class MainForm
         'AbsTimeLabel
         '
         Me.AbsTimeLabel.Name = "AbsTimeLabel"
-        Me.AbsTimeLabel.Size = New System.Drawing.Size(112, 21)
+        Me.AbsTimeLabel.Size = New System.Drawing.Size(89, 18)
         Me.AbsTimeLabel.Text = "AbsTimeLabel"
         '
         'PopulationLabel
         '
         Me.PopulationLabel.Name = "PopulationLabel"
-        Me.PopulationLabel.Size = New System.Drawing.Size(88, 21)
+        Me.PopulationLabel.Size = New System.Drawing.Size(70, 18)
         Me.PopulationLabel.Text = "Population"
         '
         'LayerStatus
@@ -100,32 +101,32 @@ Partial Class MainForm
         Me.LayerStatus.Image = CType(resources.GetObject("LayerStatus.Image"), System.Drawing.Image)
         Me.LayerStatus.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.LayerStatus.Name = "LayerStatus"
-        Me.LayerStatus.Size = New System.Drawing.Size(62, 24)
+        Me.LayerStatus.Size = New System.Drawing.Size(52, 21)
         Me.LayerStatus.Text = "Layer"
         '
         'NoneLayerML
         '
         Me.NoneLayerML.Name = "NoneLayerML"
-        Me.NoneLayerML.Size = New System.Drawing.Size(124, 26)
+        Me.NoneLayerML.Size = New System.Drawing.Size(108, 22)
         Me.NoneLayerML.Text = "None"
         '
         'SoilLayerMI
         '
         Me.SoilLayerMI.Name = "SoilLayerMI"
-        Me.SoilLayerMI.Size = New System.Drawing.Size(124, 26)
+        Me.SoilLayerMI.Size = New System.Drawing.Size(108, 22)
         Me.SoilLayerMI.Text = "Soil"
         '
         'SimStatusLabel
         '
         Me.SimStatusLabel.Name = "SimStatusLabel"
-        Me.SimStatusLabel.Size = New System.Drawing.Size(1079, 21)
+        Me.SimStatusLabel.Size = New System.Drawing.Size(787, 18)
         Me.SimStatusLabel.Spring = True
         Me.SimStatusLabel.Text = "SimStatus"
         '
         'CurrentGraphicObj
         '
         Me.CurrentGraphicObj.Name = "CurrentGraphicObj"
-        Me.CurrentGraphicObj.Size = New System.Drawing.Size(146, 21)
+        Me.CurrentGraphicObj.Size = New System.Drawing.Size(117, 18)
         Me.CurrentGraphicObj.Text = "CurrentGraphicObj"
         '
         'MenuStrip1
@@ -134,15 +135,15 @@ Partial Class MainForm
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileMI, Me.ToolsMI, Me.WindowsMI, Me.HelpMI, Me.DebugMI})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(5, 2, 0, 2)
-        Me.MenuStrip1.Size = New System.Drawing.Size(1501, 28)
+        Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(4, 2, 0, 2)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1126, 25)
         Me.MenuStrip1.TabIndex = 4
         '
         'FileMI
         '
         Me.FileMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewMI, Me.OpenMI, Me.StartPageMI, Me.ToolStripSeparator4, Me.SaveAsMI, Me.SaveTheWorldMI, Me.ToolStripSeparator2, Me.ExitMI})
         Me.FileMI.Name = "FileMI"
-        Me.FileMI.Size = New System.Drawing.Size(46, 24)
+        Me.FileMI.Size = New System.Drawing.Size(39, 21)
         Me.FileMI.Text = "&File"
         '
         'NewMI
@@ -150,7 +151,7 @@ Partial Class MainForm
         Me.NewMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewWorldMI})
         Me.NewMI.Image = Global.SimWorld.My.Resources.Resources.Create_256x
         Me.NewMI.Name = "NewMI"
-        Me.NewMI.Size = New System.Drawing.Size(262, 26)
+        Me.NewMI.Size = New System.Drawing.Size(222, 26)
         Me.NewMI.Text = "&New"
         '
         'NewWorldMI
@@ -158,7 +159,7 @@ Partial Class MainForm
         Me.NewWorldMI.Image = Global.SimWorld.My.Resources.Resources.World_256x
         Me.NewWorldMI.Name = "NewWorldMI"
         Me.NewWorldMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
-        Me.NewWorldMI.Size = New System.Drawing.Size(187, 26)
+        Me.NewWorldMI.Size = New System.Drawing.Size(163, 26)
         Me.NewWorldMI.Text = "&World"
         '
         'OpenMI
@@ -166,19 +167,19 @@ Partial Class MainForm
         Me.OpenMI.Image = Global.SimWorld.My.Resources.Resources.OpenFolder_256x
         Me.OpenMI.Name = "OpenMI"
         Me.OpenMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.OpenMI.Size = New System.Drawing.Size(262, 26)
+        Me.OpenMI.Size = New System.Drawing.Size(222, 26)
         Me.OpenMI.Text = "&Open..."
         '
         'StartPageMI
         '
         Me.StartPageMI.Name = "StartPageMI"
-        Me.StartPageMI.Size = New System.Drawing.Size(262, 26)
+        Me.StartPageMI.Size = New System.Drawing.Size(222, 26)
         Me.StartPageMI.Text = "Start Page"
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(259, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(219, 6)
         '
         'SaveAsMI
         '
@@ -186,34 +187,34 @@ Partial Class MainForm
         Me.SaveAsMI.Name = "SaveAsMI"
         Me.SaveAsMI.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Shift) _
             Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.SaveAsMI.Size = New System.Drawing.Size(262, 26)
+        Me.SaveAsMI.Size = New System.Drawing.Size(222, 26)
         Me.SaveAsMI.Text = "Save &As..."
         '
         'SaveTheWorldMI
         '
         Me.SaveTheWorldMI.Name = "SaveTheWorldMI"
         Me.SaveTheWorldMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.SaveTheWorldMI.Size = New System.Drawing.Size(262, 26)
+        Me.SaveTheWorldMI.Size = New System.Drawing.Size(222, 26)
         Me.SaveTheWorldMI.Text = "&Save the World..."
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(259, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(219, 6)
         '
         'ExitMI
         '
         Me.ExitMI.Image = Global.SimWorld.My.Resources.Resources.CloseSolution_256x
         Me.ExitMI.Name = "ExitMI"
         Me.ExitMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.F4), System.Windows.Forms.Keys)
-        Me.ExitMI.Size = New System.Drawing.Size(262, 26)
+        Me.ExitMI.Size = New System.Drawing.Size(222, 26)
         Me.ExitMI.Text = "&Exit"
         '
         'ToolsMI
         '
         Me.ToolsMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DatabaseViewerMI, Me.DashboardMI, Me.ToolStripSeparator6, Me.AssociateFilesMI})
         Me.ToolsMI.Name = "ToolsMI"
-        Me.ToolsMI.Size = New System.Drawing.Size(61, 24)
+        Me.ToolsMI.Size = New System.Drawing.Size(52, 21)
         Me.ToolsMI.Text = "&Tools"
         '
         'DatabaseViewerMI
@@ -221,7 +222,7 @@ Partial Class MainForm
         Me.DatabaseViewerMI.Image = Global.SimWorld.My.Resources.Resources.Datalist_256x
         Me.DatabaseViewerMI.Name = "DatabaseViewerMI"
         Me.DatabaseViewerMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
-        Me.DatabaseViewerMI.Size = New System.Drawing.Size(274, 26)
+        Me.DatabaseViewerMI.Size = New System.Drawing.Size(233, 26)
         Me.DatabaseViewerMI.Text = "Database &Viewer..."
         '
         'DashboardMI
@@ -229,143 +230,148 @@ Partial Class MainForm
         Me.DashboardMI.Image = Global.SimWorld.My.Resources.Resources.displayconfiguration_256x
         Me.DashboardMI.Name = "DashboardMI"
         Me.DashboardMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
-        Me.DashboardMI.Size = New System.Drawing.Size(274, 26)
+        Me.DashboardMI.Size = New System.Drawing.Size(233, 26)
         Me.DashboardMI.Text = "&Dashboard..."
         '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(271, 6)
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(230, 6)
         '
         'AssociateFilesMI
         '
         Me.AssociateFilesMI.Name = "AssociateFilesMI"
-        Me.AssociateFilesMI.Size = New System.Drawing.Size(274, 26)
+        Me.AssociateFilesMI.Size = New System.Drawing.Size(233, 26)
         Me.AssociateFilesMI.Text = "Associate &Files"
         '
         'WindowsMI
         '
         Me.WindowsMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TileVerticallyMI, Me.TileHorizontallyMI, Me.CascadeMI, Me.CloseAllMI, Me.ToolStripSeparatorWindows})
         Me.WindowsMI.Name = "WindowsMI"
-        Me.WindowsMI.Size = New System.Drawing.Size(88, 24)
+        Me.WindowsMI.Size = New System.Drawing.Size(73, 21)
         Me.WindowsMI.Text = "&Windows"
         '
         'TileVerticallyMI
         '
         Me.TileVerticallyMI.Name = "TileVerticallyMI"
-        Me.TileVerticallyMI.Size = New System.Drawing.Size(202, 26)
+        Me.TileVerticallyMI.Size = New System.Drawing.Size(173, 26)
         Me.TileVerticallyMI.Text = "Tile &Vertically"
         '
         'TileHorizontallyMI
         '
         Me.TileHorizontallyMI.Name = "TileHorizontallyMI"
-        Me.TileHorizontallyMI.Size = New System.Drawing.Size(202, 26)
+        Me.TileHorizontallyMI.Size = New System.Drawing.Size(173, 26)
         Me.TileHorizontallyMI.Text = "Tile &Horizontally"
         '
         'CascadeMI
         '
         Me.CascadeMI.Name = "CascadeMI"
-        Me.CascadeMI.Size = New System.Drawing.Size(202, 26)
+        Me.CascadeMI.Size = New System.Drawing.Size(173, 26)
         Me.CascadeMI.Text = "&Cascade"
         '
         'CloseAllMI
         '
         Me.CloseAllMI.Image = Global.SimWorld.My.Resources.Resources.CloseGroup_256x
         Me.CloseAllMI.Name = "CloseAllMI"
-        Me.CloseAllMI.Size = New System.Drawing.Size(202, 26)
+        Me.CloseAllMI.Size = New System.Drawing.Size(173, 26)
         Me.CloseAllMI.Text = "&Close All"
         '
         'ToolStripSeparatorWindows
         '
         Me.ToolStripSeparatorWindows.Name = "ToolStripSeparatorWindows"
-        Me.ToolStripSeparatorWindows.Size = New System.Drawing.Size(199, 6)
+        Me.ToolStripSeparatorWindows.Size = New System.Drawing.Size(170, 6)
         '
         'HelpMI
         '
         Me.HelpMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TutorialMI, Me.ToolStripSeparator3, Me.LanguageMI, Me.UpdateMI, Me.ToolStripSeparator5, Me.AboutUsMI})
         Me.HelpMI.Name = "HelpMI"
-        Me.HelpMI.Size = New System.Drawing.Size(56, 24)
+        Me.HelpMI.Size = New System.Drawing.Size(47, 21)
         Me.HelpMI.Text = "&Help"
         '
         'TutorialMI
         '
         Me.TutorialMI.Enabled = False
         Me.TutorialMI.Name = "TutorialMI"
-        Me.TutorialMI.Size = New System.Drawing.Size(164, 26)
+        Me.TutorialMI.Size = New System.Drawing.Size(156, 26)
         Me.TutorialMI.Text = "Tutorial"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(161, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(153, 6)
         '
         'LanguageMI
         '
         Me.LanguageMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EnUSMI, Me.ZhCNMI})
         Me.LanguageMI.Image = Global.SimWorld.My.Resources.Resources.Language_256x
         Me.LanguageMI.Name = "LanguageMI"
-        Me.LanguageMI.Size = New System.Drawing.Size(164, 26)
+        Me.LanguageMI.Size = New System.Drawing.Size(156, 26)
         Me.LanguageMI.Text = "Language"
         '
         'EnUSMI
         '
         Me.EnUSMI.Name = "EnUSMI"
-        Me.EnUSMI.Size = New System.Drawing.Size(128, 26)
+        Me.EnUSMI.Size = New System.Drawing.Size(112, 22)
         Me.EnUSMI.Text = "en-US"
         '
         'ZhCNMI
         '
         Me.ZhCNMI.Name = "ZhCNMI"
-        Me.ZhCNMI.Size = New System.Drawing.Size(128, 26)
+        Me.ZhCNMI.Size = New System.Drawing.Size(112, 22)
         Me.ZhCNMI.Text = "zh-CN"
         '
         'UpdateMI
         '
         Me.UpdateMI.Image = Global.SimWorld.My.Resources.Resources.Refresh_grey_256x
         Me.UpdateMI.Name = "UpdateMI"
-        Me.UpdateMI.Size = New System.Drawing.Size(164, 26)
+        Me.UpdateMI.Size = New System.Drawing.Size(156, 26)
         Me.UpdateMI.Text = "&Update..."
         '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(161, 6)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(153, 6)
         '
         'AboutUsMI
         '
         Me.AboutUsMI.Image = Global.SimWorld.My.Resources.Resources.StatusHelp_cyan_256x
         Me.AboutUsMI.Name = "AboutUsMI"
-        Me.AboutUsMI.Size = New System.Drawing.Size(164, 26)
+        Me.AboutUsMI.Size = New System.Drawing.Size(156, 26)
         Me.AboutUsMI.Text = "&About Us..."
         '
         'DebugMI
         '
-        Me.DebugMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OneclickRunMI, Me.Debug2ToolStripMenuItem})
+        Me.DebugMI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OneclickRunMI, Me.Debug2ToolStripMenuItem, Me.ToolStripComboBox1})
         Me.DebugMI.Name = "DebugMI"
-        Me.DebugMI.Size = New System.Drawing.Size(70, 24)
+        Me.DebugMI.Size = New System.Drawing.Size(59, 21)
         Me.DebugMI.Text = "Debug"
         '
         'OneclickRunMI
         '
         Me.OneclickRunMI.Name = "OneclickRunMI"
-        Me.OneclickRunMI.Size = New System.Drawing.Size(184, 26)
+        Me.OneclickRunMI.Size = New System.Drawing.Size(181, 22)
         Me.OneclickRunMI.Text = "One-click Run"
         '
         'Debug2ToolStripMenuItem
         '
         Me.Debug2ToolStripMenuItem.Name = "Debug2ToolStripMenuItem"
-        Me.Debug2ToolStripMenuItem.Size = New System.Drawing.Size(184, 26)
+        Me.Debug2ToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
         Me.Debug2ToolStripMenuItem.Text = "Debug2"
+        '
+        'ToolStripComboBox1
+        '
+        Me.ToolStripComboBox1.Name = "ToolStripComboBox1"
+        Me.ToolStripComboBox1.Size = New System.Drawing.Size(121, 25)
         '
         'MainForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1501, 929)
+        Me.ClientSize = New System.Drawing.Size(1126, 755)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.IsMdiContainer = True
-        Me.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.Name = "MainForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "FormMain"
@@ -419,4 +425,5 @@ Partial Class MainForm
     Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
     Friend WithEvents OneclickRunMI As ToolStripMenuItem
     Friend WithEvents Debug2ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripComboBox1 As ToolStripComboBox
 End Class

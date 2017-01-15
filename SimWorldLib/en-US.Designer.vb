@@ -100,6 +100,15 @@ Friend Class en_US
     End Property
     
     '''<summary>
+    '''  查找类似 Behavior 的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Behavior() As String
+        Get
+            Return ResourceManager.GetString("Behavior", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  查找类似 Energy that the Creature&apos;s offsprings have at birth.  的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property BornEnergy() As String
