@@ -91,6 +91,24 @@ Friend Class en_US
     End Property
     
     '''<summary>
+    '''  查找类似 The opacity of the map layer (255 is not transparent, and 0 is total transparent. ) 的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Alpha() As String
+        Get
+            Return ResourceManager.GetString("Alpha", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 The average value. 的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Avg() As String
+        Get
+            Return ResourceManager.GetString("Avg", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  查找类似 Base level energy expenditure per second of the Creature.  的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property BaseEExpend() As String
@@ -217,6 +235,24 @@ Friend Class en_US
     End Property
     
     '''<summary>
+    '''  查找类似 Genetics 的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Genetics() As String
+        Get
+            Return ResourceManager.GetString("Genetics", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Genome of the Creature: collection of the math models that determine the phenotypes and behaviors.   的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Genome() As String
+        Get
+            Return ResourceManager.GetString("Genome", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  查找类似 Graphics 的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property Graphics() As String
@@ -271,11 +307,29 @@ Friend Class en_US
     End Property
     
     '''<summary>
+    '''  查找类似 Rate of the distribution.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Lambda() As String
+        Get
+            Return ResourceManager.GetString("Lambda", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  查找类似 Life 的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property Life() As String
         Get
             Return ResourceManager.GetString("Life", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Maximum age of the Creature.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Lifespan() As String
+        Get
+            Return ResourceManager.GetString("Lifespan", resourceCulture)
         End Get
     End Property
     
@@ -289,15 +343,6 @@ Friend Class en_US
     End Property
     
     '''<summary>
-    '''  查找类似 The probability that the offsprings of this Creature are male.  的本地化字符串。
-    '''</summary>
-    Friend Shared ReadOnly Property MaleRatio() As String
-        Get
-            Return ResourceManager.GetString("MaleRatio", resourceCulture)
-        End Get
-    End Property
-    
-    '''<summary>
     '''  查找类似 Whether the Creature is shown highlighted.  的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property Marked() As String
@@ -307,7 +352,16 @@ Friend Class en_US
     End Property
     
     '''<summary>
-    '''  查找类似 Creature Reproduction 的本地化字符串。
+    '''  查找类似 Color of the Marker.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property MarkerColor() As String
+        Get
+            Return ResourceManager.GetString("MarkerColor", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Size of the Creature shown in the Stage.  的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property MarkerSize() As String
         Get
@@ -330,6 +384,24 @@ Friend Class en_US
     Friend Shared ReadOnly Property MaxEnergyStorage() As String
         Get
             Return ResourceManager.GetString("MaxEnergyStorage", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Upper bound of the model.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Maximum() As String
+        Get
+            Return ResourceManager.GetString("Maximum", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Lower bound of the model.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Minimum() As String
+        Get
+            Return ResourceManager.GetString("Minimum", resourceCulture)
         End Get
     End Property
     
@@ -361,11 +433,29 @@ Friend Class en_US
     End Property
     
     '''<summary>
+    '''  查找类似 Mean of the distribution.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Mu() As String
+        Get
+            Return ResourceManager.GetString("Mu", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  查找类似 The length of the night in second.  的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property NightLen() As String
         Get
             Return ResourceManager.GetString("NightLen", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Probability of yielding one.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property p() As String
+        Get
+            Return ResourceManager.GetString("p", resourceCulture)
         End Get
     End Property
     
@@ -442,6 +532,15 @@ Friend Class en_US
     End Property
     
     '''<summary>
+    '''  查找类似 Standard deviation of the distribution. 的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Sigma() As String
+        Get
+            Return ResourceManager.GetString("Sigma", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  查找类似 Simulation 的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property Simulation() As String
@@ -496,6 +595,15 @@ Friend Class en_US
     End Property
     
     '''<summary>
+    '''  查找类似 The sum of the values.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Sum() As String
+        Get
+            Return ResourceManager.GetString("Sum", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  查找类似 The accumulated time since simulation started in second. 的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property T() As String
@@ -514,6 +622,15 @@ Friend Class en_US
     End Property
     
     '''<summary>
+    '''  查找类似 The hue of the map layer.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property ThemeColor() As String
+        Get
+            Return ResourceManager.GetString("ThemeColor", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  查找类似 The length of each transition between day and night in second.  的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property Twilight() As String
@@ -528,6 +645,24 @@ Friend Class en_US
     Friend Shared ReadOnly Property Utility() As String
         Get
             Return ResourceManager.GetString("Utility", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Whether it is shown.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Visible() As String
+        Get
+            Return ResourceManager.GetString("Visible", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 The maximum distance from the Position to the surroudings the Creature is able to see.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property VisionDepth() As String
+        Get
+            Return ResourceManager.GetString("VisionDepth", resourceCulture)
         End Get
     End Property
     
@@ -582,6 +717,33 @@ Friend Class en_US
     Friend Shared ReadOnly Property WtoERate() As String
         Get
             Return ResourceManager.GetString("WtoERate", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 The first dimension (Width).  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property X() As String
+        Get
+            Return ResourceManager.GetString("X", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 The second dimension (Height).  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Y() As String
+        Get
+            Return ResourceManager.GetString("Y", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 The third dimension (Depth).  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property Z() As String
+        Get
+            Return ResourceManager.GetString("Z", resourceCulture)
         End Get
     End Property
 End Class

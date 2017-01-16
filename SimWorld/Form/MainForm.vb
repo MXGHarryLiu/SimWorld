@@ -55,6 +55,7 @@ Public Class MainForm
             OpenMI_Click(sender, e)
         End If
         Call ShowStartPage()
+        Call OneclickRunMI_Click(sender, e) 'Debug use!!!!!!!!!!!!!!!!!!!!!!!!!
     End Sub
 
     Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
@@ -581,7 +582,7 @@ Public Class MainForm
             If MyWorld.Creatures(i).Marked = True Then
                 Size = MyWorld.Creatures(i).MarkerSize
                 Pos = MyWorld.Creatures(i).Position
-                Target.FillEllipse(New SolidBrush(Color.Red),
+                Target.FillEllipse(New SolidBrush(MyWorld.Creatures(i).MarkerColor),
                                    CSng(Pos.X) - MarkerThickness - Size / 2,
                                    CSng(MyWorld.Size.Y - Pos.Y) - MarkerThickness - Size / 2,
                                    Size + 2 * MarkerThickness, Size + 2 * MarkerThickness)
@@ -711,12 +712,10 @@ Public Class MainForm
         MyWorld = New World(600, 400, 0)
         MyWorld.WorldFile = "Untitled World.smw"
         Call LoadWorld(MyWorld)
-        Dim RNG As System.Random = New System.Random()
         Dim NewCreature As Creature = Nothing
         For i = 0 To 10 - 1 Step 1
             NewCreature = New Creature(MyWorld)
             MyWorld.AddCreature(NewCreature)
-            Threading.Thread.Sleep(RNG.Next(1, 100))      'Sleep thread to get quite random results !!!!!!!!!!!!!!!!
             Application.DoEvents()
         Next i
         Call RefreshView(CurrentStage)

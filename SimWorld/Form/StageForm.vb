@@ -435,10 +435,25 @@ Public Class StageForm
         End If
         MainForm.SimStatusLabel.Text = "Running... "
         Dim t As Integer = 0
+        Dim ElapsedTimeList As List(Of Long) = New List(Of Long)
+        Dim MovingAvgLength As Integer = 10
+        Dim FPS As Integer = 0
+        Dim Watch As Stopwatch = New Stopwatch()
+        Watch.Start()
         While (SimulateMI.Checked = True) 'Or preassigned time
             t = t + 1
             Call MyWorld.Passage()
             If t Mod MyWorld.RefreshRate = 0 Then
+                ElapsedTimeList.Add(Watch.ElapsedMilliseconds)
+                Watch.Restart()
+                If ElapsedTimeList.Count > MovingAvgLength Then
+                    ElapsedTimeList.RemoveAt(0)
+                End If
+                Try
+                    FPS = CInt(1000 / (ElapsedTimeList.Sum / ElapsedTimeList.Count))
+                Catch ex As Exception
+                    FPS = 0
+                End Try
                 If MyWorld.CreatureCount = 0 Then
                     Call Simulate_Click(sender, e)
                 End If
@@ -447,7 +462,7 @@ Public Class StageForm
                     Call MainForm.CurrentDashboard.RefreshContent()
                 End If
             End If
-            MainForm.AbsTimeLabel.Text = CInt(MyWorld.T).ToString() & " s"
+            MainForm.AbsTimeLabel.Text = String.Format("{0} s ({1} fps)", CInt(MyWorld.T).ToString(), FPS.ToString())
             MainForm.PopulationLabel.Text = MyWorld.CreatureCount
             Application.DoEvents()
         End While
@@ -642,15 +657,12 @@ Public Class StageForm
         End While
         Try
             PopulateFromRNGMI.Checked = True
-            Dim RNG As Random = New Random()
             Dim NewCreature As Creature = Nothing
             For i = 0 To CreatureNum - 1 Step 1
                 NewCreature = New Creature(MyWorld)
                 MyWorld.AddCreature(NewCreature)
                 If MainForm.CurrentDashboard IsNot Nothing Then
                     Call MainForm.CurrentDashboard.RefreshContent()
-                Else
-                    Threading.Thread.Sleep(RNG.Next(1, 50))
                 End If
                 MainForm.SimStatusLabel.Text = String.Format("Populating ({0}/{1})... ", i + 1, CreatureNum)
                 MyWorld.LogUserAction("Add Creature: " & NewCreature.ID)
@@ -707,14 +719,12 @@ Public Class StageForm
         End While
         Try
             RandomMassacreMI.Checked = True
-            Dim RNG As Random = New Random()
+            Dim RNG As Random = NewRNG()
             Dim RemoveIdx As Integer = -1
             For i = 0 To CreatureNum - 1 Step 1
                 RemoveIdx = RNG.Next(0, MyWorld.Creatures.Count - 1)
                 If MainForm.CurrentDashboard IsNot Nothing Then
                     Call MainForm.CurrentDashboard.RefreshContent()
-                Else
-                    Threading.Thread.Sleep(RNG.Next(1, 50))
                 End If
                 MainForm.SimStatusLabel.Text = String.Format("Depopulating ({0}/{1})... ", i + 1, CreatureNum)
                 MyWorld.LogUserAction("Remove Creature: " & MyWorld.Creatures(RemoveIdx).ID)

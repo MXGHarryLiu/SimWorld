@@ -353,7 +353,7 @@ Public Class World
 
     Public Sub CreatureDeath(ByRef sender As Creature,
                              Optional ByVal DeathReason As DeathReasons = DeathReasons.UNKNOWN)
-        WorldLog.AddLog(DateTime.Now, Me.T, sender.ID, "Creature death.Reason: " & DeathReason)
+        WorldLog.AddLog(DateTime.Now, Me.T, sender.ID, "Creature death.Reason: " & DeathReason.ToString)
         Creatures.Remove(sender)
     End Sub
 
@@ -369,7 +369,6 @@ Public Class World
                 i = i + 1
             End If
         End While
-
     End Sub
 
     Public Function DayColor(Optional ByVal Value As Boolean = False) As Object

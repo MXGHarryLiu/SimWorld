@@ -5,6 +5,11 @@
 
     Public Culture As Globalization.CultureInfo = Nothing
 
+    Public Function NewRNG() As System.Random
+        Dim Seed As Integer = BitConverter.ToInt32(Guid.NewGuid.ToByteArray(), 0)
+        Return New System.Random(Seed)
+    End Function
+
 End Module
 
 Public Class Mutator
@@ -14,7 +19,7 @@ Public Class Mutator
     End Sub
 
     Public Shared Sub Mutate(ByRef thisWorld As World, ByRef Subject As Creature, ByVal CreatureProperty As Reflection.PropertyInfo, Optional ByRef Parent As Creature = Nothing)
-        Dim RNG As System.Random = New System.Random()
+        Dim RNG As System.Random = NewRNG()
         Select Case CreatureProperty
             Case GetType(Creature).GetProperty(NameOf(Creature.Position))
                 Dim Heading As Double = RNG.NextDouble * 2 * Math.PI
@@ -26,8 +31,6 @@ Public Class Mutator
                 Subject.Position = TempPos
             Case GetType(Creature).GetProperty(NameOf(Creature.MovingVector))
 
-            Case GetType(Creature).GetProperty(NameOf(Creature.Sex))
-                'Subject.Sex = (RNG.NextDouble() > Subject.MaleRatio)
             Case Else
                 MsgBox("Property Not Found!")
         End Select

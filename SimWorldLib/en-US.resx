@@ -241,16 +241,12 @@
     <value>The number of offsprings the Creature has for each mating. </value>
     <comment>Creature Reproduction</comment>
   </data>
-  <data name="MaleRatio" xml:space="preserve">
-    <value>The probability that the offsprings of this Creature are male. </value>
-    <comment>Creature Reproduction</comment>
-  </data>
   <data name="Marked" xml:space="preserve">
     <value>Whether the Creature is shown highlighted. </value>
     <comment>Creature Graphics</comment>
   </data>
   <data name="MarkerSize" xml:space="preserve">
-    <value>Creature Reproduction</value>
+    <value>Size of the Creature shown in the Stage. </value>
     <comment>Creature Graphics</comment>
   </data>
   <data name="MateReady" xml:space="preserve">
@@ -348,5 +344,81 @@
   <data name="Behavior" xml:space="preserve">
     <value>Behavior</value>
     <comment>Category Creature</comment>
+  </data>
+  <data name="Alpha" xml:space="preserve">
+    <value>The opacity of the map layer (255 is not transparent, and 0 is total transparent. )</value>
+    <comment>Sub Property (Map)</comment>
+  </data>
+  <data name="Avg" xml:space="preserve">
+    <value>The average value.</value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="Genetics" xml:space="preserve">
+    <value>Genetics</value>
+    <comment>Category Creature</comment>
+  </data>
+  <data name="Genome" xml:space="preserve">
+    <value>Genome of the Creature: collection of the math models that determine the phenotypes and behaviors.  </value>
+    <comment>Creature Genetics</comment>
+  </data>
+  <data name="Lifespan" xml:space="preserve">
+    <value>Maximum age of the Creature. </value>
+    <comment>Creature Reproduction</comment>
+  </data>
+  <data name="Maximum" xml:space="preserve">
+    <value>Upper bound of the model. </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="Minimum" xml:space="preserve">
+    <value>Lower bound of the model. </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="Sum" xml:space="preserve">
+    <value>The sum of the values. </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="ThemeColor" xml:space="preserve">
+    <value>The hue of the map layer. </value>
+    <comment>Sub Property (Map)</comment>
+  </data>
+  <data name="Visible" xml:space="preserve">
+    <value>Whether it is shown. </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="VisionDepth" xml:space="preserve">
+    <value>The maximum distance from the Position to the surroudings the Creature is able to see. </value>
+    <comment>Creature Behavior</comment>
+  </data>
+  <data name="X" xml:space="preserve">
+    <value>The first dimension (Width). </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="Y" xml:space="preserve">
+    <value>The second dimension (Height). </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="Z" xml:space="preserve">
+    <value>The third dimension (Depth). </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="Lambda" xml:space="preserve">
+    <value>Rate of the distribution. </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="MarkerColor" xml:space="preserve">
+    <value>Color of the Marker. </value>
+    <comment>Creature Graphics</comment>
+  </data>
+  <data name="Mu" xml:space="preserve">
+    <value>Mean of the distribution. </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="p" xml:space="preserve">
+    <value>Probability of yielding one. </value>
+    <comment>Sub Property</comment>
+  </data>
+  <data name="Sigma" xml:space="preserve">
+    <value>Standard deviation of the distribution.</value>
+    <comment>Sub Property</comment>
   </data>
 </root>

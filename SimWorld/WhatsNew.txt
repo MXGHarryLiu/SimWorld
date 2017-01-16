@@ -1,22 +1,37 @@
 SimWorld
 
-0.1.6223
-1. Fix editing of Structures (Point3D, Vector3D) in PropertyGrid. 
-2. 
+0.1.6224
+1. Add FPS counter in MainForm. 
+2. Change random number generator to use GUID as seed. 
+3. !!! Abandon MaleRatio and use model parameter of Gene instead. 
+4. Add MarkerColor, Lifespan Creature property. 
 
 To Do List (Arranged from near to far): 
+creature templete: 
+	a. bacteria, soil as nutrition. concentration gradient. 
+	b. Plant: seed traveling. 
+	c. Animal. 
+depopulate screening, and manually point. 
 tutorial
+multiple world checkpoints
 Mutator/Disruptor/Perturber/
 move creature update to task to run in parallel
 Nearest neigbor: creature avoid/approach each other
 Vision and occlusion
 Creature property: 
 	life stage (e.g. seed/plant, worker ant and queen, tadpole and frog)
-creature templete: 
-	a. bacteria, soil as nutrition. concentration gradient. 
-	b. Plant: seed traveling. 
-	c. Animal. 
-convert MDI forms to tab. 
+convert MDI forms to tab.
+
+0.1.6223
+1. *** Add Gene class. 
+2. Add the following classes: 
+	GenomeConverter, 
+	GenomeUIEditor, 
+	GeneConverter, 
+	GenomePropertyDescriptor, 
+	GenePropertyDescriptor, 
+	GeneticApplicableAttribute. 
+2. Add StructureConverter class to fix editing of Structures (Point3D, Vector3D) in PropertyGrid. 
 
 0.1.6221
 1. Improve Log data read speed. 

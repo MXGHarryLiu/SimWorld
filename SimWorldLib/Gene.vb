@@ -4,6 +4,7 @@ Imports SimWorldLib.ErrMsg
 
 <Serializable>
 <DataContract>
+<System.ComponentModel.DefaultProperty("Phenotype")>
 Public Class Gene
 
 #Region "Properties"
@@ -12,7 +13,10 @@ Public Class Gene
     Public Property Phenotype As String
 
     <DataMember>
-    Private _Model As MathModels = MathModels.UNKNOWN
+    Public Property Everlast As Boolean = True
+
+    <DataMember>
+    Private _Model As MathModels = MathModels.CONSTANT
     Public Property Model As MathModels
         Get
             Return _Model
@@ -21,18 +25,26 @@ Public Class Gene
             If _Model <> value Then
                 _ModelParameters.Clear()
                 Select Case value
+                    Case MathModels.CONSTANT
+                        _ValidParameterNum = 1
+                        _ModelParameters.Add(0)     ' Const
+                        _Maximum = 0
+                        _Minimum = 0
+                        Everlast = True
                     Case MathModels.BINARY
                         _ValidParameterNum = 1
-                        _ModelParameters.Add(0)
+                        _ModelParameters.Add(0.5)   ' p
+                        _Maximum = 1
+                        _Minimum = 0
                     Case MathModels.UNIFORM
                         _ValidParameterNum = 0
                     Case MathModels.NORMAL
                         _ValidParameterNum = 2
-                        _ModelParameters.Add(0)
-                        _ModelParameters.Add(1)
+                        _ModelParameters.Add(0)     ' Mu
+                        _ModelParameters.Add(1)     ' Sigma
                     Case MathModels.EXPONENTIAL
-                        '_ValidParameterNum = 1
-                        '_ModelParameters.Add(0)
+                        _ValidParameterNum = 1
+                        _ModelParameters.Add(0)     ' Lambda
                     Case Else
                         'do nothing
                 End Select
@@ -41,7 +53,7 @@ Public Class Gene
         End Set
     End Property
     Public Enum MathModels As Byte
-        UNKNOWN = 0         ' ModelParameters
+        CONSTANT = 0        ' ModelParameters
         BINARY = 1          ' p(True)
         UNIFORM = 2
         NORMAL = 3          ' Mean: Mu, Standard Deviation: Sigma
@@ -67,11 +79,21 @@ Public Class Gene
             ElseIf Index + 1 > _ValidParameterNum Then
                 ShowErrMsg(NameOf(Index), ErrType.UPPERBOUNDED, _ValidParameterNum - 1)
             Else
+                If Me.Model = MathModels.BINARY Then
+                    If Index = 0 AndAlso (value > 1 Or value < 0) Then
+                        ShowErrMsg("Model parameter p", ErrType.PROBABILITY)
+                        Exit Property
+                    End If
+                ElseIf Me.Model = MathModels.CONSTANT Then
+                    _Maximum = value
+                    _Minimum = value
+                End If
                 _ModelParameters(Index) = value
             End If
         End Set
     End Property
 
+    <DataMember>
     Private _ValidParameterNum As Integer = 0
     Public ReadOnly Property ValidParameterNum As Integer
         Get
@@ -111,11 +133,22 @@ Public Class Gene
 
 #End Region
 
+    Public Overrides Function Equals(obj As Object) As Boolean
+        If TypeOf (obj) Is Gene Then
+            If Me.Phenotype = TryCast(obj, Gene).Phenotype Then
+                Return True
+            Else
+                Return False
+            End If
+        End If
+        Return MyBase.Equals(obj)
+    End Function
+
     Public Sub New()
 
     End Sub
 
-    Public Sub New(ByVal Phenotype As String, Optional ByVal MathModel As MathModels = MathModels.UNKNOWN)
+    Public Sub New(ByVal Phenotype As String, Optional ByVal MathModel As MathModels = MathModels.CONSTANT)
         Me.Phenotype = Phenotype
         Me.Model = MathModel
     End Sub
@@ -126,20 +159,26 @@ Public Class Gene
         Next i
     End Sub
 
-    Public Function ShowPhenotype() As Object
-        Select Case Me.Model
-            Case MathModels.BINARY
-                Return 0 'Distributions.Bernoulli.Sample(_ModelParameters(0))
-            Case MathModels.UNIFORM
-                Return 0
-            Case MathModels.NORMAL
-                Return Distributions.Normal.Sample(_ModelParameters(0), _ModelParameters(1))
-            Case MathModels.EXPONENTIAL
-                Return 0
-            Case Else
-                'Distributions.Normal.
-                Return 0 'do nothing 
-        End Select
+    Public Function ShowPhenotype() As Double
+        Dim Output As Double = Double.NaN
+        Dim RNG As System.Random = NewRNG()
+        Do Until Output >= Minimum And Output <= Maximum
+            Select Case Me.Model
+                Case MathModels.CONSTANT
+                    Output = _ModelParameters(0)
+                Case MathModels.BINARY
+                    Output = Distributions.Bernoulli.Sample(RNG, _ModelParameters(0))
+                Case MathModels.UNIFORM
+                    Output = Distributions.ContinuousUniform.Sample(RNG, Me.Minimum, Me.Maximum)
+                Case MathModels.NORMAL
+                    Output = Distributions.Normal.Sample(RNG, _ModelParameters(0), _ModelParameters(1))
+                Case MathModels.EXPONENTIAL
+                    Output = Distributions.Exponential.Sample(RNG, _ModelParameters(0))
+                Case Else
+                    Return 0 'do nothing 
+            End Select
+        Loop
+        Return Output
     End Function
 
     Public Overloads Function ToString() As String

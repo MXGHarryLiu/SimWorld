@@ -22,7 +22,7 @@ Public Class Creature
 
 #Region "Static or Shared"
 
-    Private RNG As System.Random = New System.Random()
+    Private RNG As System.Random = NewRNG()
 
     ''' <param name="item">Name of the property. </param>
     ''' <remarks>
@@ -36,8 +36,8 @@ Public Class Creature
                 Return False
             Case NameOf(MarkerSize)
                 Return 10.0F
-            Case NameOf(MaleRatio)
-                Return 0.5R
+            Case NameOf(MarkerColor)
+                Return Color.Red
             Case Else
                 Return Nothing
         End Select
@@ -46,7 +46,8 @@ Public Class Creature
     Public Enum DeathReasons As Byte
         UNKNOWN = &B0
         HUNGER = &B1
-        MATERNAL = &B10
+        AGE = &B10
+        MATERNAL = &B11
     End Enum
 
     'Public Shared Widening Operator CType(ByVal thisCreature As CreatureFromFile) As Creature
@@ -103,6 +104,12 @@ Public Class Creature
             End If
         End Set
     End Property
+
+    <DataMember>
+    <Category("Graphics")>
+    <Description(NameOf(MarkerColor))>
+    <DefaultValueAttribute(NameOf(MarkerColor))>
+    Public Property MarkerColor As Color = Color.Red
 
 #End Region
 
@@ -331,25 +338,8 @@ Public Class Creature
     <Category("Reproduction")>
     <Description(NameOf(Sex))>
     <System.ComponentModel.DefaultValueAttribute(True)>
+    <GeneticApplicable(True)>
     Public Property Sex As Boolean = True    'Male = True
-
-    Private _MaleRatio As Double = DefaultValue(NameOf(MaleRatio))     '0 to 1
-    <DataMember>
-    <Category("Reproduction")>
-    <Description(NameOf(MaleRatio))>
-    <DefaultValueAttribute(NameOf(MaleRatio))>
-    Public Property MaleRatio As Double
-        Get
-            Return _MaleRatio
-        End Get
-        Set(ByVal value As Double)
-            If value < 0 Or value > 1 Then
-                ShowErrMsg(NameOf(MaleRatio), ErrType.PROBABILITY)
-            Else
-                _MaleRatio = value
-            End If
-        End Set
-    End Property
 
     Private _Weight As Double = 0
     <DataMember>
@@ -414,6 +404,7 @@ Public Class Creature
     <Category("Reproduction")>
     <Description(NameOf(LitterSize))>
     <System.ComponentModel.DefaultValueAttribute(1)>
+    <GeneticApplicable(True)>
     Public Property LitterSize As Integer
         Get
             Return _LitterSize
@@ -445,17 +436,18 @@ Public Class Creature
         End Set
     End Property
 
-    Private _Lifespan As Double = 0           'sec
+    Private _Lifespan As Double = Double.PositiveInfinity           'sec
     <DataMember>
     <Category("Reproduction")>
     <Description(NameOf(Lifespan))>
+    <GeneticApplicable(True)>
     Public Property Lifespan As Double
         Get
             Return _Lifespan
         End Get
         Set(ByVal value As Double)
-            If value < 0 Then
-                ShowErrMsg(NameOf(Lifespan), ErrType.NOTNEGATIVE)
+            If value <= 0 Then
+                ShowErrMsg(NameOf(Lifespan), ErrType.MUSTPOSITIVE)
             Else
                 _Lifespan = value
             End If
@@ -486,10 +478,10 @@ Public Class Creature
 
 #End Region
 
-#Region "Genome"
+#Region "Genetics"
 
     <DataMember>
-    <Category("Genome")>
+    <Category("Genetics")>
     <Description(NameOf(Genome))>
     <System.ComponentModel.ReadOnlyAttribute(True)>
     <System.ComponentModel.Editor(GetType(GenomeUIEditor), GetType(Design.UITypeEditor))>
@@ -515,10 +507,8 @@ Public Class Creature
         EtoWRate = 1 / 100
         WtoERate = 100
         Joule = 500 * RNG.NextDouble() + 100
-        BornEnergy = 500 * RNG.NextDouble() + 100
         Weight = 1
         BornWeight = 1
-        Sex = (RNG.NextDouble() > MaleRatio)
         MinMateAge = 1000
         VisionDepth = 50
         Me.ActState.Move = True
@@ -530,10 +520,15 @@ Public Class Creature
             If CustomAttributes.Count > 0 Then
                 propGeneticApplicableAttribute = CustomAttributes(0)
                 If propGeneticApplicableAttribute IsNot Nothing AndAlso propGeneticApplicableAttribute.Applicable = True Then
-                    Genome.Add(New Gene(propinfo.Name))
+                    Genome.Add(CreateSpeciesTemplate(propinfo.Name))
                 End If
             End If
         Next
+        ' New Genetics
+        Lifespan = ShowPhenotype(NameOf(Lifespan))
+        Sex = (ShowPhenotype(NameOf(Sex)) = 1)
+        BornEnergy = ShowPhenotype(NameOf(BornEnergy))
+        LitterSize = ShowPhenotype(NameOf(LitterSize))
     End Sub
 
     Protected Overrides Sub Finalize()
@@ -552,7 +547,7 @@ Public Class Creature
             fs.Seek(0, IO.SeekOrigin.Begin)
             NewCreature = CType(ser.ReadObject(fs), Creature)
         End Using
-        NewCreature.RNG = New System.Random()
+        NewCreature.RNG = NewRNG()
         Return NewCreature
     End Function
 
@@ -576,13 +571,41 @@ Public Class Creature
         Return MyBase.Equals(obj)
     End Function
 
-    'Public Overrides Function GetHashCode() As Integer
-    '    Return MyBase.GetHashCode()
-    'End Function
-
 #End Region
 
     ' ============= Methods =============
+
+    Private Function CreateSpeciesTemplate(ByVal PropertyName As String) As Gene
+        Dim NewGene As Gene = New Gene(PropertyName)
+        Select Case PropertyName
+            Case NameOf(Lifespan)
+                NewGene.Model = Gene.MathModels.NORMAL
+                NewGene.Minimum = 0
+                NewGene.SetParameters(3000, 100)
+            Case NameOf(Sex)
+                NewGene.Model = Gene.MathModels.BINARY
+            Case NameOf(BornEnergy)
+                NewGene.Model = Gene.MathModels.NORMAL
+                NewGene.Minimum = 0
+                NewGene.Maximum = Me.MaxEnergyStorage        '!!!!!!!!!!!!!!!!!!!
+                NewGene.SetParameters(500, 50)
+            Case NameOf(LitterSize)
+                NewGene.Model = Gene.MathModels.UNIFORM
+                NewGene.Minimum = 1
+                NewGene.Maximum = 3
+            Case Else
+                ' Do nothing
+        End Select
+        Return NewGene
+    End Function
+
+    Private Function ShowPhenotype(ByVal Name As String, Optional DefaultValue As Double = 0) As Double
+        Dim TargetGene As Gene = Me.Genome.Find(Function(x) x.Phenotype = Name)
+        If TargetGene IsNot Nothing Then
+            Return TargetGene.ShowPhenotype()
+        End If
+        Return DefaultValue
+    End Function
 
     Public Shared Sub BoundPosition(ByRef thisWorld As World, ByRef Position As Point3D)
         If Position.X < 0 Then
@@ -638,13 +661,10 @@ Public Class Creature
     End Sub
 
     Private Sub ReproRefresh(ByRef thisWorld As World)
-        Age = Age + thisWorld.DT
-
         If Age >= MinMateAge Then
             MateReady = True
             MarkerSize = 15   'Debug use
         End If
-
 
         If MateReady = True Then
             ActState.Pregnant = True  'immediately pregnanted
@@ -654,7 +674,9 @@ Public Class Creature
                 Dim NewBorn As Creature = Nothing
                 Dim NewBornPos(2) As Double
                 For i As Integer = 1 To LitterSize Step 1
+
                     _Joule = _Joule - BornEnergy
+
                     If _Joule < 0 Then
                         _Joule = 0
                         ActState.Alive = False
@@ -663,26 +685,38 @@ Public Class Creature
                     End If
                     NewBorn = Me.Copy() ' finally replaced by empty creature
                     Mutator.Mutate(thisWorld, NewBorn, GetType(Creature).GetProperty(NameOf(Position)))
-                    Mutator.Mutate(thisWorld, NewBorn, GetType(Creature).GetProperty(NameOf(Sex)))
 
-                    Weight = Weight - BornWeight
-                    NewBorn.Age = 0
-                    NewBorn.Joule = Me.BornEnergy
-                    NewBorn.Weight = Me.Weight
-                    NewBorn.ActState.Photosynthesize = True
+                    Me.Weight = Me.Weight - Me.BornWeight
 
+                    With NewBorn
+                        .Age = 0
+                        .Joule = Me.BornEnergy
+                        .Weight = Me.BornWeight
+                        .ActState.Photosynthesize = True
+
+                        .Lifespan = .ShowPhenotype(NameOf(Lifespan))
+                        .Sex = (.ShowPhenotype(NameOf(Sex)) = 1)
+                        .BornEnergy = .ShowPhenotype(NameOf(BornEnergy))
+                        .LitterSize = .ShowPhenotype(NameOf(LitterSize)) ' A decision?????
+                    End With
                     thisWorld.AddCreature(NewBorn)
                     thisWorld.WorldLog.AddLog(DateTime.Now, thisWorld.T, NewBorn.ID,
                                               String.Format("Creature is born by {0}.", Me.ID))
+                    ' Prepare for next birth
+                    BornEnergy = ShowPhenotype(NameOf(BornEnergy))      ' A decision?????
 
                 Next i
-
             End If
-
         End If
     End Sub
 
     Public Sub LiveDT(ByRef thisWorld As World)
+        Age = Age + thisWorld.DT
+        If Age > Lifespan Then
+            ActState.Alive = False
+            thisWorld.CreatureDeath(Me, DeathReasons.AGE)
+            Exit Sub
+        End If
         Call Rove(thisWorld)
         Call EnergyRefresh(thisWorld)
         If ActState.Alive = False Then Exit Sub

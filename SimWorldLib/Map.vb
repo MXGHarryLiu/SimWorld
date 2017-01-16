@@ -68,6 +68,7 @@ Public Class Map
     ''' <summary>
     ''' Get the sum of value in each pixel. 
     ''' </summary>
+    <Description(NameOf(Sum))>
     Public ReadOnly Property Sum As Single
         Get
             Dim Ans As Single = 0
@@ -81,6 +82,7 @@ Public Class Map
     ''' <summary>
     ''' Get the average of value in each pixel. 
     ''' </summary>
+    <Description(NameOf(Avg))>
     Public ReadOnly Property Avg As Single
         Get
             Return Me.Sum / Me.Width / Me.Height
@@ -93,16 +95,19 @@ Public Class Map
 
     <DataMember>
     <Category("Graphics")>
+    <Description(NameOf(Visible))>
     <System.ComponentModel.DefaultValueAttribute(True)>
     Public Property Visible As Boolean = True
 
     <DataMember>
     <Category("Graphics")>
+    <Description(NameOf(ThemeColor))>
     Public Property ThemeColor As Color = Color.Blue
 
     <DataMember>
     <Category("Graphics")>
     <System.ComponentModel.DefaultValueAttribute(255)>
+    <Description(NameOf(Alpha))>
     Public Property Alpha As Byte = 127
 
 #End Region
@@ -186,6 +191,5 @@ Public Class Map
         Result.UnlockBits(bmpData)
         Return Result
     End Function
-
 
 End Class
