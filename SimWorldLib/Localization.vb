@@ -506,12 +506,15 @@ Namespace Localization
     Public Class GeneticApplicableAttribute
         Inherits Attribute
 
+        <System.ComponentModel.DefaultValueAttribute(False)>
         Public Property Applicable As Boolean = False
-        Public Property Everlast As Boolean = True
 
-        Public Sub New(ByVal Applicable As Boolean, Optional ByVal SupportVariable As Boolean = True)
+        <System.ComponentModel.DefaultValueAttribute(True)>
+        Public Property SupportPlasticity As Boolean = True
+
+        Public Sub New(ByVal Applicable As Boolean, Optional ByVal SupportPlasticity As Boolean = True)
             Me.Applicable = Applicable
-            Me.Everlast = Everlast
+            Me.SupportPlasticity = SupportPlasticity
         End Sub
 
     End Class

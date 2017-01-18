@@ -367,6 +367,8 @@ Public Class World
             Creatures(i).LiveDT(Me)
             If Creatures.Count = LastCount Then ' Death can only occur once!
                 i = i + 1
+            Else
+                Call MapGrid.UpdateGrid(Me.Creatures)
             End If
         End While
     End Sub

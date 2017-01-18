@@ -13,7 +13,8 @@ Public Class Gene
     Public Property Phenotype As String
 
     <DataMember>
-    Public Property Everlast As Boolean = True
+    <System.ComponentModel.DefaultValueAttribute(True)>
+    Public Property Plastic As Boolean = True
 
     <DataMember>
     Private _Model As MathModels = MathModels.CONSTANT
@@ -30,7 +31,7 @@ Public Class Gene
                         _ModelParameters.Add(0)     ' Const
                         _Maximum = 0
                         _Minimum = 0
-                        Everlast = True
+                        Plastic = False
                     Case MathModels.BINARY
                         _ValidParameterNum = 1
                         _ModelParameters.Add(0.5)   ' p
@@ -52,12 +53,12 @@ Public Class Gene
             End If
         End Set
     End Property
-    Public Enum MathModels As Byte
-        CONSTANT = 0        ' ModelParameters
-        BINARY = 1          ' p(True)
+    Public Enum MathModels As Byte  ' ModelParameters
+        CONSTANT = 0                ' the constant itself
+        BINARY = 1                  ' p: probability of True/1
         UNIFORM = 2
-        NORMAL = 3          ' Mean: Mu, Standard Deviation: Sigma
-        EXPONENTIAL = 4     ' TBD
+        NORMAL = 3                  ' Mean: Mu, Standard Deviation: Sigma
+        EXPONENTIAL = 4             ' Lambda: Rate constant
     End Enum
 
     <DataMember>

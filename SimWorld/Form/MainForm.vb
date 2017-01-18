@@ -587,12 +587,17 @@ Public Class MainForm
                                    CSng(MyWorld.Size.Y - Pos.Y) - MarkerThickness - Size / 2,
                                    Size + 2 * MarkerThickness, Size + 2 * MarkerThickness)
             End If
-            If MyWorld.Creatures(i).Sex = True Then
-                'Target.DrawPath(Pens.Black, Canvas)
-                Target.FillPath(New SolidBrush(Color.LightBlue), Subpath)
-            Else
-                Target.FillPath(New SolidBrush(Color.Pink), Subpath)
-            End If
+            'Target.DrawPath(Pens.Black, Canvas)
+            Select Case MyWorld.Creatures(i).Sex
+                Case Creature.Gender.MALE
+                    Target.FillPath(New SolidBrush(Color.LightBlue), Subpath)
+                Case Creature.Gender.FEMALE
+                    Target.FillPath(New SolidBrush(Color.Pink), Subpath)
+                Case Creature.Gender.HERMAPHRODITE
+                    Target.FillPath(New SolidBrush(Color.MediumPurple), Subpath)
+                Case Creature.Gender.ASEXUAL
+                    Target.FillPath(New SolidBrush(Color.Goldenrod), Subpath)
+            End Select
         Next i
         If True Then        'Show MapGrid on the Canvas
             Dim DashPen As Pen = New Pen(Color.Gray)

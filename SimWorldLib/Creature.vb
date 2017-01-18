@@ -24,6 +24,8 @@ Public Class Creature
 
     Private RNG As System.Random = NewRNG()
 
+    Private PregnantAge As Double = 0
+
     ''' <param name="item">Name of the property. </param>
     ''' <remarks>
     ''' Return the default value for the property named <paramref name="item"/>. 
@@ -337,9 +339,15 @@ Public Class Creature
     <DataMember>
     <Category("Reproduction")>
     <Description(NameOf(Sex))>
-    <System.ComponentModel.DefaultValueAttribute(True)>
+    <System.ComponentModel.DefaultValueAttribute(Gender.ASEXUAL)>
     <GeneticApplicable(True)>
-    Public Property Sex As Boolean = True    'Male = True
+    Public Property Sex As Gender = Gender.ASEXUAL
+    Public Enum Gender As Byte
+        MALE = 0
+        FEMALE = 1
+        ASEXUAL = 2
+        HERMAPHRODITE = 3
+    End Enum
 
     Private _Weight As Double = 0
     <DataMember>
@@ -436,6 +444,8 @@ Public Class Creature
         End Set
     End Property
 
+    Public Property Generation As Integer = 0
+
     Private _Lifespan As Double = Double.PositiveInfinity           'sec
     <DataMember>
     <Category("Reproduction")>
@@ -526,7 +536,7 @@ Public Class Creature
         Next
         ' New Genetics
         Lifespan = ShowPhenotype(NameOf(Lifespan))
-        Sex = (ShowPhenotype(NameOf(Sex)) = 1)
+        Sex = ShowPhenotype(NameOf(Sex))
         BornEnergy = ShowPhenotype(NameOf(BornEnergy))
         LitterSize = ShowPhenotype(NameOf(LitterSize))
     End Sub
@@ -582,7 +592,7 @@ Public Class Creature
                 NewGene.Model = Gene.MathModels.NORMAL
                 NewGene.Minimum = 0
                 NewGene.SetParameters(3000, 100)
-            Case NameOf(Sex)
+            Case NameOf(Sex)                                ' bisexual
                 NewGene.Model = Gene.MathModels.BINARY
             Case NameOf(BornEnergy)
                 NewGene.Model = Gene.MathModels.NORMAL
@@ -661,22 +671,21 @@ Public Class Creature
     End Sub
 
     Private Sub ReproRefresh(ByRef thisWorld As World)
+        MarkerSize = CSng(Me.Age / 50 + 1)   'Debug use !!!!!!!!!!!!!!!!!!!!!!!!!!
         If Age >= MinMateAge Then
             MateReady = True
-            MarkerSize = 15   'Debug use
+            Marked = True                    'Debug use !!!!!!!!!!!!!!!!!!!!!!!!!!
         End If
-
-        If MateReady = True Then
-            ActState.Pregnant = True  'immediately pregnanted
-
-            If Weight >= (LitterSize + 1) * BornWeight Then ' Deliver new born 'MAGIC NUMBER
+        If MateReady = False Then
+            Exit Sub
+        End If
+        If ActState.Pregnant = True And Me.Age - PregnantAge > 100 Then ' Magic number!!!
+            If Weight >= (LitterSize + 1) * BornWeight Then     ' Deliver new born 'MAGIC NUMBER
                 ActState.Pregnant = False
                 Dim NewBorn As Creature = Nothing
                 Dim NewBornPos(2) As Double
                 For i As Integer = 1 To LitterSize Step 1
-
                     _Joule = _Joule - BornEnergy
-
                     If _Joule < 0 Then
                         _Joule = 0
                         ActState.Alive = False
@@ -685,28 +694,47 @@ Public Class Creature
                     End If
                     NewBorn = Me.Copy() ' finally replaced by empty creature
                     Mutator.Mutate(thisWorld, NewBorn, GetType(Creature).GetProperty(NameOf(Position)))
-
                     Me.Weight = Me.Weight - Me.BornWeight
-
                     With NewBorn
                         .Age = 0
                         .Joule = Me.BornEnergy
                         .Weight = Me.BornWeight
+                        .MateReady = False
+                        .Marked = False          'debug use
                         .ActState.Photosynthesize = True
-
                         .Lifespan = .ShowPhenotype(NameOf(Lifespan))
-                        .Sex = (.ShowPhenotype(NameOf(Sex)) = 1)
+                        .Sex = .ShowPhenotype(NameOf(Sex))
                         .BornEnergy = .ShowPhenotype(NameOf(BornEnergy))
                         .LitterSize = .ShowPhenotype(NameOf(LitterSize)) ' A decision?????
                     End With
                     thisWorld.AddCreature(NewBorn)
                     thisWorld.WorldLog.AddLog(DateTime.Now, thisWorld.T, NewBorn.ID,
-                                              String.Format("Creature is born by {0}.", Me.ID))
+                                                  String.Format("Creature is born by {0}.", Me.ID))
                     ' Prepare for next birth
                     BornEnergy = ShowPhenotype(NameOf(BornEnergy))      ' A decision?????
-
                 Next i
             End If
+            Exit Sub
+        ElseIf ActState.Pregnant = False And MateReady = True Then
+            Select Case Me.Sex      'Find mate
+                Case Gender.ASEXUAL
+                    Exit Sub
+                Case Gender.FEMALE
+                    Dim NearestDist As Double = Double.PositiveInfinity
+                    Dim NeigborIdx As Integer = thisWorld.MapGrid.FindNearestNeighbor(thisWorld.Creatures, Me, VisionDepth, NearestDist)
+                    If NeigborIdx <> -1 And NearestDist < 2 * Me.MarkerSize Then        '!!!!!!!!!!!!!!!!!!!!
+                        If thisWorld.Creatures(NeigborIdx).Sex = Gender.MALE And thisWorld.Creatures(NeigborIdx).MateReady = True Then
+                            ActState.Pregnant = True  'immediately pregnanted
+                            PregnantAge = Me.Age
+                        End If
+                    End If
+                Case Gender.MALE
+                ' ???????????????????????
+                Case Gender.HERMAPHRODITE
+                    ' ???????????????????????
+                Case Else
+                    ' ERROR: Do nothing 
+            End Select
         End If
     End Sub
 
@@ -717,15 +745,14 @@ Public Class Creature
             thisWorld.CreatureDeath(Me, DeathReasons.AGE)
             Exit Sub
         End If
-        Call Rove(thisWorld)
         Call EnergyRefresh(thisWorld)
         If ActState.Alive = False Then Exit Sub
         Call ReproRefresh(thisWorld)
         If ActState.Alive = False Then Exit Sub
+        Call Rove(thisWorld)
     End Sub
 
 End Class
-
 
 ''' <summary>
 ''' SimWorld Creature Derived Class for File Import/Export
