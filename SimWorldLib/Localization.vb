@@ -106,7 +106,7 @@ Namespace Localization
 
     End Class
 
-    Public Class ActStatesConverter
+    Public Class StatesConverter
         Inherits System.ComponentModel.ExpandableObjectConverter
 
         Public Overloads Overrides Function CanConvertTo(
@@ -123,16 +123,28 @@ Namespace Localization
                               ByVal culture As CultureInfo,
                               ByVal value As Object,
                               ByVal destinationType As Type) As Object
-            If (destinationType Is GetType(String) AndAlso TypeOf value Is Creature.ActStates) Then
-                Select Case CType(value, Creature.ActStates).Alive
-                    Case True
-                        Return "Alive"                 'Localization!!!!!!!!!!!!!!
-                    Case False
-                        Return "Dead"
-                End Select
+            If (destinationType Is GetType(String) AndAlso TypeOf value Is Creature.States) Then
+                Return CType(value, Creature.States).ToString
             End If
             Return MyBase.ConvertTo(context, culture, value, destinationType)
         End Function
+
+        'Public Overrides Function CanConvertFrom(ByVal context As ITypeDescriptorContext,
+        '                                        ByVal sourceType As Type) As Boolean
+        '    If sourceType Is GetType(String) Then
+        '        Return True
+        '    End If
+        '    Return MyBase.CanConvertFrom(context, sourceType)
+        'End Function
+
+        'Public Overrides Function ConvertFrom(ByVal context As ITypeDescriptorContext,
+        '                                      ByVal culture As CultureInfo,
+        '                                      ByVal value As Object) As Object
+        '    If TypeOf value Is String Then
+        '        Return New Creature.States(CBool(value))
+        '    End If
+        '    Return MyBase.ConvertFrom(context, culture, value)
+        'End Function
 
     End Class
 
@@ -272,52 +284,43 @@ Namespace Localization
                                                 ByVal attributes() As Attribute) As PropertyDescriptorCollection
             Dim CurrentGene As Gene = TryCast(value, Gene)
             Dim AttributeList() As Attribute
-            Dim props() As PropertyDescriptor
+            Dim PropertyDescriptorList As PropertyDescriptorCollection = New PropertyDescriptorCollection(Nothing)
+            AttributeList = {New System.ComponentModel.DefaultValueAttribute(True)} 'Not Working!!!
+            PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Perceptible), AttributeList))
             Select Case CurrentGene.Model
                 Case Gene.MathModels.CONSTANT
-                    ReDim props(2)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Minimum)), New ReadOnlyAttribute(True)}
-                    props(0) = New GenePropertyDescriptor(NameOf(Gene.Minimum), AttributeList, 0)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Maximum)), New ReadOnlyAttribute(True)}
-                    props(1) = New GenePropertyDescriptor(NameOf(Gene.Maximum), AttributeList, 1)
+                    AttributeList = {New ReadOnlyAttribute(True)}
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Minimum), AttributeList))
+                    AttributeList = {New ReadOnlyAttribute(True)}
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Maximum), AttributeList))
                     AttributeList = {New DescriptionAttribute(CurrentGene.Phenotype)}
-                    props(2) = New GenePropertyDescriptor(CurrentGene.Phenotype, AttributeList, 2)
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(CurrentGene.Phenotype, AttributeList, 0))
                 Case Gene.MathModels.UNIFORM
-                    ReDim props(1)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Minimum))}
-                    props(0) = New GenePropertyDescriptor(NameOf(Gene.Minimum), AttributeList, 0)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Maximum))}
-                    props(1) = New GenePropertyDescriptor(NameOf(Gene.Maximum), AttributeList, 1)
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Minimum), Nothing))
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Maximum), Nothing))
                 Case Gene.MathModels.BINARY
-                    ReDim props(2)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Minimum)), New ReadOnlyAttribute(True)}
-                    props(0) = New GenePropertyDescriptor(NameOf(Gene.Minimum), AttributeList, 0)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Maximum)), New ReadOnlyAttribute(True)}
-                    props(1) = New GenePropertyDescriptor(NameOf(Gene.Maximum), AttributeList, 1)
+                    AttributeList = {New ReadOnlyAttribute(True)}
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Minimum), AttributeList))
+                    AttributeList = {New ReadOnlyAttribute(True)}
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Maximum), AttributeList))
                     AttributeList = {New DescriptionAttribute("p")}
-                    props(2) = New GenePropertyDescriptor("p", AttributeList, 2)
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor("p", AttributeList, 0))
                 Case Gene.MathModels.NORMAL
-                    ReDim props(3)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Minimum))}
-                    props(0) = New GenePropertyDescriptor(NameOf(Gene.Minimum), AttributeList, 0)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Maximum))}
-                    props(1) = New GenePropertyDescriptor(NameOf(Gene.Maximum), AttributeList, 1)
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Minimum), Nothing))
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Maximum), Nothing))
                     AttributeList = {New DescriptionAttribute("Mu")}
-                    props(2) = New GenePropertyDescriptor("Mu", AttributeList, 2)
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor("Mu", AttributeList, 0))
                     AttributeList = {New DescriptionAttribute("Sigma")}
-                    props(3) = New GenePropertyDescriptor("Sigma", AttributeList, 3)
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor("Sigma", AttributeList, 1))
                 Case Gene.MathModels.EXPONENTIAL
-                    ReDim props(2)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Minimum))}
-                    props(0) = New GenePropertyDescriptor(NameOf(Gene.Minimum), AttributeList, 0)
-                    AttributeList = {New DescriptionAttribute(NameOf(Gene.Maximum))}
-                    props(1) = New GenePropertyDescriptor(NameOf(Gene.Maximum), AttributeList, 1)
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Minimum), Nothing))
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor(NameOf(Gene.Maximum), Nothing))
                     AttributeList = {New DescriptionAttribute("Lambda")}
-                    props(2) = New GenePropertyDescriptor("Lambda", AttributeList, 2)
+                    PropertyDescriptorList.Add(New GenePropertyDescriptor("Lambda", AttributeList, 0))
                 Case Else
                     ' Do nothing
             End Select
-            Return New PropertyDescriptorCollection(props)
+            Return PropertyDescriptorList
         End Function
 
         Public Overrides Function CanConvertFrom(ByVal context As ITypeDescriptorContext,
@@ -430,10 +433,19 @@ Namespace Localization
     Public Class GenePropertyDescriptor
         Inherits PropertyDescriptor
 
-        Private _Idx As Integer = 0
+        Private _Idx As Integer = -1
 
-        Public Sub New(ByVal name As String, ByVal attrs() As Attribute, ByVal Idx As Integer)
+        Public Sub New(ByVal name As String, ByVal attrs() As Attribute, Optional ByVal Idx As Integer = -1)
             MyBase.New(name, attrs)
+            Dim CurrentProp As Reflection.PropertyInfo = GetType(Gene).GetProperty(name)
+            If CurrentProp IsNot Nothing Then
+                Dim AttributeList As Attribute() = Me.AttributeArray
+                For Each SubAttribute As Attribute In CurrentProp.GetCustomAttributes(False)
+                    ReDim Preserve AttributeList(AttributeList.Count)
+                    AttributeList(UBound(AttributeList)) = SubAttribute
+                Next
+                Me.AttributeArray = AttributeList
+            End If
             Me._Idx = Idx
         End Sub
 
@@ -456,7 +468,12 @@ Namespace Localization
 
         Public Overrides ReadOnly Property PropertyType As Type
             Get
-                Return GetType(Double)
+                Select Case Me.Name
+                    Case NameOf(Gene.Perceptible)
+                        Return GetType(Boolean)
+                    Case Else
+                        Return GetType(Double)
+                End Select
             End Get
         End Property
 
@@ -466,16 +483,20 @@ Namespace Localization
 
         Public Overrides Sub SetValue(component As Object, value As Object)
             Dim CurrentGene As Gene = TryCast(component, Gene)
-            Select Case _Idx
-                Case 0
-                    CurrentGene.Minimum = value
-                Case 1
-                    CurrentGene.Maximum = value
-                Case Is >= 2
-                    CurrentGene.ModelParameters(_Idx - 2) = value
-                Case Else
-                    ' Do nothing
-            End Select
+            If _Idx = -1 Then
+                Select Case Me.Name
+                    Case NameOf(Gene.Maximum)
+                        CurrentGene.Maximum = value
+                    Case NameOf(Gene.Minimum)
+                        CurrentGene.Minimum = value
+                    Case NameOf(Gene.Perceptible)
+                        CurrentGene.Perceptible = value
+                    Case Else
+
+                End Select
+            Else
+                CurrentGene.ModelParameters(_Idx) = value
+            End If
         End Sub
 
         Public Overrides Function CanResetValue(component As Object) As Boolean
@@ -484,16 +505,20 @@ Namespace Localization
 
         Public Overrides Function GetValue(component As Object) As Object
             Dim CurrentGene As Gene = TryCast(component, Gene)
-            Select Case _Idx
-                Case 0
-                    Return CurrentGene.Minimum
-                Case 1
-                    Return CurrentGene.Maximum
-                Case Is >= 2
-                    Return CurrentGene.ModelParameters(_Idx - 2)
-                Case Else
-                    Return 0
-            End Select
+            If _Idx = -1 Then
+                Select Case Me.Name
+                    Case NameOf(Gene.Maximum)
+                        Return CurrentGene.Maximum
+                    Case NameOf(Gene.Minimum)
+                        Return CurrentGene.Minimum
+                    Case NameOf(Gene.Perceptible)
+                        Return CurrentGene.Perceptible
+                    Case Else
+                        Return -1
+                End Select
+            Else
+                Return CurrentGene.ModelParameters(_Idx)
+            End If
         End Function
 
         Public Overrides Function ShouldSerializeValue(component As Object) As Boolean
@@ -509,12 +534,8 @@ Namespace Localization
         <System.ComponentModel.DefaultValueAttribute(False)>
         Public Property Applicable As Boolean = False
 
-        <System.ComponentModel.DefaultValueAttribute(True)>
-        Public Property SupportPlasticity As Boolean = True
-
-        Public Sub New(ByVal Applicable As Boolean, Optional ByVal SupportPlasticity As Boolean = True)
+        Public Sub New(ByVal Applicable As Boolean)
             Me.Applicable = Applicable
-            Me.SupportPlasticity = SupportPlasticity
         End Sub
 
     End Class

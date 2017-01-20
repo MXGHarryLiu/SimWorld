@@ -173,21 +173,13 @@
     <value>Utility</value>
     <comment>Category World/Creature</comment>
   </data>
-  <data name="ActState" xml:space="preserve">
-    <value>A 2nd-level object that tracks the states of the Creature.  </value>
-    <comment>Creature State</comment>
-  </data>
   <data name="Age" xml:space="preserve">
     <value>The age of the Creature. </value>
     <comment>Creature Reproduction</comment>
   </data>
   <data name="Alive" xml:space="preserve">
-    <value>Whether the Creature is alive. </value>
-    <comment>Creature ActState</comment>
-  </data>
-  <data name="BaseEExpend" xml:space="preserve">
-    <value>Base level energy expenditure per second of the Creature. </value>
-    <comment>Creature Energy</comment>
+    <value>Whether the Creature is alive. EnergyExpand shows base level energy expenditure per second of the Creature.</value>
+    <comment>Creature Activity</comment>
   </data>
   <data name="BornEnergy" xml:space="preserve">
     <value>Energy that the Creature's offsprings have at birth. </value>
@@ -203,7 +195,7 @@
   </data>
   <data name="Eating" xml:space="preserve">
     <value>Whether the Creature is eating. </value>
-    <comment>Creature ActState</comment>
+    <comment>Creature Activity</comment>
   </data>
   <data name="Energy" xml:space="preserve">
     <value>Energy</value>
@@ -263,31 +255,27 @@
   </data>
   <data name="Move" xml:space="preserve">
     <value>Whether the Creature is moving. </value>
-    <comment>Creature ActState</comment>
+    <comment>Creature Activity</comment>
   </data>
   <data name="MovingVector" xml:space="preserve">
     <value>The 3D velocity vector of the Creature at the given instance. </value>
-    <comment>Creature State</comment>
+    <comment>Creature Activity</comment>
   </data>
   <data name="NightLen" xml:space="preserve">
     <value>The length of the night in second. </value>
     <comment>World Environment</comment>
   </data>
-  <data name="PhotoSynRate" xml:space="preserve">
-    <value>Rate of photosynthesis in energy per second per brightness received. </value>
-    <comment>Creature Energy</comment>
-  </data>
   <data name="Photosynthesize" xml:space="preserve">
-    <value>Whether the Creature is photosynthesizing. </value>
-    <comment>Creature ActState</comment>
+    <value>Whether the Creature is photosynthesizing. EnergyExpand shows the rate of photosynthesis in energy per second per brightness received. </value>
+    <comment>Creature Activity</comment>
   </data>
   <data name="Position" xml:space="preserve">
     <value>The 3D position of the Creature. </value>
-    <comment>Creature State</comment>
+    <comment>Creature Activity</comment>
   </data>
   <data name="Pregnant" xml:space="preserve">
     <value>Whether the Creature is pregnant. </value>
-    <comment>Creature ActState</comment>
+    <comment>Creature Activity</comment>
   </data>
   <data name="Reproduction" xml:space="preserve">
     <value>Reproduction</value>
@@ -303,14 +291,14 @@
   </data>
   <data name="Sleep" xml:space="preserve">
     <value>Whether the Creature is asleep. </value>
-    <comment>Creature ActState</comment>
+    <comment>Creature Activity</comment>
   </data>
   <data name="Species" xml:space="preserve">
     <value>The species number of the Creature. </value>
     <comment>Creature Identity</comment>
   </data>
-  <data name="State" xml:space="preserve">
-    <value>State</value>
+  <data name="Activity" xml:space="preserve">
+    <value>Activity</value>
     <comment>Category Creature</comment>
   </data>
   <data name="Weight" xml:space="preserve">
@@ -347,7 +335,7 @@
   </data>
   <data name="Alpha" xml:space="preserve">
     <value>The opacity of the map layer (255 is not transparent, and 0 is total transparent. )</value>
-    <comment>Sub Property (Map)</comment>
+    <comment>Map</comment>
   </data>
   <data name="Avg" xml:space="preserve">
     <value>The average value.</value>
@@ -367,11 +355,11 @@
   </data>
   <data name="Maximum" xml:space="preserve">
     <value>Upper bound of the model. </value>
-    <comment>Sub Property</comment>
+    <comment>Gene</comment>
   </data>
   <data name="Minimum" xml:space="preserve">
     <value>Lower bound of the model. </value>
-    <comment>Sub Property</comment>
+    <comment>Gene</comment>
   </data>
   <data name="Sum" xml:space="preserve">
     <value>The sum of the values. </value>
@@ -379,11 +367,11 @@
   </data>
   <data name="ThemeColor" xml:space="preserve">
     <value>The hue of the map layer. </value>
-    <comment>Sub Property (Map)</comment>
+    <comment>Map</comment>
   </data>
   <data name="Visible" xml:space="preserve">
     <value>Whether it is shown. </value>
-    <comment>Sub Property</comment>
+    <comment>Map</comment>
   </data>
   <data name="VisionDepth" xml:space="preserve">
     <value>The maximum distance from the Position to the surroudings the Creature is able to see. </value>
@@ -403,7 +391,7 @@
   </data>
   <data name="Lambda" xml:space="preserve">
     <value>Rate of the distribution. </value>
-    <comment>Sub Property</comment>
+    <comment>Gene</comment>
   </data>
   <data name="MarkerColor" xml:space="preserve">
     <value>Color of the Marker. </value>
@@ -411,14 +399,26 @@
   </data>
   <data name="Mu" xml:space="preserve">
     <value>Mean of the distribution. </value>
-    <comment>Sub Property</comment>
+    <comment>Gene</comment>
   </data>
   <data name="p" xml:space="preserve">
     <value>Probability of yielding one. </value>
-    <comment>Sub Property</comment>
+    <comment>Gene</comment>
   </data>
   <data name="Sigma" xml:space="preserve">
     <value>Standard deviation of the distribution.</value>
-    <comment>Sub Property</comment>
+    <comment>Gene</comment>
+  </data>
+  <data name="Perceptible" xml:space="preserve">
+    <value>Whether the phenotype of the Gene is perceptible to other Creatures. </value>
+    <comment>Gene</comment>
+  </data>
+  <data name="EnergyExpense" xml:space="preserve">
+    <value>Energy expenditure associated with this state. </value>
+    <comment>State</comment>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Whether the Creature is in this state. </value>
+    <comment>State</comment>
   </data>
 </root>

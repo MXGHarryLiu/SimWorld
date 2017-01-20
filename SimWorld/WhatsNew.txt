@@ -1,15 +1,16 @@
 SimWorld
 
-0.1.6226
-1. Update Creature Sex property to support four genders. 
-2. Improve nearest neighbor execution speed by not using Try statements. 
-3. Update ReproRefresh sub. 
+0.1.6229
+1. Update to Math.NET 3.17. 
+2. Add Gene Perceptible property. 
+3. *** Add Creature - States sub class. 
+4. !!! Abandon ActState class, BaseEExpend, PhotoSynRate properties. 
 
 To Do List (Arranged from near to far): 
 Add Generation
 Add Gene plasticity property. 
+Add Gene regulation, a function that take other properties and output phenotype/decision. 
 alelle
-whether phenotype is accessible/sensible/exposed to others
 creature templete: 
 	a. bacteria, soil as nutrition. concentration gradient. 
 	b. Plant: seed traveling. 
@@ -27,6 +28,11 @@ Creature property:
 	life stage (e.g. seed/plant, worker ant and queen, tadpole and frog)
 Sexual dimorphism
 convert MDI forms to tab.
+
+0.1.6226
+1. Update Creature Sex property to support four genders. 
+2. Improve nearest neighbor execution speed by not using Try statements. 
+3. Update ReproRefresh sub. 
 
 0.1.6224
 1. Add FPS counter in MainForm. 

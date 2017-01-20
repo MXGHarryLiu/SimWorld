@@ -9,7 +9,7 @@ Imports System.Drawing
 ''' </summary>
 <Serializable>
 <DataContract>
-<System.ComponentModel.DefaultProperty("ID")>
+<System.ComponentModel.DefaultProperty(NameOf(Creature.ID))>
 Public Class Creature
 
     Private Class DefaultValueAttribute
@@ -115,11 +115,11 @@ Public Class Creature
 
 #End Region
 
-#Region "State Properties"
+#Region "Activity Properties"
 
     Private _MovingVector As Vector3D = New Vector3D()   ' Normalized Vector ????????
     <DataMember>
-    <Category("State")>
+    <Category("Activity")>
     <Description(NameOf(MovingVector))>
     <System.ComponentModel.TypeConverter(GetType(StructureConverter(Of Vector3D)))>
     Public Property MovingVector As Vector3D
@@ -133,7 +133,7 @@ Public Class Creature
 
     Private _Position As Point3D = New Point3D()
     <DataMember>
-    <Category("State")>
+    <Category("Activity")>
     <Description(NameOf(Position))>
     <System.ComponentModel.TypeConverter(GetType(StructureConverter(Of Point3D)))>
     Public Property Position As Point3D
@@ -153,54 +153,97 @@ Public Class Creature
         End Set
     End Property
 
-    <DataMember>
-    <Category("State")>
-    <Description(NameOf(ActState))>
-    <System.ComponentModel.TypeConverter(GetType(ActStatesConverter))>
-    Public Property ActState As ActStates = New ActStates()
 
     'facing direction
 
-    <DataContract>
     <Serializable>
-    <System.ComponentModel.DefaultProperty("Alive")>
-    Public Class ActStates 'eating|photosynthesis|Pregnant|Sleep|Move|Alive
+    <DataContract>
+    <System.ComponentModel.DefaultProperty(NameOf(States.State))>
+    Public Class States
 
         <DataMember>
-        <Description(NameOf(Alive))>
-        <System.ComponentModel.DefaultValueAttribute(True)>
-        Public Property Alive As Boolean = True
+        <Description(NameOf(State))>
+        Public Property State As Boolean = True
 
         <DataMember>
-        <Description(NameOf(Move))>
-        <System.ComponentModel.DefaultValueAttribute(False)>
-        Public Property Move As Boolean = False
-
-        <DataMember>
-        <Description(NameOf(Sleep))>
-        <System.ComponentModel.DefaultValueAttribute(False)>
-        Public Property Sleep As Boolean = False
-
-        <DataMember>
-        <Description(NameOf(Pregnant))>
-        <System.ComponentModel.DefaultValueAttribute(False)>
-        Public Property Pregnant As Boolean = False
-
-        <DataMember>
-        <Description(NameOf(Photosynthesize))>
-        <System.ComponentModel.DefaultValueAttribute(False)>
-        Public Property Photosynthesize As Boolean = True
-
-        <DataMember>
-        <Description(NameOf(Eating))>
-        <System.ComponentModel.DefaultValueAttribute(False)>
-        Public Property Eating As Boolean = False
+        <Description(NameOf(EnergyExpense))>
+        Public Property EnergyExpense As Double = 0
 
         Public Sub New()
-            ' Necessary for serialization
+
         End Sub
 
+        Public Sub New(ByVal thisState As Boolean)
+            Me.State = thisState
+        End Sub
+
+        Public Shared Widening Operator CType(ByVal thisState As States) As Boolean
+            Return thisState.State
+        End Operator
+
+        Public Shared Narrowing Operator CType(ByVal thisState As Boolean) As States
+            Return New States(thisState)
+        End Operator
+
+        Public Shared Operator =(ByVal a As Boolean, ByVal thisState As States) As Boolean
+            Return (thisState.State = a)
+        End Operator
+
+        Public Shared Operator <>(ByVal a As Boolean, ByVal thisState As States) As Boolean
+            Return (thisState.State <> a)
+        End Operator
+
+        Public Overloads Function ToString() As String
+            Return Me.State.ToString()
+        End Function
+
+        Public Function E() As Double
+            If Me.State = True Then
+                Return Me.EnergyExpense
+            Else
+                Return 0
+            End If
+        End Function
+
     End Class
+
+    <DataMember>
+    <Category("Activity")>
+    <Description(NameOf(Alive))>
+    <System.ComponentModel.TypeConverter(GetType(StatesConverter))>
+    Public Property Alive As States = True
+
+    <DataMember>
+    <Category("Activity")>
+    <Description(NameOf(Move))>
+    <System.ComponentModel.TypeConverter(GetType(StatesConverter))>
+    Public Property Move As States = False
+
+    Friend DefaultStates As States = New States(False)
+
+    <DataMember>
+    <Category("Activity")>
+    <Description(NameOf(Sleep))>
+    <System.ComponentModel.TypeConverter(GetType(StatesConverter))>
+    Public Property Sleep As States = False
+
+    <DataMember>
+    <Category("Activity")>
+    <Description(NameOf(Pregnant))>
+    <System.ComponentModel.TypeConverter(GetType(StatesConverter))>
+    Public Property Pregnant As States = False
+
+    <DataMember>
+    <Category("Activity")>
+    <Description(NameOf(Photosynthesize))>
+    <System.ComponentModel.TypeConverter(GetType(StatesConverter))>
+    Public Property Photosynthesize As States = True
+
+    <DataMember>
+    <Category("Activity")>
+    <Description(NameOf(Eating))>
+    <System.ComponentModel.TypeConverter(GetType(StatesConverter))>
+    Public Property Eating As States = False
 
 #End Region
 
@@ -237,40 +280,6 @@ Public Class Creature
                 ShowErrMsg(NameOf(MaxEnergyStorage), ErrType.NOTNEGATIVE)
             Else
                 _MaxEnergyStorage = value
-            End If
-        End Set
-    End Property
-
-    Private _BaseEExpend As Double = 0    'J/s as a function of weight later
-    <DataMember>
-    <Category("Energy")>
-    <Description(NameOf(BaseEExpend))>
-    Public Property BaseEExpend As Double
-        Get
-            Return _BaseEExpend
-        End Get
-        Set(ByVal value As Double)
-            If value < 0 Then
-                ShowErrMsg(NameOf(BaseEExpend), ErrType.NOTNEGATIVE)
-            Else
-                _BaseEExpend = value
-            End If
-        End Set
-    End Property
-
-    Private _PhotoSynRate As Double = 0     'J/s/brightness as a function of weight later
-    <DataMember>
-    <Category("Energy")>
-    <Description(NameOf(PhotoSynRate))>
-    Public Property PhotoSynRate As Double
-        Get
-            Return _PhotoSynRate
-        End Get
-        Set(ByVal value As Double)
-            If value < 0 Then
-                ShowErrMsg(NameOf(PhotoSynRate), ErrType.NOTNEGATIVE)
-            Else
-                _PhotoSynRate = value
             End If
         End Set
     End Property
@@ -512,8 +521,10 @@ Public Class Creature
         Position = New Point3D(RNG.NextDouble() * thisWorld.Size.X, RNG.NextDouble() * thisWorld.Size.Y, 0)
         ' Genetic Variables
         MaxEnergyStorage = 1500
-        BaseEExpend = 2
-        PhotoSynRate = 0.02
+        'BaseEExpend = 2
+        Alive.EnergyExpense = 2
+        Photosynthesize.EnergyExpense = -0.02
+        'PhotoSynRate = 0.02
         EtoWRate = 1 / 100
         WtoERate = 100
         Joule = 500 * RNG.NextDouble() + 100
@@ -521,7 +532,7 @@ Public Class Creature
         BornWeight = 1
         MinMateAge = 1000
         VisionDepth = 50
-        Me.ActState.Move = True
+        Me.Move = True
         ' Genome
         Dim CustomAttributes() As Attribute
         Dim propGeneticApplicableAttribute As GeneticApplicableAttribute = Nothing
@@ -592,6 +603,7 @@ Public Class Creature
                 NewGene.Model = Gene.MathModels.NORMAL
                 NewGene.Minimum = 0
                 NewGene.SetParameters(3000, 100)
+                NewGene.Perceptible = False
             Case NameOf(Sex)                                ' bisexual
                 NewGene.Model = Gene.MathModels.BINARY
             Case NameOf(BornEnergy)
@@ -599,10 +611,12 @@ Public Class Creature
                 NewGene.Minimum = 0
                 NewGene.Maximum = Me.MaxEnergyStorage        '!!!!!!!!!!!!!!!!!!!
                 NewGene.SetParameters(500, 50)
+                NewGene.Perceptible = False
             Case NameOf(LitterSize)
                 NewGene.Model = Gene.MathModels.UNIFORM
                 NewGene.Minimum = 1
                 NewGene.Maximum = 3
+                NewGene.Perceptible = False
             Case Else
                 ' Do nothing
         End Select
@@ -636,7 +650,7 @@ Public Class Creature
     End Sub
 
     Private Sub Rove(ByRef thisWorld As World)
-        If ActState.Move = True Then 'rove
+        If Me.Move = True Then 'rove
             ' Kalman filter!!!
             _Position = _Position + _MovingVector * thisWorld.DT
             BoundPosition(thisWorld, _Position)
@@ -647,19 +661,17 @@ Public Class Creature
 
     Private Sub EnergyRefresh(ByRef thisWorld As World)
 
-        If ActState.Photosynthesize = True Then
-            _Joule = _Joule + thisWorld.DayColor(True) * thisWorld.DT * PhotoSynRate
-        End If
+        _Joule = _Joule - thisWorld.DayColor(True) * thisWorld.DT * Photosynthesize.E
 
-        If ActState.Move = True Then
+        If Me.Move = True Then
             '_Joule = _Joule - 1 * Weight * MovingVector.Length
         End If
 
-        _Joule = _Joule - BaseEExpend * thisWorld.DT ' Baseline 
+        _Joule = _Joule - Alive.E * thisWorld.DT
 
         If _Joule < 0 Then
             _Joule = 0
-            ActState.Alive = False
+            Me.Alive = False
             thisWorld.CreatureDeath(Me, DeathReasons.HUNGER)
             Exit Sub
         ElseIf _Joule > MaxEnergyStorage Then
@@ -679,16 +691,16 @@ Public Class Creature
         If MateReady = False Then
             Exit Sub
         End If
-        If ActState.Pregnant = True And Me.Age - PregnantAge > 100 Then ' Magic number!!!
+        If Me.Pregnant = True And Me.Age - PregnantAge > 100 Then ' Magic number!!!
             If Weight >= (LitterSize + 1) * BornWeight Then     ' Deliver new born 'MAGIC NUMBER
-                ActState.Pregnant = False
+                Me.Pregnant = False
                 Dim NewBorn As Creature = Nothing
                 Dim NewBornPos(2) As Double
                 For i As Integer = 1 To LitterSize Step 1
                     _Joule = _Joule - BornEnergy
                     If _Joule < 0 Then
                         _Joule = 0
-                        ActState.Alive = False
+                        Me.Alive = False
                         thisWorld.CreatureDeath(Me, DeathReasons.MATERNAL)
                         Exit Sub
                     End If
@@ -701,7 +713,7 @@ Public Class Creature
                         .Weight = Me.BornWeight
                         .MateReady = False
                         .Marked = False          'debug use
-                        .ActState.Photosynthesize = True
+                        '.Photosynthesize = True
                         .Lifespan = .ShowPhenotype(NameOf(Lifespan))
                         .Sex = .ShowPhenotype(NameOf(Sex))
                         .BornEnergy = .ShowPhenotype(NameOf(BornEnergy))
@@ -711,11 +723,11 @@ Public Class Creature
                     thisWorld.WorldLog.AddLog(DateTime.Now, thisWorld.T, NewBorn.ID,
                                                   String.Format("Creature is born by {0}.", Me.ID))
                     ' Prepare for next birth
-                    BornEnergy = ShowPhenotype(NameOf(BornEnergy))      ' A decision?????
+                    'BornEnergy = ShowPhenotype(NameOf(BornEnergy))      ' A decision?????
                 Next i
             End If
             Exit Sub
-        ElseIf ActState.Pregnant = False And MateReady = True Then
+        ElseIf Me.Pregnant = False And MateReady = True Then
             Select Case Me.Sex      'Find mate
                 Case Gender.ASEXUAL
                     Exit Sub
@@ -724,7 +736,7 @@ Public Class Creature
                     Dim NeigborIdx As Integer = thisWorld.MapGrid.FindNearestNeighbor(thisWorld.Creatures, Me, VisionDepth, NearestDist)
                     If NeigborIdx <> -1 And NearestDist < 2 * Me.MarkerSize Then        '!!!!!!!!!!!!!!!!!!!!
                         If thisWorld.Creatures(NeigborIdx).Sex = Gender.MALE And thisWorld.Creatures(NeigborIdx).MateReady = True Then
-                            ActState.Pregnant = True  'immediately pregnanted
+                            Me.Pregnant = True  'immediately pregnanted
                             PregnantAge = Me.Age
                         End If
                     End If
@@ -741,14 +753,14 @@ Public Class Creature
     Public Sub LiveDT(ByRef thisWorld As World)
         Age = Age + thisWorld.DT
         If Age > Lifespan Then
-            ActState.Alive = False
+            Me.Alive = False
             thisWorld.CreatureDeath(Me, DeathReasons.AGE)
             Exit Sub
         End If
         Call EnergyRefresh(thisWorld)
-        If ActState.Alive = False Then Exit Sub
+        If Me.Alive = False Then Exit Sub
         Call ReproRefresh(thisWorld)
-        If ActState.Alive = False Then Exit Sub
+        If Me.Alive = False Then Exit Sub
         Call Rove(thisWorld)
     End Sub
 

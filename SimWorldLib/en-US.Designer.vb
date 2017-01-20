@@ -64,11 +64,11 @@ Friend Class en_US
     End Property
     
     '''<summary>
-    '''  查找类似 A 2nd-level object that tracks the states of the Creature.   的本地化字符串。
+    '''  查找类似 Activity 的本地化字符串。
     '''</summary>
-    Friend Shared ReadOnly Property ActState() As String
+    Friend Shared ReadOnly Property Activity() As String
         Get
-            Return ResourceManager.GetString("ActState", resourceCulture)
+            Return ResourceManager.GetString("Activity", resourceCulture)
         End Get
     End Property
     
@@ -82,7 +82,7 @@ Friend Class en_US
     End Property
     
     '''<summary>
-    '''  查找类似 Whether the Creature is alive.  的本地化字符串。
+    '''  查找类似 Whether the Creature is alive. EnergyExpand shows base level energy expenditure per second of the Creature. 的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property Alive() As String
         Get
@@ -105,15 +105,6 @@ Friend Class en_US
     Friend Shared ReadOnly Property Avg() As String
         Get
             Return ResourceManager.GetString("Avg", resourceCulture)
-        End Get
-    End Property
-    
-    '''<summary>
-    '''  查找类似 Base level energy expenditure per second of the Creature.  的本地化字符串。
-    '''</summary>
-    Friend Shared ReadOnly Property BaseEExpend() As String
-        Get
-            Return ResourceManager.GetString("BaseEExpend", resourceCulture)
         End Get
     End Property
     
@@ -213,6 +204,15 @@ Friend Class en_US
     Friend Shared ReadOnly Property Energy() As String
         Get
             Return ResourceManager.GetString("Energy", resourceCulture)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  查找类似 Energy expenditure associated with this state.  的本地化字符串。
+    '''</summary>
+    Friend Shared ReadOnly Property EnergyExpense() As String
+        Get
+            Return ResourceManager.GetString("EnergyExpense", resourceCulture)
         End Get
     End Property
     
@@ -460,16 +460,16 @@ Friend Class en_US
     End Property
     
     '''<summary>
-    '''  查找类似 Rate of photosynthesis in energy per second per brightness received.  的本地化字符串。
+    '''  查找类似 Whether the phenotype of the Gene is perceptible to other Creatures.  的本地化字符串。
     '''</summary>
-    Friend Shared ReadOnly Property PhotoSynRate() As String
+    Friend Shared ReadOnly Property Perceptible() As String
         Get
-            Return ResourceManager.GetString("PhotoSynRate", resourceCulture)
+            Return ResourceManager.GetString("Perceptible", resourceCulture)
         End Get
     End Property
     
     '''<summary>
-    '''  查找类似 Whether the Creature is photosynthesizing.  的本地化字符串。
+    '''  查找类似 Whether the Creature is photosynthesizing. EnergyExpand shows the rate of photosynthesis in energy per second per brightness received.  的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property Photosynthesize() As String
         Get
@@ -586,7 +586,7 @@ Friend Class en_US
     End Property
     
     '''<summary>
-    '''  查找类似 State 的本地化字符串。
+    '''  查找类似 Whether the Creature is in this state.  的本地化字符串。
     '''</summary>
     Friend Shared ReadOnly Property State() As String
         Get

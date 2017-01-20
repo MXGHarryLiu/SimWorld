@@ -159,8 +159,8 @@ Partial Class MainForm
         Me.NewWorldMI.Image = Global.SimWorld.My.Resources.Resources.World_256x
         Me.NewWorldMI.Name = "NewWorldMI"
         Me.NewWorldMI.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
-        Me.NewWorldMI.Size = New System.Drawing.Size(163, 26)
-        Me.NewWorldMI.Text = "&World"
+        Me.NewWorldMI.Size = New System.Drawing.Size(172, 26)
+        Me.NewWorldMI.Text = "&World..."
         '
         'OpenMI
         '
@@ -371,7 +371,7 @@ Partial Class MainForm
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.IsMdiContainer = True
-        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Margin = New System.Windows.Forms.Padding(2)
         Me.Name = "MainForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "FormMain"

@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.Serialization
 Imports MathNet.Numerics
 Imports SimWorldLib.ErrMsg
+Imports SimWorldLib.Localization
 
 <Serializable>
 <DataContract>
@@ -12,9 +13,14 @@ Public Class Gene
     <DataMember>
     Public Property Phenotype As String
 
+    '<DataMember>
+    '<System.ComponentModel.DefaultValueAttribute(True)>
+    'Public Property Plastic As Boolean = True
+
     <DataMember>
     <System.ComponentModel.DefaultValueAttribute(True)>
-    Public Property Plastic As Boolean = True
+    <Description(NameOf(Perceptible))>
+    Public Property Perceptible As Boolean = True
 
     <DataMember>
     Private _Model As MathModels = MathModels.CONSTANT
@@ -31,21 +37,27 @@ Public Class Gene
                         _ModelParameters.Add(0)     ' Const
                         _Maximum = 0
                         _Minimum = 0
-                        Plastic = False
+                        'Plastic = False
                     Case MathModels.BINARY
                         _ValidParameterNum = 1
                         _ModelParameters.Add(0.5)   ' p
-                        _Maximum = 1
                         _Minimum = 0
+                        _Maximum = 1
                     Case MathModels.UNIFORM
                         _ValidParameterNum = 0
+                        _Minimum = 0
+                        _Maximum = Double.PositiveInfinity
                     Case MathModels.NORMAL
                         _ValidParameterNum = 2
                         _ModelParameters.Add(0)     ' Mu
                         _ModelParameters.Add(1)     ' Sigma
+                        _Minimum = 0
+                        _Maximum = Double.PositiveInfinity
                     Case MathModels.EXPONENTIAL
                         _ValidParameterNum = 1
                         _ModelParameters.Add(0)     ' Lambda
+                        _Minimum = 0
+                        _Maximum = Double.PositiveInfinity
                     Case Else
                         'do nothing
                 End Select
@@ -104,6 +116,7 @@ Public Class Gene
 
     Private _Minimum As Double = Double.NegativeInfinity
     <DataMember>
+    <Description(NameOf(Minimum))>
     Public Property Minimum As Double
         Get
             Return _Minimum
@@ -119,6 +132,7 @@ Public Class Gene
 
     Private _Maximum As Double = Double.PositiveInfinity
     <DataMember>
+    <Description(NameOf(Maximum))>
     Public Property Maximum As Double
         Get
             Return _Maximum
