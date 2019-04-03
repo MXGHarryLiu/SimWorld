@@ -10,7 +10,8 @@
     <AssemblyName>SimWorldLib</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -72,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Creature.vb" />
+    <Compile Include="Decisioner.vb" />
     <Compile Include="en-US.Designer.vb">
       <DependentUpon>en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
