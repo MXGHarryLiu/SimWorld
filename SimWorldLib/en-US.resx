@@ -421,4 +421,12 @@
     <value>Whether the Creature is in this state. </value>
     <comment>State</comment>
   </data>
+  <data name="SunPowerRatio" xml:space="preserve">
+    <value>Ratio of the light power received from the Sun compare to the maximum value. </value>
+    <comment>World Environment</comment>
+  </data>
+  <data name="TimeofDay" xml:space="preserve">
+    <value>Current time of the day. </value>
+    <comment>World Simulation</comment>
+  </data>
 </root>

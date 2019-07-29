@@ -1,10 +1,10 @@
 SimWorld
 
-0.1.6229
-1. Update to Math.NET 3.17. 
-2. Add Gene Perceptible property. 
-3. *** Add Creature - States sub class. 
-4. !!! Abandon ActState class, BaseEExpend, PhotoSynRate properties. 
+0.1.6233
+1. *** Add Decisioner Class, and Behavior - Script Creature property. 
+   This allows creature behavior or properties to be controlled by external command lines. 
+2. Add Creature property thisWorld, and change World Creatures property. 
+3. Upgrade to .Net Framework 4.7. 
 
 To Do List (Arranged from near to far): 
 Add Generation
@@ -20,14 +20,21 @@ Demonstration:
 depopulate screening, and manually point. 
 tutorial
 multiple world checkpoints
-Mutator/Disruptor/Perturber/
+Mutator/Disruptor/Perturber
 move creature update to task to run in parallel
 Nearest neigbor: creature avoid/approach each other
 Vision and occlusion
 Creature property: 
-	life stage (e.g. seed/plant, worker ant and queen, tadpole and frog)
+	life stage (e.g. seed/plant, tadpole and frog)
+	sociality (worker ant and queen),
 Sexual dimorphism
 convert MDI forms to tab.
+
+0.1.6229
+1. Update to Math.NET 3.17. 
+2. Add Gene Perceptible property. 
+3. *** Add Creature - States sub class. 
+4. !!! Abandon ActState class, BaseEExpend, PhotoSynRate properties. 
 
 0.1.6226
 1. Update Creature Sex property to support four genders. 
