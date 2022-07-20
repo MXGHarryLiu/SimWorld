@@ -726,7 +726,7 @@ Public Class MainForm
         Call RefreshView(CurrentStage)
     End Sub
 
-    Private Sub Debug2ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Debug2ToolStripMenuItem.Click
+    Private Sub Debug2ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Debug2MI.Click
         'MyWorld.MapGrid.UpdateGrid(MyWorld.Creatures)
         'Dim a As Integer = InputBox("Center Creature")
         'Dim TrueDist As Double = InputBox("GridDist",, "1")
@@ -735,5 +735,40 @@ Public Class MainForm
         '    ToolStripComboBox1.Items.Add(CreatureProp.Name)
         'Next
 
+        'dateT.Columns.Add()
+        'MsgBox(dateT.Compute(, Nothing))
+        Dim Command As String = InputBox("Input Command",, "IIF(#Weight>#BornWeight, '>', IIF(#Weight=#BornWeight, '=' , '<'))")
+        d = New Decisioner(MyWorld.Creatures(0), MyWorld, Command)
+    End Sub
+
+    Private d As Decisioner
+
+    Private Sub Debug3MI_Click(sender As Object, e As EventArgs) Handles Debug3MI.Click
+        Dim a As String = d.Decide()
+        MsgBox(a)
+    End Sub
+
+    Private Sub Debug4ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Debug4ToolStripMenuItem.Click
+
+        Dim MySource As New AutoCompleteStringCollection()
+        For Each Prop As Reflection.PropertyInfo In GetType(Creature).GetProperties()
+            MySource.Add("#" & Prop.Name)
+        Next
+        For Each Prop As Reflection.PropertyInfo In GetType(World).GetProperties()
+            MySource.Add("#" & Prop.Name)
+        Next
+        TextBox1.AutoCompleteCustomSource = MySource
+        TextBox1.AutoCompleteMode = AutoCompleteMode.SuggestAppend
+        TextBox1.AutoCompleteSource = AutoCompleteSource.CustomSource
+
+    End Sub
+
+    Private AutoCompleteMenu As ListBox = New ListBox()
+
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+        AutoCompleteMenu.Items.Add("s")
+        AutoCompleteMenu.Items.Add("s2")
+        AutoCompleteMenu.Items.Add("s3")
     End Sub
 End Class

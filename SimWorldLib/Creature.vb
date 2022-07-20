@@ -26,6 +26,8 @@ Public Class Creature
 
     Private PregnantAge As Double = 0
 
+    Private Decisioners As List(Of Decisioner) = New List(Of Decisioner)
+
     ''' <param name="item">Name of the property. </param>
     ''' <remarks>
     ''' Return the default value for the property named <paramref name="item"/>. 
@@ -57,6 +59,9 @@ Public Class Creature
     'End Operator
 
 #End Region
+
+    <ComponentModel.BrowsableAttribute(False)>
+    Public Property thisWorld As World = Nothing
 
 #Region "Identity Properties"
 
@@ -495,6 +500,37 @@ Public Class Creature
         End Set
     End Property
 
+    Private _Script As String = ""
+    <DataMember>
+    <Category("Behavior")>
+    <Description(NameOf(Script))>
+    <System.ComponentModel.DefaultValueAttribute("")>
+    <System.ComponentModel.Editor(GetType(ComponentModel.Design.MultilineStringEditor), GetType(Design.UITypeEditor))>
+    Public Property Script As String
+        Get
+            Return _Script
+        End Get
+        Set(ByVal value As String)
+            Dim Commands As String() = value.Split(New String() {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
+            Dim thisDecisioner As Decisioner = Nothing
+            If Decisioners IsNot Nothing Then Decisioners.Clear()
+            _Script = ""
+            For i As Integer = 0 To Commands.Count - 1 Step 1
+                thisDecisioner = New Decisioner(Me, Me.thisWorld, Commands(i))
+                If thisDecisioner.Valid = False Then
+                    Continue For
+                Else
+                    Decisioners.Add(thisDecisioner)
+                    If i = 0 Then
+                        _Script = Commands(i)
+                    Else
+                        _Script = _Script & vbNewLine & Commands(i)
+                    End If
+                End If
+            Next i
+        End Set
+    End Property
+
 #End Region
 
 #Region "Genetics"
@@ -521,10 +557,8 @@ Public Class Creature
         Position = New Point3D(RNG.NextDouble() * thisWorld.Size.X, RNG.NextDouble() * thisWorld.Size.Y, 0)
         ' Genetic Variables
         MaxEnergyStorage = 1500
-        'BaseEExpend = 2
         Alive.EnergyExpense = 2
-        Photosynthesize.EnergyExpense = -0.02
-        'PhotoSynRate = 0.02
+        Photosynthesize.EnergyExpense = -6
         EtoWRate = 1 / 100
         WtoERate = 100
         Joule = 500 * RNG.NextDouble() + 100
@@ -661,7 +695,7 @@ Public Class Creature
 
     Private Sub EnergyRefresh(ByRef thisWorld As World)
 
-        _Joule = _Joule - thisWorld.DayColor(True) * thisWorld.DT * Photosynthesize.E
+        _Joule = _Joule - thisWorld.SunPowerRatio * thisWorld.DT * Photosynthesize.E
 
         If Me.Move = True Then
             '_Joule = _Joule - 1 * Weight * MovingVector.Length

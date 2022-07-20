@@ -178,7 +178,7 @@ Public Class StageForm
                     Case 0          'background
                         Me.Cursor = Cursors.Default
                         Stage.ContextMenuStrip = ContextMenuStripBg
-                        MouseInfo = "Ambient: " & MyWorld.DayColor(True)
+                        MouseInfo = "Ambient: " & MyWorld.SunPowerRatio
                     Case Else       'foreground
                         Me.Cursor = Cursors.Hand
                         Stage.ContextMenuStrip = ContextMenuStripFg

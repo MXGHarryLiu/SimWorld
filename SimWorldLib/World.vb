@@ -117,6 +117,28 @@ Public Class World
         End Set
     End Property
 
+    <Category("Environment")>
+    <Description(NameOf(SunPowerRatio))>
+    Public ReadOnly Property SunPowerRatio As Double
+        Get
+            Dim TWithinDay As Double = Me.TimeofDay
+            Dim MinPassTwi As Double = 0
+            Dim SunPower As Double = 0
+            If TWithinDay < DayLen Then
+                SunPower = 1.0R
+            ElseIf TWithinDay >= DayLen And TWithinDay < DayLen + Twilight Then
+                MinPassTwi = TWithinDay - DayLen
+                SunPower = 1.0R - MinPassTwi / Twilight
+            ElseIf TWithinDay >= DayLen + Twilight And TWithinDay < DayLen + Twilight + NightLen Then
+                SunPower = 0.0R
+            Else
+                MinPassTwi = TWithinDay - DayLen - Twilight - NightLen
+                SunPower = MinPassTwi / Twilight
+            End If
+            Return SunPower
+        End Get
+    End Property
+
     'sec first day and night ---\___/
     <Category("Environment")>
     <Description(NameOf(DayTotal))>
@@ -192,11 +214,22 @@ Public Class World
 
 #Region "Life Properties"
 
+    Private _Creatures As List(Of Creature) = New List(Of Creature)
     <DataMember>
     <Category("Life")>
     <Description(NameOf(Creatures))>
     <System.ComponentModel.Editor(GetType(CreatureCollectionEditor), GetType(Design.UITypeEditor))>
-    Public Property Creatures As List(Of Creature) = New List(Of Creature)
+    Public Property Creatures As List(Of Creature)
+        Get
+            Return _Creatures
+        End Get
+        Set(ByVal value As List(Of Creature))
+            For i As Integer = 0 To value.Count - 1 Step 1
+                value(i).thisWorld = Me
+            Next i
+            _Creatures = value
+        End Set
+    End Property
 
     <Category("Life")>
     <Description(NameOf(CreatureCount))>
@@ -239,6 +272,14 @@ Public Class World
         Private Set(value As Double)
             _T = value
         End Set
+    End Property
+
+    <Category("Simulation")>
+    <Description(NameOf(TimeofDay))>
+    Public ReadOnly Property TimeofDay As Double
+        Get
+            Return T Mod DayTotal
+        End Get
     End Property
 
     Private _RefreshRate As Integer = DefaultValue(NameOf(RefreshRate))     'multiple of dT
@@ -348,6 +389,7 @@ Public Class World
         If NewCreature Is Nothing Then
             NewCreature = New Creature(Me)
         End If
+        NewCreature.thisWorld = Me
         Creatures.Add(NewCreature)
     End Sub
 
@@ -373,26 +415,9 @@ Public Class World
         End While
     End Sub
 
-    Public Function DayColor(Optional ByVal Value As Boolean = False) As Object
-        Dim TWithinDay As Double = T Mod DayTotal
-        Dim MinPassTwi As Double = 0
-        Dim CValue As Double
-        If TWithinDay < DayLen Then
-            CValue = 255
-        ElseIf TWithinDay >= DayLen And TWithinDay < DayLen + Twilight Then
-            MinPassTwi = TWithinDay - DayLen
-            CValue = 255 - MinPassTwi / Twilight * 255
-        ElseIf TWithinDay >= DayLen + Twilight And TWithinDay < DayLen + Twilight + NightLen Then
-            CValue = 0
-        Else
-            MinPassTwi = TWithinDay - DayLen - Twilight - NightLen
-            CValue = MinPassTwi / Twilight * 255
-        End If
-        If Value Then
-            Return CValue
-        Else
-            Return Color.FromArgb(CValue, CValue, CValue)
-        End If
+    Public Function DayColor() As Object
+        Dim SunPower As Integer = CInt(Me.SunPowerRatio * 255)
+        Return Color.FromArgb(SunPower, SunPower, SunPower)
     End Function
 
 End Class
